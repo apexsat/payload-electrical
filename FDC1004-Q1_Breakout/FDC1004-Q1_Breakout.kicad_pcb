@@ -74,7 +74,7 @@
 			(subtractmaskfromsilk no)
 			(outputformat 1)
 			(mirror no)
-			(drillshape 1)
+			(drillshape 0)
 			(scaleselection 1)
 			(outputdirectory "")
 		)
@@ -1077,7 +1077,7 @@
 			(uuid "e232b86d-1183-41e5-a1a3-19e0310ac7e5")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 5.079999 360)
+			(at 0 5.079999 0)
 			(layer "F.Fab")
 			(uuid "afb385fd-a965-492b-a20b-5fcd4eb15985")
 			(effects
@@ -1161,7 +1161,7 @@
 		(descr "Through hole straight pin header, 1x04, 2.54mm pitch, single row")
 		(tags "Through hole pin header THT 1x04 2.54mm single row")
 		(property "Reference" "J1"
-			(at 0 -2.33 360)
+			(at 0 -2.33 0)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "d2fa4ac5-4c34-4b2d-a89c-46dd25d56724")
@@ -1173,7 +1173,7 @@
 			)
 		)
 		(property "Value" "Conn_01x04_Pin"
-			(at 0 9.949999 360)
+			(at 0 9.949999 0)
 			(layer "F.Fab")
 			(uuid "482e5ffe-9aa0-4e69-ad48-40eda54b06aa")
 			(effects
@@ -1668,7 +1668,7 @@
 			(uuid "52e4c8a9-2917-4083-83c4-ff17a5357cea")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 5.079999 360)
+			(at 0 5.079999 0)
 			(layer "F.Fab")
 			(uuid "587e4915-bbdd-459d-8201-a44592bf477f")
 			(effects
