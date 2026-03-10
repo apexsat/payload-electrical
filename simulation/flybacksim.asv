@@ -1,29 +1,20 @@
 % LM5022 Datasheet: https://www.ti.com/lit/ds/symlink/lm5022.pdf
 % LM5022 Flyback reference design: https://www.ti.com/lit/ug/tiduco4/tiduco4.pdf
-% Opto feedback design doc: https://www.ti.com/lit/an/sluaa66/sluaa66.pdf
 
-% Simulation time steps
+%Simulation time steps
 t_end = 1;
 t_step = t_end/1e4;
 
-% Capacitor Specs
+%Design details
 Cload = 200e-6; % Output capacitance
-ESRload = 2.1e-3; % ESR of output capacitor; 2P2S configuration means effective ESR is the same as one of the 4 caps.
-
-% Bleed Resistor
+ESRload = 2.1e-3 % 
 Rload = 1000e3; % Bleed resistor for Steady State calcs
-
-% Output Diode Forward Voltage
 Vf = 1.2; % Output Diode Forward Voltage
-
-% Design details
 Vload_max = 400; % Output regulation voltage limit
 N12 = 1/20; % Transformer N1:N2
 Vin = 16.8; % 12 < Vin < 16.8
 fsw = 250e3; % 250khz
-Ripple_ratio = 0.03; % 3% Vin ripple ratio requirement
-
-% Transformer specs
+Ripple_ratio = 0.03; % 3% Vin ripple ratio
 Lpri = 5.1e-6;
 Lpri_leakage = 0.24e-6;
 Lsec = 2e-3;
