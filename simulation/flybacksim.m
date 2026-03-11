@@ -11,7 +11,7 @@ Cload = 200e-6; % Output capacitance
 ESRload = 2.1e-3; % ESR of output capacitor; 2P2S configuration means effective ESR is the same as one of the 4 caps.
 
 % Bleed Resistor
-Rload = 1000e3; % Bleed resistor for Steady State calcs
+Rload = 307e3; % Bleed resistor for Steady State calcs
 
 % Output Diode Forward Voltage
 Vf = 1.2; % Output Diode Forward Voltage
@@ -19,7 +19,7 @@ Vf = 1.2; % Output Diode Forward Voltage
 % Design details
 Vload_max = 400; % Output regulation voltage limit
 N12 = 1/20; % Transformer N1:N2
-Vin = 16.8; % 12 < Vin < 16.8
+Vin = 12; % 12 < Vin < 16.8
 fsw = 250e3; % 250khz
 Ripple_ratio = 0.03; % 3% Vin ripple ratio requirement
 
@@ -110,7 +110,7 @@ Prdson = Ipri_rms.^2 * Rdson; % Power lost in FET rdson
 Pdrive = fsw * Qg * Vdrive * ones([t_end / t_step + 1 1]); % Power lost in driving FET
 Poss = 0.5*Coss * (Vin^2) * fsw * ones([t_end / t_step + 1 1]); % Power lost in output capacitance of FET
 Psw = 0.5 * Vin * fsw * (trise * Vdrive / Rgate_tot + tfall * Vdrive / Rgate_tot) * ones([t_end / t_step + 1 1]); 
-Psnubber = 0.5 * Lpri_leakage * Ipri_pk.^2 * fsw; % ChatGPT derived snubber power lost
+Psnubber = 0.5 * Lpri_leakage * Ipri_pk.^2 * fsw; % Snubber power loss
 Ptotal = Pdiode + Prsns + Prload + Prdson + Pdrive + Poss + Psw + Psnubber;
 Pin = Iload .* Vload; % I know this should be Vin * Iin but you'd have to do Ipri_rms * Vpri_rms and I dont feel like calculating Vpri_rms. Deal with it; assume ideal conversion
 eff = max(1 - Ptotal ./ Pin, 0); % Max 0 becomes pin is sometimes zero causing eff to be -inf. lol
