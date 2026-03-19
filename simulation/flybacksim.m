@@ -2,6 +2,9 @@
 % LM5022 Flyback reference design: https://www.ti.com/lit/ug/tiduco4/tiduco4.pdf
 % Opto feedback design doc: https://www.ti.com/lit/an/sluaa66/sluaa66.pdf
 
+% Simulation settings
+PRODUCE_PLOTS = 1;
+
 % Simulation time steps
 t_end = 1;
 t_step = t_end/1e4;
@@ -25,12 +28,12 @@ Ripple_ratio = 0.03; % 3% Vin ripple ratio requirement
 
 % Transformer specs
 Lpri = 5.1e-6;
-Lpri_leakage = 0.24e-6;
+Lpri_leakage = Lpri*.03;
 Lsec = 2e-3;
 
 % Change Rsns, Rs2, and Rs1 to change the current limit
-Rsns = 50e-3; % Primary side switch current sense resistor
-Rs2 = 10e3; % Rs2 and Rs1 are as referred to in LM5022 datasheet. 
+Rsns = 100e-3; % Primary side switch current sense resistor
+Rs2 = 1e3; % Rs2 and Rs1 are as referred to in LM5022 datasheet. 
 Rs1 = 100;
 
 %LM5022 params
@@ -45,7 +48,11 @@ Qg = 23e-9;
 Coss = 1e-9;
 Rgate_tot = 5; % MOSFET Rg + any external gate resistor
 Vdrive = 6;
+Vdsmax = 100; % Raw max VDS stress
 
+% Snubber specs
+Vds_fos = 1.5; % FOS to apply to VDS
+Vsn_ripple_max = 0.2; % Ratio of vsn max ripple to vsn
 
 %Simulation outputs
 Vload = zeros([t_end / t_step + 1 1]); % Output load voltage
@@ -100,6 +107,11 @@ end
 Ipri_rms = Ipri_avgpk .* sqrt(D); % RMS primary side current
 Isec_rms = Isec_avgpk .* sqrt(1 - D); % RMS secondary side current
 
+% Snubber calculations
+Vsnmax = min((Vdsmax / Vds_fos - (Vload + Vf) * N12 - Vin) / (1 + Vsn_ripple_max / 2));
+Rsnmax = Vsnmax .^2 ./ (fsw * 0.5 * Lpri_leakage * Ipri_pk.^2 .* Vsnmax ./ (Vsnmax - N12 * (Vload + Vf)));
+Csnmin = Vsnmax ./ (Vsnmax * Vsn_ripple_max * fsw);
+
 % Efficiency calculation
 trise = Rgate_tot * Qg / Vdrive; % Assumes one RC constant is good to turn on/off FET
 tfall = Rgate_tot * Qg / Vdrive;
@@ -131,93 +143,106 @@ disp(max(Lpri_crit(1:floor(t_charged / t_step))));
 disp("Average Efficiency:");
 disp(1 - sum(Ptotal) / sum(Pin));
 
-figure()
-hold on
-plot(t, Iload);
-xlabel('Time (s)');
-ylabel('Current (A)');
-title('Output Current');
-grid on
-hold off
+disp("Calculated snubber voltage:");
+disp(Vsnmax);
 
-figure()
-hold on
-plot(t, Ilim);
-xlabel('Time (s)');
-ylabel('Current (A)');
-title('Current Limit');
-grid on
-hold off
+disp("Maximum snubber resistance:");
+disp(min(Rsnmax));
 
-figure()
-hold on
-plot(t, Ipri_pk);
-xlabel('Time (s)');
-ylabel('Current (A)');
-title('Primary peak current');
-grid on
-hold off
+disp("Minimum snubber capacitance:");
+disp(max(Csnmin));
 
-figure()
-hold on
-plot(t, Vload);
-xlabel('Time (s)');
-ylabel('Voltage (V)');
-title('Output Voltage');
-grid on
-hold off
 
-figure()
-hold on
-plot(t, D);
-xlabel('Time (s)');
-ylabel('Duty');
-title('Duty Cycle');
-grid on
-hold off
+if (PRODUCE_PLOTS)
+    figure()
+    hold on
+    plot(t, Iload);
+    xlabel('Time (s)');
+    ylabel('Current (A)');
+    title('Output Current');
+    grid on
+    hold off
+    
+    figure()
+    hold on
+    plot(t, Ilim);
+    xlabel('Time (s)');
+    ylabel('Current (A)');
+    title('Current Limit');
+    grid on
+    hold off
+    
+    figure()
+    hold on
+    plot(t, Ipri_pk);
+    xlabel('Time (s)');
+    ylabel('Current (A)');
+    title('Primary peak current');
+    grid on
+    hold off
+    
+    figure()
+    hold on
+    plot(t, Vload);
+    xlabel('Time (s)');
+    ylabel('Voltage (V)');
+    title('Output Voltage');
+    grid on
+    hold off
+    
+    figure()
+    hold on
+    plot(t, D);
+    xlabel('Time (s)');
+    ylabel('Duty');
+    title('Duty Cycle');
+    grid on
+    hold off
+    
+    figure()
+    hold on
+    plot(t, 1e3*Lpri_crit);
+    plot(t, 1e3*Lsec_crit);
+    xlabel('Time (s)');
+    ylabel('Critical inductance (mH)');
+    title('Critical inductance for primary and secondary');
+    grid on
+    hold off
+    
+    figure()
+    hold on
+    plot(t, eff);
+    xlabel('Time (s)');
+    ylabel('Efficiency');
+    title('Efficiency vs Time');
+    grid on
+    hold off
+    
+    figure()
+    hold on
+    plot(t, Pin);
+    xlabel('Time (s)');
+    ylabel('Power In (W)');
+    title('Power In');
+    grid on
+    hold off
+    
+    figure()
+    hold on
+    plot(t, Ptotal);
+    plot(t, Prsns);
+    plot(t, Prload);
+    plot(t, Prdson);
+    plot(t, Pdrive);
+    plot(t, Poss);
+    plot(t, Psw);
+    plot(t, Psnubber);
+    colororder("glow12");
+    legend('Ptotal', 'Prsns', 'Prload', 'Prdson', 'Pdrive', 'Poss', 'Psw', 'Psnubber');
+    xlabel('Time (s)');
+    ylabel('Total power lost (W)');
+    title('Power Lost');
+    grid on
+    hold off
 
-figure()
-hold on
-plot(t, 1e3*Lpri_crit);
-plot(t, 1e3*Lsec_crit);
-xlabel('Time (s)');
-ylabel('Critical inductance (mH)');
-title('Critical inductance for primary and secondary');
-grid on
-hold off
-
-figure()
-hold on
-plot(t, eff);
-xlabel('Time (s)');
-ylabel('Efficiency');
-title('Efficiency vs Time');
-grid on
-hold off
-
-figure()
-hold on
-plot(t, Pin);
-xlabel('Time (s)');
-ylabel('Power In (W)');
-title('Power In');
-grid on
-hold off
-
-figure()
-hold on
-plot(t, Ptotal);
-plot(t, Prsns);
-plot(t, Prload);
-plot(t, Prdson);
-plot(t, Pdrive);
-plot(t, Poss);
-plot(t, Psw);
-plot(t, Psnubber);
-colororder("glow12");
-legend('Ptotal', 'Prsns', 'Prload', 'Prdson', 'Pdrive', 'Poss', 'Psw', 'Psnubber');
-xlabel('Time (s)');
-ylabel('Total power lost (W)');
-title('Power Lost');
-grid on
-hold off
+end
