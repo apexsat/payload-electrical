@@ -14,7 +14,7 @@ Cload = 200e-6; % Output capacitance
 ESRload = 2.1e-3; % ESR of output capacitor; 2P2S configuration means effective ESR is the same as one of the 4 caps.
 
 % Bleed Resistor
-Rload = 307e3; % Bleed resistor for Steady State calcs
+Rload = 286e3; % Bleed resistor for Steady State calcs
 
 % Output Diode Forward Voltage
 Vf = 1.2; % Output Diode Forward Voltage
