@@ -3251,6 +3251,18 @@
 		(uuid "0ab8e035-9d09-4544-a96d-0b4f4ac8d423")
 	)
 	(junction
+		(at 29.21 40.64)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0b8fbf95-c939-4b1c-9df0-e0465aeca971")
+	)
+	(junction
+		(at 19.05 40.64)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0de06eb1-3650-4495-8b8b-753a5e41d7fc")
+	)
+	(junction
 		(at 139.7 90.17)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3333,6 +3345,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6be718ff-1900-4449-8a6c-658d4ca99a27")
+	)
+	(junction
+		(at 19.05 48.26)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6d35eec4-9dcf-42e0-8418-fe96a6102cfa")
 	)
 	(junction
 		(at 154.94 69.85)
@@ -3778,7 +3796,7 @@
 	)
 	(wire
 		(pts
-			(xy 54.61 40.64) (xy 57.15 40.64)
+			(xy 19.05 40.64) (xy 29.21 40.64)
 		)
 		(stroke
 			(width 0)
@@ -4048,6 +4066,16 @@
 	)
 	(wire
 		(pts
+			(xy 19.05 48.26) (xy 29.21 48.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a83fd05b-8283-4795-9561-b929e179143f")
+	)
+	(wire
+		(pts
 			(xy 118.11 95.25) (xy 123.19 95.25)
 		)
 		(stroke
@@ -4195,6 +4223,16 @@
 			(type default)
 		)
 		(uuid "d3360e58-b059-474d-822e-2bfd68b74c79")
+	)
+	(wire
+		(pts
+			(xy 29.21 40.64) (xy 57.15 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d4bff47b-80bd-4dde-be1d-1fd67e3c170d")
 	)
 	(wire
 		(pts
@@ -5370,73 +5408,6 @@
 			(project "lm5022-flyback"
 				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08"
 					(reference "C2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 119.38 71.12 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "2f508f5a-7935-4d2b-9468-0d7c90de4b80")
-		(property "Reference" "TP4"
-			(at 124.46 69.8499 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "5004"
-			(at 124.46 72.3899 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
-			(at 119.38 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 119.38 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "test point"
-			(at 119.38 71.12 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "1e777249-1a31-4d88-9866-a33efb4b62d8")
-		)
-		(instances
-			(project "lm5022-flyback"
-				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08"
-					(reference "TP4")
 					(unit 1)
 				)
 			)
@@ -7464,7 +7435,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "9564e805-7f3c-469b-ab01-716049592427")
 		(property "Reference" "R9"
 			(at 129.54 25.908 90)
@@ -8062,7 +8033,7 @@
 	)
 	(symbol
 		(lib_id "Mechanical:MountingHole_Pad")
-		(at 52.07 40.64 90)
+		(at 16.51 40.64 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom no)
@@ -8071,7 +8042,7 @@
 		(fields_autoplaced yes)
 		(uuid "cf61682c-4aec-4aa3-8b95-37ac4e5c6fb5")
 		(property "Reference" "H3"
-			(at 50.8 34.29 90)
+			(at 15.24 34.29 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8079,7 +8050,7 @@
 			)
 		)
 		(property "Value" "VIN"
-			(at 50.8 36.83 90)
+			(at 15.24 36.83 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8087,7 +8058,7 @@
 			)
 		)
 		(property "Footprint" "Pads_Custom:Pad6x4"
-			(at 52.07 40.64 0)
+			(at 16.51 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8096,7 +8067,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 52.07 40.64 0)
+			(at 16.51 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8105,7 +8076,7 @@
 			)
 		)
 		(property "Description" "Mounting Hole with connection"
-			(at 52.07 40.64 0)
+			(at 16.51 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8328,6 +8299,75 @@
 			(project ""
 				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08"
 					(reference "H1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 29.21 44.45 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "e1f9f1a2-67bf-44ad-8652-45fd1cfcbe18")
+		(property "Reference" "C12"
+			(at 31.75 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22uF"
+			(at 31.75 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
+			(at 30.1752 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 29.21 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 29.21 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "276ad461-0dd2-4c41-b188-57537ce076b1")
+		)
+		(pin "1"
+			(uuid "a5623dd6-aa5e-4b13-ae79-7dd17829a119")
+		)
+		(instances
+			(project "lm5022-flyback"
+				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08"
+					(reference "C12")
 					(unit 1)
 				)
 			)
@@ -8686,6 +8726,75 @@
 	)
 	(symbol
 		(lib_id "Device:C")
+		(at 19.05 44.45 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "e778131b-590c-48b7-aa59-a0d8774ff718")
+		(property "Reference" "C11"
+			(at 21.59 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22uF"
+			(at 21.59 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
+			(at 20.0152 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 19.05 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 19.05 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "45040656-a18a-4cee-91c4-83cef9dbe7c3")
+		)
+		(pin "1"
+			(uuid "8b210323-af98-4561-9777-a220a2bd48b5")
+		)
+		(instances
+			(project "lm5022-flyback"
+				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08"
+					(reference "C11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
 		(at 118.11 91.44 180)
 		(unit 1)
 		(exclude_from_sim no)
@@ -8748,6 +8857,72 @@
 			(project "lm5022-flyback"
 				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08"
 					(reference "C8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 19.05 48.26 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f5a837ab-12e2-44b5-bade-8857a2f41f9e")
+		(property "Reference" "#PWR015"
+			(at 19.05 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 19.05 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 19.05 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 19.05 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 19.05 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "2be65da8-c7ce-4f26-8d6a-d3658c61fa46")
+		)
+		(instances
+			(project "lm5022-flyback"
+				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08"
+					(reference "#PWR015")
 					(unit 1)
 				)
 			)
