@@ -251,12 +251,9 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Device:D_Schottky"
-			(pin_numbers
-				(hide yes)
-			)
+		(symbol "Device:D_Schottky_AAK"
 			(pin_names
-				(offset 1.016)
+				(offset 0)
 				(hide yes)
 			)
 			(exclude_from_sim no)
@@ -270,7 +267,7 @@
 					)
 				)
 			)
-			(property "Value" "D_Schottky"
+			(property "Value" "D_Schottky_AAK"
 				(at 0 -2.54 0)
 				(effects
 					(font
@@ -296,7 +293,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Schottky diode"
+			(property "Description" "Schottky diode, anode on pins 1 and 2"
 				(at 0 0 0)
 				(effects
 					(font
@@ -305,7 +302,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_keywords" "diode Schottky"
+			(property "ki_keywords" "diode Schottky SCHDPAK"
 				(at 0 0 0)
 				(effects
 					(font
@@ -323,7 +320,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "D_Schottky_0_1"
+			(symbol "D_Schottky_AAK_0_1"
 				(polyline
 					(pts
 						(xy -1.905 0.635) (xy -1.905 1.27) (xy -1.27 1.27) (xy -1.27 -1.27) (xy -0.635 -1.27) (xy -0.635 -0.635)
@@ -348,9 +345,20 @@
 						(type none)
 					)
 				)
+				(circle
+					(center 2.54 0)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
 				(polyline
 					(pts
-						(xy 1.27 0) (xy -1.27 0)
+						(xy 3.81 2.54) (xy 2.54 2.54) (xy 2.54 0) (xy -1.27 0)
 					)
 					(stroke
 						(width 0)
@@ -361,11 +369,29 @@
 					)
 				)
 			)
-			(symbol "D_Schottky_1_1"
+			(symbol "D_Schottky_AAK_1_1"
 				(pin passive line
 					(at -3.81 0 0)
 					(length 2.54)
 					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 2.54 180)
+					(length 2.54)
+					(name "A"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -381,7 +407,7 @@
 					)
 				)
 				(pin passive line
-					(at 3.81 0 180)
+					(at 5.08 0 180)
 					(length 2.54)
 					(name "A"
 						(effects
@@ -3219,6 +3245,12 @@
 		(uuid "01812098-525e-4a2b-862a-7694e4fba1d7")
 	)
 	(junction
+		(at 119.38 53.34)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0ab8e035-9d09-4544-a96d-0b4f4ac8d423")
+	)
+	(junction
 		(at 139.7 90.17)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3297,6 +3329,12 @@
 		(uuid "624ff386-4db3-448c-a006-76fb59e983f0")
 	)
 	(junction
+		(at 119.38 50.8)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6be718ff-1900-4449-8a6c-658d4ca99a27")
+	)
+	(junction
 		(at 154.94 69.85)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3345,12 +3383,6 @@
 		(uuid "97f61983-7dbd-4c32-b77a-4a4488d0e87b")
 	)
 	(junction
-		(at 59.69 50.8)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "a3a0b10b-df89-45b1-87c6-03cdbf5f1697")
-	)
-	(junction
 		(at 123.19 95.25)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3373,12 +3405,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "bfc552ac-1a08-46d2-b605-53922a52fe70")
-	)
-	(junction
-		(at 119.38 50.8)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "bfe2ffc1-6e8e-4650-9135-4d0b77354e8d")
 	)
 	(junction
 		(at 194.31 40.64)
@@ -3542,7 +3568,7 @@
 	)
 	(wire
 		(pts
-			(xy 59.69 50.8) (xy 68.58 50.8)
+			(xy 44.45 50.8) (xy 68.58 50.8)
 		)
 		(stroke
 			(width 0)
@@ -3609,6 +3635,16 @@
 			(type default)
 		)
 		(uuid "270d3b0d-00e4-45e3-abda-344f2a9f6a68")
+	)
+	(wire
+		(pts
+			(xy 119.38 53.34) (xy 119.38 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2d022efa-ff24-4044-9c39-ebccb857f161")
 	)
 	(wire
 		(pts
@@ -3772,6 +3808,16 @@
 	)
 	(wire
 		(pts
+			(xy 119.38 50.8) (xy 119.38 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5eeb4e32-6445-435a-80df-7d63995a03c0")
+	)
+	(wire
+		(pts
 			(xy 182.88 109.22) (xy 182.88 69.85)
 		)
 		(stroke
@@ -3882,7 +3928,7 @@
 	)
 	(wire
 		(pts
-			(xy 105.41 50.8) (xy 111.76 50.8)
+			(xy 105.41 50.8) (xy 110.49 50.8)
 		)
 		(stroke
 			(width 0)
@@ -3919,16 +3965,6 @@
 			(type default)
 		)
 		(uuid "89ec230b-417b-4cba-8f56-796797281bb5")
-	)
-	(wire
-		(pts
-			(xy 44.45 50.8) (xy 59.69 50.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8a3e2304-7368-40de-b275-3f3a8961bfbf")
 	)
 	(wire
 		(pts
@@ -4282,16 +4318,6 @@
 	)
 	(wire
 		(pts
-			(xy 119.38 50.8) (xy 119.38 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fa968a7f-f37e-4470-b1d5-174c6ddfb55c")
-	)
-	(wire
-		(pts
 			(xy 109.22 63.5) (xy 111.76 63.5)
 		)
 		(stroke
@@ -4299,6 +4325,16 @@
 			(type default)
 		)
 		(uuid "fc3f2a18-cd43-4443-bab3-0c1a7794e68b")
+	)
+	(label "VS"
+		(at 119.38 71.12 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "21e16031-42b8-4c33-b224-7427216c1025")
 	)
 	(label "FB"
 		(at 106.68 71.12 180)
@@ -4309,6 +4345,26 @@
 			(justify right bottom)
 		)
 		(uuid "96614804-0bd8-4c87-ad34-b8c746225859")
+	)
+	(label "VSN"
+		(at 105.41 50.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "a2fc0044-31c3-4a1e-88bb-0894566f0e5d")
+	)
+	(label "VD"
+		(at 119.38 55.88 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f2ec9f7d-6bc1-4c38-9e8e-6cfab6ce8bde")
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -4401,7 +4457,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 105.41 67.818 90)
 			(effects
 				(font
@@ -4940,7 +4996,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 75.8952 86.36 0)
 			(effects
 				(font
@@ -5208,7 +5264,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_1225_3264Metric"
 			(at 117.602 74.93 90)
 			(effects
 				(font
@@ -5277,7 +5333,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 69.5452 58.42 0)
 			(effects
 				(font
@@ -5413,7 +5469,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 100.0252 86.36 0)
 			(effects
 				(font
@@ -6089,6 +6145,77 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:D_Schottky_AAK")
+		(at 114.3 50.8 0)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "519e8781-daeb-463c-ba65-2478e7b009f3")
+		(property "Reference" "D3"
+			(at 115.062 45.974 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PPH10100"
+			(at 115.062 48.006 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:TO-277A"
+			(at 114.3 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 114.3 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Schottky diode, anode on pins 1 and 2"
+			(at 114.3 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "27d89048-1c40-407c-b0bb-d73435f52b61")
+		)
+		(pin "1"
+			(uuid "1f149d17-f612-4117-a307-b6773761d4d5")
+		)
+		(pin "2"
+			(uuid "21c2a03a-389b-4569-8f12-4c9a878315e9")
+		)
+		(instances
+			(project ""
+				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08"
+					(reference "D3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 110.49 74.93 0)
 		(unit 1)
@@ -6115,7 +6242,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 111.4552 78.74 0)
 			(effects
 				(font
@@ -7089,7 +7216,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 102.87 75.438 90)
 			(effects
 				(font
@@ -7407,7 +7534,7 @@
 		(dnp no)
 		(uuid "a24732b5-5531-414c-badd-7bde6c130e26")
 		(property "Reference" "TP12"
-			(at 101.092 57.15 0)
+			(at 100.33 59.182 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7415,7 +7542,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "5004"
+		(property "Value" "~"
 			(at 101.092 59.182 0)
 			(effects
 				(font
@@ -7424,7 +7551,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 104.14 63.5 0)
 			(effects
 				(font
@@ -8558,79 +8685,13 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 59.69 50.8 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "eb060b59-8ca1-4c75-b54b-03abe448639f")
-		(property "Reference" "TP15"
-			(at 61.722 44.45 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "5004"
-			(at 61.722 46.482 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5000-5004_Miniature"
-			(at 64.77 50.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 64.77 50.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "test point"
-			(at 59.69 50.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "52be3ba6-4c03-4f8b-9f04-02d799006001")
-		)
-		(instances
-			(project "lm5022-flyback"
-				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08"
-					(reference "TP15")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 118.11 91.44 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "f0099a38-6594-4650-a8ce-8773046c453d")
 		(property "Reference" "C8"
 			(at 114.808 90.424 0)
@@ -8641,7 +8702,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100pF DNP"
+		(property "Value" "100pF"
 			(at 114.554 92.964 0)
 			(effects
 				(font
@@ -8687,73 +8748,6 @@
 			(project "lm5022-flyback"
 				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08"
 					(reference "C8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D_Schottky")
-		(at 115.57 50.8 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "f4723ce1-7593-467f-8f61-2f1467909e26")
-		(property "Reference" "D3"
-			(at 115.316 45.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "V40D103C-M3/I"
-			(at 115.316 48.006 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TO_SOT_SMD_Custom:TO-263-2_Diode"
-			(at 115.57 50.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.mouser.com/ProductDetail/Vishay/V40D103C-M3-I?qs=i8QVZAFTkqRWP1GZirJttw%3D%3D"
-			(at 115.57 50.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Schottky diode"
-			(at 115.57 50.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "2d26f360-4c7c-4533-ba64-68a04feb66b8")
-		)
-		(pin "1"
-			(uuid "cf2b2c1d-db3b-473c-822c-179f5d47979d")
-		)
-		(instances
-			(project ""
-				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08"
-					(reference "D3")
 					(unit 1)
 				)
 			)
@@ -8918,7 +8912,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 66.802 77.47 90)
 			(effects
 				(font
@@ -8985,7 +8979,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 115.57 72.898 90)
 			(effects
 				(font
