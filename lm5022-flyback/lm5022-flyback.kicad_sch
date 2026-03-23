@@ -4495,7 +4495,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 105.41 67.818 90)
 			(effects
 				(font
@@ -4696,7 +4696,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 55.372 63.5 90)
 			(effects
 				(font
@@ -6748,7 +6748,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TestPoint"
+		(property "Value" "5004"
 			(at 152.4 52.0699 90)
 			(effects
 				(font
@@ -7921,7 +7921,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 105.41 65.278 90)
 			(effects
 				(font
@@ -9154,7 +9154,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 115.57 72.898 90)
 			(effects
 				(font
