@@ -49,7 +49,7 @@ Ilim_cl = Vcl * Vin / (Vin * Rsns + Icl * Lpri * fsw * (Rcl_int + Rs2 + Rs1)); %
 
 % Snubber specs
 Vds_fos = 1.5; % FOS to apply to VDS
-Vsn_ripple_max = 0.1; % Ratio of vsn max ripple to vsn
+Vsn_ripple_max = 0.2; % Ratio of vsn max ripple to vsn
 
 %Simulation outputs
 t_end = 1;
@@ -63,6 +63,8 @@ Ipri_valley = zeros([t_end / t_step + 1 1]); % Primary side valley current
 Ipri_avg = zeros([t_end / t_step + 1 1]); % Primary side average current during on time
 
 D = zeros([t_end / t_step + 1 1]); % Switch Duty Cycle
+Dcl = zeros([t_end / t_step + 1 1]); % Current limited duty cycle
+Dvolt = (Vload_max + Vf) * N12 / (Vin + (Vload_max + Vf) * N12) * ones([t_end / t_step + 1 1]); % Voltage limited duty cycle
 
 CCM = zeros([t_end / t_step + 1 1]); % 1 if CCM, 0 if DCM
 
@@ -72,10 +74,12 @@ t = zeros([t_end / t_step + 1 1]);
 
 index = 1;
 while (t(index) < t_end - 1e-9) 
+    % Duty Cycle Calculations
+    Dcl(index + 1) = Lpri * (Ilim_cl - Ipri_valley(index)) * fsw / Vin; % Current limited duty cycle
+    D(index + 1) = min([Dcl(index + 1), Dvolt(index + 1), Dmax]);
     Vreflected = max((Vload(index) + Vf) * N12, 1e-6); % Prevent div by zero
     
     if (Vload(index) < Vload_max) % Current limited operation
-        D(index + 1) = min(Lpri * (Ilim_cl - Ipri_valley(index)) * fsw / Vin, Dmax); % Current limited duty cycle
         Ipri_pk(index + 1) = Ilim_cl;
         dIoff = min(Lpri * Ipri_pk(index + 1) / Vreflected, (1 - D(index + 1)) / fsw) * (Vreflected / Lpri);
         Ipri_valley(index + 1) = max(0, Ipri_pk(index + 1) - dIoff);
@@ -90,24 +94,27 @@ while (t(index) < t_end - 1e-9)
         Vload(index + 1) = sqrt(max(Vload(index)^2 + 2 * E / Cload, 0)); 
         Iload(index + 1) = Cload * (Vload(index + 1) - Vload(index)) / t_step + Vload(index) / Rload;
         Ipri_avg(index + 1) = (0.5 * (Ipri_pk(index + 1) - Ipri_valley(index + 1)) + Ipri_valley(index + 1)) *  D(index + 1);
-    else % Voltage Limited operation; assume DCM
+    else % Voltage Limited operation
         if (t_charged == 0)
             t_charged = t(index);
         end
 
-        Ereq = Vload(index) ^2 / (Rload * fsw);
-        Ipri_pk(index + 1) = sqrt(Ipri_valley(index)^2 + 2*Ereq/Lpri);
-        Ipri_valley(index + 1) = 0; % Assume DCM
+        Preq = Vload(index) ^2 / Rload
+        Ipri_pk(index + 1) = Vin * D(index + 1) / (Lpri * fsw) + Ipri_valley(index);
+        dIoff = min(Lpri * Ipri_pk(index + 1) / Vreflected, (1 - D(index + 1)) / fsw) * (Vreflected / Lpri);
+        Ipri_valley(index + 1) = max(0, Ipri_pk(index + 1) - dIoff);
+        if (Ipri_valley(index + 1) ~= 0) % CCM, voltage limited
+            CCM(index + 1) = 1;
+        else
+            CCM(index + 1) = 0;
+        end
 
-        D(index + 1) = min(Lpri * (Ipri_pk(index + 1) - Ipri_valley(index)) * fsw / Vin, Dmax);
-        
-        CCM(index + 1) = 0;
-
+        % Both CCM and DCM behave simimlarly enough
         Vload(index + 1) = Vload(index); % Assume perfect DC regulation (I know, I know...)
         Iload(index + 1) = Vload(index + 1) / Rload;
         Isec_avgpk = Iload(index + 1) / (1 - D(index + 1));
         Ipri_avgpk = Isec_avgpk / N12;
-        %Ipri_pk(index + 1) = 2 * Ipri_avgpk / (2 - D(index + 1));
+        Ipri_pk(index + 1) = 2 * Ipri_avgpk / (2 - D(index + 1));
         Ipri_avg(index + 1) = Ipri_avgpk * D(index + 1);
         
     end
