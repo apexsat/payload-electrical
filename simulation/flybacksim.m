@@ -32,8 +32,8 @@ Vf = 1.2; % Output Diode Forward Voltage
 % Design details
 Vload_max = 400; % Output regulation voltage limit
 N12 = 1/20; % Transformer N1:N2
-Vin = 12; % 12 < Vin < 16.8
-fsw = 500e3; % 250khz
+Vin = 15; % 12 < Vin < 16.8
+fsw = 250e3; % 250khz
 Ripple_ratio = 0.03; % 3% Vin ripple ratio requirement
 
 % Transformer specs
@@ -42,8 +42,8 @@ Lpri_leakage = 80e-9;
 Lsec = 41e-6; % Todo: figure out if this is true because if so very strange.
 
 % Current Limit Settings
-Rsns = 25e-3; % Primary side switch current sense resistor
-Rs2 = 13.3e3; % Rs2 and Rs1 are as referred to in LM5022 datasheet. 
+Rsns = 100e-3; % Primary side switch current sense resistor
+Rs2 = 1e3; % Rs2 and Rs1 are as referred to in LM5022 datasheet. 
 Rs1 = 100;
 Ilim_cl = Vcl * Vin / (Vin * Rsns + Icl * Lpri * fsw * (Rcl_int + Rs2 + Rs1)); % Current limit when transformer is in DCM
 
@@ -190,6 +190,7 @@ if (PRODUCE_PLOTS)
     xlabel('Time (s)');
     ylabel('Duty');
     title('Duty Cycle');
+    zoom xon
     grid on
     hold off
     
