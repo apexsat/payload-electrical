@@ -3192,6 +3192,16 @@
 		)
 		(uuid "73681f8c-2da1-4992-82ac-b94a4cf1c894")
 	)
+	(text "TODO: Resize D1 to be rated for 400V + reflected primary voltage (roughly 2x rating)"
+		(exclude_from_sim no)
+		(at 189.992 32.258 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "7b7df16d-bbe5-4816-b6d6-1f3c88748713")
+	)
 	(text "200uF\n"
 		(exclude_from_sim no)
 		(at 208.28 55.626 0)
