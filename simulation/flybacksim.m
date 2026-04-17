@@ -32,14 +32,14 @@ Vf = 1.2; % Output Diode Forward Voltage
 % Design details
 Vload_max = 400; % Output regulation voltage limit
 N12 = 1/20; % Transformer N1:N2
-Vin = 15; % 12 < Vin < 16.8
+Vin = 15.5; % 12 < Vin < 16.8
 fsw = 250e3; % 250khz
 Ripple_ratio = 0.03; % 3% Vin ripple ratio requirement
 
 % Transformer specs
-Lpri = 1.2e-6;
-Lpri_leakage = 80e-9;
-Lsec = 41e-6; % Todo: figure out if this is true because if so very strange.
+Lpri = 5.46e-6;
+Lpri_leakage = 11.4e-9;
+Lsec = 2.1e-3; % Todo: figure out if this is true because if so very strange.
 
 % Current Limit Settings
 Rsns = 100e-3; % Primary side switch current sense resistor
