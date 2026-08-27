@@ -1,0 +1,141 @@
+(footprint "MS5540C"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at -1.5 -0.5 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "9635c34f-51a9-40d3-bde6-4915b8830a66")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "MS5540C"
+		(at 0 1 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "211b1fc3-726d-4fdb-8b27-1d8b7de2dccf")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "02328328-734a-4a00-ba57-477db78cc806")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "85c07dcb-9e96-4c12-9b92-977af5e69f38")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_rect
+		(start 0 0)
+		(end 6.4 -6.2)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.SilkS")
+		(uuid "180f49f5-f98d-4e11-9d99-64e74d049124")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 2.5 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "88975f0c-9759-4f94-8105-6a0a4654a340")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" smd trapezoid
+		(at 0.775 -5)
+		(size 1.55 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "6360da19-a3d4-421f-87aa-154aa70c4cdf")
+	)
+	(pad "2" smd trapezoid
+		(at 0.775 -3.75)
+		(size 1.55 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "85380f4e-ffc9-46da-bb0b-162c0c302ea4")
+	)
+	(pad "3" smd trapezoid
+		(at 1.05 -2.45)
+		(size 2.1 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "3331f90e-7078-4f7b-9b83-c4dc5e77ac7a")
+	)
+	(pad "4" smd trapezoid
+		(at 0.775 -1.2)
+		(size 1.55 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "da0cc540-43bd-43b0-bbe9-5c8335449481")
+	)
+	(pad "5" smd trapezoid
+		(at 5.625 -1.2)
+		(size 1.55 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "b2a44975-fe8f-4574-abc4-2a51caa6cb21")
+	)
+	(pad "6" smd trapezoid
+		(at 5.625 -2.45)
+		(size 1.55 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "714d2dcd-feff-4f5e-bcc3-1a250ebf5e28")
+	)
+	(pad "7" smd trapezoid
+		(at 5.625 -3.75)
+		(size 1.55 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "406961db-ddf1-4cad-b4ea-03b51e8f6385")
+	)
+	(pad "8" smd trapezoid
+		(at 5.625 -5)
+		(size 1.55 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "0578892d-582a-46c5-a149-aed6347120c0")
+	)
+	(embedded_fonts no)
+	(model "${KICAD10_3DMODEL_DIR}/200_60_1 DPT Sensor.STEP"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -90 -0 -0)
+		)
+	)
+)
