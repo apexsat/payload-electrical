@@ -73,7 +73,10 @@
         "extra_footprint": "warning",
         "footprint": "error",
         "footprint_filters_mismatch": "ignore",
+<<<<<<< HEAD
         "footprint_symbol_field_mismatch": "warning",
+=======
+>>>>>>> ff5c1b0417058cb4181c739831768ab8b4b53a8e
         "footprint_symbol_mismatch": "warning",
         "footprint_type_mismatch": "ignore",
         "hole_clearance": "error",
@@ -112,8 +115,11 @@
         "too_many_vias": "error",
         "track_angle": "error",
         "track_dangling": "warning",
+<<<<<<< HEAD
         "track_not_centered_on_via": "ignore",
         "track_on_post_machined_layer": "error",
+=======
+>>>>>>> ff5c1b0417058cb4181c739831768ab8b4b53a8e
         "track_segment_length": "error",
         "track_width": "error",
         "tracks_crossing": "error",
@@ -512,7 +518,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "Outputs/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "",
@@ -619,6 +625,10 @@
     "page_layout_descr_file": "",
     "plot_directory": "",
     "reuse_designators": true,
+<<<<<<< HEAD
+=======
+    "space_save_all_events": true,
+>>>>>>> ff5c1b0417058cb4181c739831768ab8b4b53a8e
     "spice_current_sheet_as_root": false,
     "spice_external_command": "spice \"%I\"",
     "spice_model_current_sheet_as_root": true,
@@ -631,7 +641,11 @@
       {
         "filename": "ADC-Testing.kicad_sch",
         "name": "ADC-Testing",
+<<<<<<< HEAD
         "uuid": "00000000-0000-0000-0000-000000000000"
+=======
+        "uuid": "bec65100-934b-44ef-872d-ab1bd5621b53"
+>>>>>>> ff5c1b0417058cb4181c739831768ab8b4b53a8e
       }
     ],
     "used_designators": "",
@@ -640,7 +654,7 @@
   "sheets": [
     [
       "bec65100-934b-44ef-872d-ab1bd5621b53",
-      "Root"
+      "ADC-Testing"
     ]
   ],
   "text_variables": {},

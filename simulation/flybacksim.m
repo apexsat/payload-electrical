@@ -5,37 +5,6 @@
 % Simulation settings
 PRODUCE_PLOTS = 1;
 
-% Simulation time steps
-t_end = 1;
-t_step = t_end/1e4;
-
-% Capacitor Specs
-Cload = 200e-6; % Output capacitance
-ESRload = 2.1e-3; % ESR of output capacitor; 2P2S configuration means effective ESR is the same as one of the 4 caps.
-
-% Bleed Resistor
-Rload = 286e3; % Bleed resistor for Steady State calcs
-
-% Output Diode Forward Voltage
-Vf = 1.2; % Output Diode Forward Voltage
-
-% Design details
-Vload_max = 400; % Output regulation voltage limit
-N12 = 1/20; % Transformer N1:N2
-Vin = 12; % 12 < Vin < 16.8
-fsw = 250e3; % 250khz
-Ripple_ratio = 0.03; % 3% Vin ripple ratio requirement
-
-% Transformer specs
-Lpri = 5.1e-6;
-Lpri_leakage = Lpri*.03;
-Lsec = 2e-3;
-
-% Change Rsns, Rs2, and Rs1 to change the current limit
-Rsns = 100e-3; % Primary side switch current sense resistor
-Rs2 = 1e3; % Rs2 and Rs1 are as referred to in LM5022 datasheet. 
-Rs1 = 100;
-
 %LM5022 params
 Dmax = 0.9; % Maximum duty cycle
 Vcl = 0.5; % Current limit thresh
@@ -50,62 +19,102 @@ Rgate_tot = 5; % MOSFET Rg + any external gate resistor
 Vdrive = 6;
 Vdsmax = 100; % Raw max VDS stress
 
+% Capacitor Specs
+Cload = 200e-6; % Output capacitance
+ESRload = 2.1e-3; % ESR of output capacitor; 2P2S configuration means effective ESR is the same as one of the 4 caps.
+
+% Bleed Resistor
+Rload = 286e3; % Bleed resistor for Steady State calcs
+
+% Output Diode Forward Voltage
+Vf = 1.2; % Output Diode Forward Voltage
+
+% Design details
+Vload_max = 400; % Output regulation voltage limit
+N12 = 1/20; % Transformer N1:N2
+Vin = 15.5; % 12 < Vin < 16.8
+fsw = 250e3; % 250khz
+Ripple_ratio = 0.03; % 3% Vin ripple ratio requirement
+
+% Transformer specs
+Lpri = 5.46e-6;
+Lpri_leakage = 11.4e-9;
+Lsec = 2.1e-3; % Todo: figure out if this is true because if so very strange.
+
+% Current Limit Settings
+Rsns = 100e-3; % Primary side switch current sense resistor
+Rs2 = 1e3; % Rs2 and Rs1 are as referred to in LM5022 datasheet. 
+Rs1 = 100;
+Ilim_cl = Vcl * Vin / (Vin * Rsns + Icl * Lpri * fsw * (Rcl_int + Rs2 + Rs1)); % Current limit when transformer is in DCM
+
 % Snubber specs
 Vds_fos = 1.5; % FOS to apply to VDS
-Vsn_ripple_max = 0.2; % Ratio of vsn max ripple to vsn
+Vsn_ripple_max = 0.1; % Ratio of vsn max ripple to vsn
 
 %Simulation outputs
+t_end = 1;
+t_step = 1/fsw;
+
 Vload = zeros([t_end / t_step + 1 1]); % Output load voltage
 Iload = zeros([t_end / t_step + 1 1]); % Output load current, which equals Isec_avg
-Ilim = zeros([t_end / t_step + 1 1]); % Current limit resulting from Rsns, Rs1/Rs2, and current limit comparator
+
 Ipri_pk = zeros([t_end / t_step + 1 1]); % Primary side peak current
-Isec_pk = zeros([t_end / t_step + 1 1]); % Secondary side peak current
-Ipri_avgpk = zeros([t_end / t_step + 1 1]); % Primary side average current during on time
-Isec_avgpk = zeros([t_end / t_step + 1 1]); % Secondary side average current during on time
+Ipri_valley = zeros([t_end / t_step + 1 1]); % Primary side valley current
+Ipri_avg = zeros([t_end / t_step + 1 1]); % Primary side average current during on time
+
 D = zeros([t_end / t_step + 1 1]); % Switch Duty Cycle
 
-%Intermediate vals for CCM calculation
-Lpri_crit = zeros([t_end / t_step + 1 1]);
-Lsec_crit = zeros([t_end / t_step + 1 1]);
+CCM = zeros([t_end / t_step + 1 1]); % 1 if CCM, 0 if DCM
 
 t_charged = 0;
 
 t = zeros([t_end / t_step + 1 1]);
 
 index = 1;
-while (t(index) < t_end - 1e-12) 
+while (t(index) < t_end - 1e-9) 
+    Vreflected = max((Vload(index) + Vf) * N12, 1e-6); % Prevent div by zero
+    
+    if (Vload(index) < Vload_max) % Current limited operation
+        D(index + 1) = min(Lpri * (Ilim_cl - Ipri_valley(index)) * fsw / Vin, Dmax); % Current limited duty cycle
+        Ipri_pk(index + 1) = Ilim_cl;
+        dIoff = min(Lpri * Ipri_pk(index + 1) / Vreflected, (1 - D(index + 1)) / fsw) * (Vreflected / Lpri);
+        Ipri_valley(index + 1) = max(0, Ipri_pk(index + 1) - dIoff);
 
-    % Duty cycle and switch voltage/current calculations
-    D(index + 1) = min((Vload(index) + Vf)*N12 / (Vin + (Vload(index) + Vf)*N12), Dmax);
-    Ilim(index + 1) = max((Vcl - (Rs2 + Rs1 + Rcl_int) * Icl * D(index + 1)) / Rsns, 0);
-    if (Vload (index) >= Vload_max)
+        if (Ipri_valley(index + 1) ~= 0) % CCM, current limited
+            CCM(index + 1) = 1;
+        else % DCM, current limited
+            CCM(index + 1) = 0;
+        end
+        
+        E = 0.5 * Lpri * (Ipri_pk(index + 1).^2 - Ipri_valley(index + 1).^2) - (Vload(index)^2 / Rload) * t_step; % Energy transferred to the capacitor during each switch cycle
+        Vload(index + 1) = sqrt(max(Vload(index)^2 + 2 * E / Cload, 0)); 
+        Iload(index + 1) = Cload * (Vload(index + 1) - Vload(index)) / t_step + Vload(index) / Rload;
+        Ipri_avg(index + 1) = (0.5 * (Ipri_pk(index + 1) - Ipri_valley(index + 1)) + Ipri_valley(index + 1)) *  D(index + 1);
+    else % Voltage Limited operation; assume DCM
         if (t_charged == 0)
             t_charged = t(index);
         end
-        Vload (index + 1) = Vload(index); % Assume perfect DC regulation (I know, I know...)
-        Iload(index + 1) = Vload(index + 1) / Rload;
-        Isec_avgpk(index + 1) = Iload(index + 1) / (1 - D(index + 1));
-        Isec_pk(index + 1) = 2 * Isec_avgpk(index + 1) / (2 - (1 - D(index + 1)));
-        Ipri_avgpk(index + 1) = Isec_avgpk(index + 1) / N12;
-        Ipri_pk(index + 1) = 2 * Ipri_avgpk(index + 1) / (2 - D(index + 1));
-    else
-        Ipri_pk(index + 1) = Ilim(index + 1);
-        Ipri_avgpk(index + 1) = Ipri_pk(index + 1) * (2 - D(index + 1)) / 2;
-        Isec_avgpk(index + 1) = Ipri_avgpk(index + 1) * N12;
-        Iload(index + 1) = Isec_avgpk(index + 1) * (1 - D(index + 1));
-        Vload(index + 1) = Vload(index) + (Iload(index + 1) - Vload(index) / Rload) * t_step / Cload;
-    end
 
-    % CCM calculation
-    Lsec_crit(index + 1) = (1 - D(index + 1))^2 * Vload(index + 1) / (2 * Iload(index + 1) * (fsw));
-    Lpri_crit(index + 1) = Lsec_crit(index + 1) * (N12^2);
+        Ereq = Vload(index) ^2 / (Rload * fsw);
+        Ipri_pk(index + 1) = sqrt(Ipri_valley(index)^2 + 2*Ereq/Lpri);
+        Ipri_valley(index + 1) = 0; % Assume DCM
+
+        D(index + 1) = min(Lpri * (Ipri_pk(index + 1) - Ipri_valley(index)) * fsw / Vin, Dmax);
+        
+        CCM(index + 1) = 0;
+
+        Vload(index + 1) = Vload(index); % Assume perfect DC regulation (I know, I know...)
+        Iload(index + 1) = Vload(index + 1) / Rload;
+        Isec_avgpk = Iload(index + 1) / (1 - D(index + 1));
+        Ipri_avgpk = Isec_avgpk / N12;
+        %Ipri_pk(index + 1) = 2 * Ipri_avgpk / (2 - D(index + 1));
+        Ipri_avg(index + 1) = Ipri_avgpk * D(index + 1);
+        
+    end
     
     t(index + 1) = t(index) + t_step;
     index = index + 1;
 end
-
-Ipri_rms = Ipri_avgpk .* sqrt(D); % RMS primary side current
-Isec_rms = Isec_avgpk .* sqrt(1 - D); % RMS secondary side current
 
 % Snubber calculations
 Vsnmax = min((Vdsmax / Vds_fos - (Vload + Vf) * N12 - Vin) / (1 + Vsn_ripple_max / 2));
@@ -116,29 +125,23 @@ Csnmin = Vsnmax ./ (Vsnmax * Vsn_ripple_max * fsw);
 trise = Rgate_tot * Qg / Vdrive; % Assumes one RC constant is good to turn on/off FET
 tfall = Rgate_tot * Qg / Vdrive;
 Pdiode = Iload * Vf; % Power lost in output diode
-Prsns = Ipri_rms.^2 * Rsns; % Power lost in sense resistor
+Prsns = Ipri_avg.^2 * Rsns; % Power lost in sense resistor
 Prload = Vload.^2 / Rload; % Rload in this case is purely a parasitic draw
-Prdson = Ipri_rms.^2 * Rdson; % Power lost in FET rdson
+Prdson = Ipri_avg.^2 * Rdson; % Power lost in FET rdson
 Pdrive = fsw * Qg * Vdrive * ones([t_end / t_step + 1 1]); % Power lost in driving FET
 Poss = 0.5*Coss * (Vin^2) * fsw * ones([t_end / t_step + 1 1]); % Power lost in output capacitance of FET
 Psw = 0.5 * Vin * fsw * (trise * Vdrive / Rgate_tot + tfall * Vdrive / Rgate_tot) * ones([t_end / t_step + 1 1]); 
 Psnubber = 0.5 * Lpri_leakage * Ipri_pk.^2 * fsw; % Snubber power loss
 Ptotal = Pdiode + Prsns + Prload + Prdson + Pdrive + Poss + Psw + Psnubber;
-Pin = Iload .* Vload; % I know this should be Vin * Iin but you'd have to do Ipri_rms * Vpri_rms and I dont feel like calculating Vpri_rms. Deal with it; assume ideal conversion
+Pin = Iload .* Vload; % Assume ideal conversion, whatever man
 eff = max(1 - Ptotal ./ Pin, 0); % Max 0 becomes pin is sometimes zero causing eff to be -inf. lol
 
+disp("Effective Current Limit (A)");
+disp(Ilim_cl);
 disp("Cin(min) (uF):");
 disp(1e6*max(Ipri_pk .* D) / (fsw * Vin * Ripple_ratio));
 disp("Time to capacitor charge (s): ");
 disp(t_charged);
-disp("Secondary critical inductance if aiming for always CCM (H): ");
-disp(max(Lsec_crit));
-disp("Primary critical inductance if aiming for always CCM (H): ");
-disp(max(Lpri_crit));
-disp("Secondary critical inductance if DCM allowable at steady state (H):");
-disp(max(Lsec_crit(1:floor(t_charged / t_step)))); 
-disp("Primary critical inductance if DCM allowable at steady state (H):");
-disp(max(Lpri_crit(1:floor(t_charged / t_step))));
 
 disp("Average Efficiency:");
 disp(1 - sum(Ptotal) / sum(Pin));
@@ -160,15 +163,6 @@ if (PRODUCE_PLOTS)
     xlabel('Time (s)');
     ylabel('Current (A)');
     title('Output Current');
-    grid on
-    hold off
-    
-    figure()
-    hold on
-    plot(t, Ilim);
-    xlabel('Time (s)');
-    ylabel('Current (A)');
-    title('Current Limit');
     grid on
     hold off
     
@@ -196,16 +190,7 @@ if (PRODUCE_PLOTS)
     xlabel('Time (s)');
     ylabel('Duty');
     title('Duty Cycle');
-    grid on
-    hold off
-    
-    figure()
-    hold on
-    plot(t, 1e3*Lpri_crit);
-    plot(t, 1e3*Lsec_crit);
-    xlabel('Time (s)');
-    ylabel('Critical inductance (mH)');
-    title('Critical inductance for primary and secondary');
+    zoom xon
     grid on
     hold off
     
