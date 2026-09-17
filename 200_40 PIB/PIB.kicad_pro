@@ -555,7 +555,7 @@
       "plot": "Outputs/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "PIB.step",
       "svg": "",
       "vrml": ""
     },
@@ -699,7 +699,7 @@
         "uuid": "2bb2e4a1-de70-477a-a246-143db0a21e08"
       }
     ],
-    "used_designators": "J1-12,C1-8,C14-39,A1,FB1,Y1,#PWR1-61,T2-3,H6-10,Q1-8,D4-9,U1-14,F1-3,R1-14,R16-47,TP15-45",
+    "used_designators": "J1-12,C1-8,C14-39,A1,Y1,FB1,#PWR1-61,T2-3,H6-10,Q1-9,D4-9,U1-14,F1-3,R1-14,R16-47,TP15-45",
     "variants": []
   },
   "sheets": [
