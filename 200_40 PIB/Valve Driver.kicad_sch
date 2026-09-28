@@ -1873,6 +1873,16 @@
 		)
 		(uuid "ce4887fa-c64a-453c-a60e-d38772006df5")
 	)
+	(text "look into what was done on femta for NC valve"
+		(exclude_from_sim no)
+		(at 185.42 90.424 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "d0917dcf-94f3-4df9-a17e-b50076403c8c")
+	)
 	(junction
 		(at 152.4 100.33)
 		(diameter 0)
