@@ -699,7 +699,7 @@
         "uuid": "2bb2e4a1-de70-477a-a246-143db0a21e08"
       }
     ],
-    "used_designators": "U11-14,D2-3,#PWR59,#PWR71-92,C36,C43-58,J5-7,R71,R76-80,SW1,Q3-4",
+    "used_designators": "U11-14,D2-3,#PWR59,#PWR61,#PWR71-92,C36,C43-58,J5-8,R71,R76-81,SW1,Q3-4",
     "variants": []
   },
   "sheets": [
@@ -708,8 +708,8 @@
       "PIB"
     ],
     [
-      "07db5fbc-5cc8-4df5-92f0-dcbcf0d3ba30",
-      "Igniter Signal Processing"
+      "177725a5-a22e-4ba6-aa4d-305743e89374",
+      "Rogowski Integrator"
     ],
     [
       "a3e2437a-f450-49da-ac0f-e1add7c59a42",
