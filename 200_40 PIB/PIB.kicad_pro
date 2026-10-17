@@ -699,7 +699,7 @@
         "uuid": "2bb2e4a1-de70-477a-a246-143db0a21e08"
       }
     ],
-    "used_designators": "U11-14,D2-3,#PWR59,#PWR61,#PWR71-92,C36,C43-58,J5-8,R71,R76-81,SW1,Q3-4",
+    "used_designators": "#PWR104-111,H1-4,C57-60",
     "variants": []
   },
   "sheets": [
@@ -710,6 +710,10 @@
     [
       "177725a5-a22e-4ba6-aa4d-305743e89374",
       "Rogowski Integrator"
+    ],
+    [
+      "cc1f88ed-408c-4ec5-ab26-d4cb3df82b9c",
+      "DPT MUX"
     ],
     [
       "a3e2437a-f450-49da-ac0f-e1add7c59a42",
