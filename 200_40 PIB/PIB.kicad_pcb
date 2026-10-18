@@ -6518,7 +6518,7 @@
 			)
 		)
 		(property ki_fp_filters "DIP*W7.62mm*")
-		(path "/f1104d0d-a210-48ec-bcd3-67111e94bad3")
+		(path "/d3b89093-464c-4d0c-96b3-ba16d3f1baed")
 		(sheetname "/")
 		(sheetfile "PIB.kicad_sch")
 		(units
@@ -47594,7 +47594,7 @@
 				(justify mirror)
 			)
 		)
-		(path "/a3e2437a-f450-49da-ac0f-e1add7c59a42/9501d0dc-8576-4c83-bdf2-414a50d2a3fc")
+		(path "/a3e2437a-f450-49da-ac0f-e1add7c59a42/4604a458-ab72-4b1d-820f-5062834583a1")
 		(sheetname "/Valve Driver/")
 		(sheetfile "Valve Driver.kicad_sch")
 		(units

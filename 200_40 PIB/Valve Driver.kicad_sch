@@ -5,6 +5,349 @@
 	(uuid "8cf4a0dd-bdbd-422b-87ab-990d908b8950")
 	(paper "A4")
 	(lib_symbols
+		(symbol "0_PAY_Symbol_Library:LT3065EDDPBF"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "U"
+				(at 7.874 5.334 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left bottom)
+				)
+			)
+			(property "Value" "LT3065EDDPBF"
+				(at 7.874 3.048 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left bottom)
+				)
+			)
+			(property "Footprint" "LT3065EDDPBF:DFN-10_DD"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify bottom)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Linear Voltage Regulator IC Positive Adjustable 1 Output  500mA 10-DFN (3x3)"
+				(at -1.27 3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify bottom)
+				)
+			)
+			(property "MF" "Analog Devices"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify bottom)
+				)
+			)
+			(property "VENDOR" "Linear Technology"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify bottom)
+				)
+			)
+			(property "Package" "DFN-10 Linear Technology"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify bottom)
+				)
+			)
+			(property "Price" "None"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify bottom)
+				)
+			)
+			(property "MP" "LT3065EDD#PBF"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify bottom)
+				)
+			)
+			(symbol "LT3065EDDPBF_1_0"
+				(pin input line
+					(at 5.08 0 0)
+					(length 2.54)
+					(name "IN"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 5.08 0 0)
+					(length 2.54)
+					(hide yes)
+					(name "IN"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 -2.54 0)
+					(length 2.54)
+					(name "*SHDN"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 5.08 -5.08 0)
+					(length 2.54)
+					(name "PWRGD"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 -7.62 0)
+					(length 2.54)
+					(name "IMAX"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 27.94 -7.62 180)
+					(length 2.54)
+					(name "REF/BYP"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at 27.94 -5.08 180)
+					(length 2.54)
+					(name "GND/ADJ"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at 27.94 -2.54 180)
+					(length 2.54)
+					(name "ADJ/SENSE"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 27.94 0 180)
+					(length 2.54)
+					(hide yes)
+					(name "OUT"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 27.94 0 180)
+					(length 2.54)
+					(name "OUT"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 16.51 -12.7 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+					(number "11"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+				)
+			)
+			(symbol "LT3065EDDPBF_1_1"
+				(rectangle
+					(start 7.62 2.54)
+					(end 25.4 -10.16)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "74xGxx:74LVC1GU04DRL"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -1095,349 +1438,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "LT3065EDDPBF:LT3065EDDPBF"
-			(pin_names
-				(offset 1.016)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "U"
-				(at 7.874 5.334 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left bottom)
-				)
-			)
-			(property "Value" "LT3065EDDPBF"
-				(at 7.874 3.048 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left bottom)
-				)
-			)
-			(property "Footprint" "LT3065EDDPBF:DFN-10_DD"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Linear Voltage Regulator IC Positive Adjustable 1 Output  500mA 10-DFN (3x3)"
-				(at -1.27 3.81 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-				)
-			)
-			(property "MF" "Analog Devices"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-				)
-			)
-			(property "VENDOR" "Linear Technology"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-				)
-			)
-			(property "Package" "DFN-10 Linear Technology"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-				)
-			)
-			(property "Price" "None"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-				)
-			)
-			(property "MP" "LT3065EDD#PBF"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-				)
-			)
-			(symbol "LT3065EDDPBF_1_0"
-				(pin input line
-					(at 5.08 0 0)
-					(length 2.54)
-					(name "IN"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at 5.08 0 0)
-					(length 2.54)
-					(hide yes)
-					(name "IN"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.08 -2.54 0)
-					(length 2.54)
-					(name "*SHDN"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 5.08 -5.08 0)
-					(length 2.54)
-					(name "PWRGD"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.08 -7.62 0)
-					(length 2.54)
-					(name "IMAX"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 27.94 -7.62 180)
-					(length 2.54)
-					(name "REF/BYP"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-				(pin bidirectional line
-					(at 27.94 -5.08 180)
-					(length 2.54)
-					(name "GND/ADJ"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "7"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-				(pin bidirectional line
-					(at 27.94 -2.54 180)
-					(length 2.54)
-					(name "ADJ/SENSE"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "8"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 27.94 0 180)
-					(length 2.54)
-					(hide yes)
-					(name "OUT"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "9"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 27.94 0 180)
-					(length 2.54)
-					(name "OUT"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "10"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 16.51 -12.7 90)
-					(length 2.54)
-					(name "GND"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "11"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-			)
-			(symbol "LT3065EDDPBF_1_1"
-				(rectangle
-					(start 7.62 2.54)
-					(end 25.4 -10.16)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type background)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "MIC4424YM:MIC4424YM"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -2514,6 +2514,12 @@
 		(uuid "168ee6d7-c994-404b-86c1-39a87db52f1d")
 	)
 	(junction
+		(at 35.56 22.86)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1ae071f8-59e3-4b0d-8a52-f531829cc232")
+	)
+	(junction
 		(at 125.73 83.82)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2544,18 +2550,6 @@
 		(uuid "47cb7d53-b0fc-4c32-8027-3835e729e34b")
 	)
 	(junction
-		(at 35.56 22.86)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "50dfc8c9-ab8f-4c09-8d57-23ae55cf78d6")
-	)
-	(junction
-		(at 35.56 30.48)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "540bba52-afab-40ea-bb0d-73830f1850bc")
-	)
-	(junction
 		(at 152.4 55.88)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2566,6 +2560,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6029e356-f025-41c3-a25d-d0e78e20ced7")
+	)
+	(junction
+		(at 35.56 30.48)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "61aade45-d781-4c8a-9489-3bbdf21f0318")
 	)
 	(junction
 		(at 24.13 96.52)
@@ -2832,6 +2832,16 @@
 			(type default)
 		)
 		(uuid "1d67cbba-c466-40c5-b815-dd25ef43ed01")
+	)
+	(wire
+		(pts
+			(xy 58.42 27.94) (xy 68.58 27.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1f26c9bb-e6df-41b0-aca7-c4b20f7e22db")
 	)
 	(wire
 		(pts
@@ -3245,16 +3255,6 @@
 	)
 	(wire
 		(pts
-			(xy 58.42 25.4) (xy 72.39 25.4)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "92f6cb55-03bd-4dca-8ffc-4f5e8d00f8e7")
-	)
-	(wire
-		(pts
 			(xy 35.56 22.86) (xy 35.56 25.4)
 		)
 		(stroke
@@ -3262,6 +3262,16 @@
 			(type default)
 		)
 		(uuid "93cd586e-0f78-46c4-84fb-5f1a0b6ba876")
+	)
+	(wire
+		(pts
+			(xy 58.42 25.4) (xy 72.39 25.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "93edd398-3e42-4d56-ad01-1a67be880b42")
 	)
 	(wire
 		(pts
@@ -3632,16 +3642,6 @@
 			(type default)
 		)
 		(uuid "e1208dda-798e-43bf-bf4d-ec2d21caebe2")
-	)
-	(wire
-		(pts
-			(xy 58.42 27.94) (xy 68.58 27.94)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "eeab34ae-c178-4433-a43d-5cc23afd67f8")
 	)
 	(wire
 		(pts
@@ -5371,6 +5371,175 @@
 		)
 	)
 	(symbol
+		(lib_id "0_PAY_Symbol_Library:LT3065EDDPBF")
+		(at 30.48 22.86 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4604a458-ab72-4b1d-820f-5062834583a1")
+		(property "Reference" "U1"
+			(at 46.99 15.24 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LT3065EDDPBF"
+			(at 46.99 17.78 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "0_PAY_Footprint_Library:DFN-10_DD"
+			(at 30.48 22.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Datasheet" ""
+			(at 30.48 22.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Linear Voltage Regulator IC Positive Adjustable 1 Output  500mA 10-DFN (3x3)"
+			(at 29.21 19.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "MF" "Analog Devices"
+			(at 30.48 22.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "VENDOR" "Linear Technology"
+			(at 30.48 22.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Package" "DFN-10 Linear Technology"
+			(at 30.48 22.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Price" "None"
+			(at 30.48 22.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "MP" "LT3065EDD#PBF"
+			(at 30.48 22.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(pin "7"
+			(uuid "0f26986a-2b9b-4311-a55f-daa4d3c5e35b")
+		)
+		(pin "5"
+			(uuid "10b746c8-b05b-4394-9a51-4f63af1f349a")
+		)
+		(pin "4"
+			(uuid "ead8e9ba-0821-4d97-93cf-2cfbc69a87ba")
+		)
+		(pin "8"
+			(uuid "edb6e367-66d4-43cd-ac10-7198ed7774a5")
+		)
+		(pin "1"
+			(uuid "4b4318e3-89e4-4fe8-9b78-1bd4f493b061")
+		)
+		(pin "10"
+			(uuid "e9e5f006-9e31-4524-9b06-faf176ca0561")
+		)
+		(pin "11"
+			(uuid "dea5b72d-bab8-4042-957a-58ddff262a5b")
+		)
+		(pin "3"
+			(uuid "1e8d41bd-4980-41fb-a365-1be115bc1830")
+		)
+		(pin "9"
+			(uuid "9ad5662e-8ee6-4b27-91ba-df0d36c6ffca")
+		)
+		(pin "2"
+			(uuid "bcf143d6-b30b-4559-8fdc-ff93a148f9e6")
+		)
+		(pin "6"
+			(uuid "833668b4-fa86-4846-b37a-df032050ab83")
+		)
+		(instances
+			(project "PIB"
+				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08/a3e2437a-f450-49da-ac0f-e1add7c59a42"
+					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 148.59 50.8 90)
 		(unit 1)
@@ -6828,175 +6997,6 @@
 			(project "PIB"
 				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08/a3e2437a-f450-49da-ac0f-e1add7c59a42"
 					(reference "U6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "LT3065EDDPBF:LT3065EDDPBF")
-		(at 30.48 22.86 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "9501d0dc-8576-4c83-bdf2-414a50d2a3fc")
-		(property "Reference" "U1"
-			(at 46.99 15.24 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "LT3065EDDPBF"
-			(at 46.99 17.78 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "0_PAY_Footprint_Library:DFN-10_DD"
-			(at 30.48 22.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Datasheet" ""
-			(at 30.48 22.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Linear Voltage Regulator IC Positive Adjustable 1 Output  500mA 10-DFN (3x3)"
-			(at 29.21 19.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "MF" "Analog Devices"
-			(at 30.48 22.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "VENDOR" "Linear Technology"
-			(at 30.48 22.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Package" "DFN-10 Linear Technology"
-			(at 30.48 22.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Price" "None"
-			(at 30.48 22.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "MP" "LT3065EDD#PBF"
-			(at 30.48 22.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(pin "10"
-			(uuid "9f4e9766-cf3f-43b6-9c8e-daf686fae302")
-		)
-		(pin "6"
-			(uuid "fd264796-70ce-4437-b57e-d8b5792b3964")
-		)
-		(pin "2"
-			(uuid "cb584ece-22c2-4552-bc2f-d2754275796c")
-		)
-		(pin "4"
-			(uuid "43d1acee-8436-43fd-8b96-f0f1e464b749")
-		)
-		(pin "1"
-			(uuid "2debb0fc-23a8-404f-bc28-32d175abff5a")
-		)
-		(pin "3"
-			(uuid "22355c54-b893-4e53-8db8-7cdceb1a2360")
-		)
-		(pin "8"
-			(uuid "21465ac8-67b5-437a-8160-04796c224d50")
-		)
-		(pin "9"
-			(uuid "0fd65f4e-570e-4685-8d0c-ad1c233a7b08")
-		)
-		(pin "11"
-			(uuid "2f8220b8-7480-4079-b224-721395882524")
-		)
-		(pin "5"
-			(uuid "b39e9dbd-c26d-44b8-89f0-bb966302fc75")
-		)
-		(pin "7"
-			(uuid "6d232b86-654f-4fc7-a384-15c185cfdac1")
-		)
-		(instances
-			(project "PIB"
-				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08/a3e2437a-f450-49da-ac0f-e1add7c59a42"
-					(reference "U1")
 					(unit 1)
 				)
 			)
