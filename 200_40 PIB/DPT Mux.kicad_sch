@@ -2134,6 +2134,101 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:Conn_01x06_Pin")
+		(at 208.28 76.2 0)
+		(mirror y)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0dddb9ac-ff71-4db8-9354-3711c6138680")
+		(property "Reference" "J10"
+			(at 209.55 76.1999 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "53398-0671"
+			(at 209.55 78.7399 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Connector_Molex:Molex_PicoBlade_53398-0671_1x06-1MP_P1.25mm_Vertical"
+			(at 208.28 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 208.28 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x06, script generated"
+			(at 208.28 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "00d6bdb8-20c9-47ce-9d2b-355cdd390c26")
+		)
+		(pin "6"
+			(uuid "c3ee41b0-8e7e-4890-bd6f-e978d351b378")
+		)
+		(pin "4"
+			(uuid "c221e2e8-e134-4539-ba51-d2d7a3a53401")
+		)
+		(pin "5"
+			(uuid "4044bbd8-a8a7-4d9d-b50a-80fd47bbaa33")
+		)
+		(pin "3"
+			(uuid "6271b941-a042-4bb8-bbf5-43b110437c72")
+		)
+		(pin "1"
+			(uuid "29e1e2d6-a5df-41cf-a4b5-ebaa36a24cd7")
+		)
+		(instances
+			(project "PIB"
+				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08/cc1f88ed-408c-4ec5-ab26-d4cb3df82b9c"
+					(reference "J10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3.3V")
 		(at 177.8 45.72 0)
 		(unit 1)
@@ -2792,101 +2887,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:Conn_01x06_Pin")
-		(at 208.28 76.2 0)
-		(mirror y)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "2dcc2947-85dc-482a-a81e-4169f0f8cec6")
-		(property "Reference" "J10"
-			(at 209.55 76.1999 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "53261-0671"
-			(at 209.55 78.7399 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Connector_Molex:Molex_PicoBlade_53261-0671_1x06-1MP_P1.25mm_Horizontal"
-			(at 208.28 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 208.28 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x06, script generated"
-			(at 208.28 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "7e13f98e-afb1-4687-adc5-03a934496ae0")
-		)
-		(pin "6"
-			(uuid "e5eccab4-1bbe-416c-8ca6-46ceda43805b")
-		)
-		(pin "4"
-			(uuid "beeaa87a-3df3-447c-bc70-716992d87d7e")
-		)
-		(pin "5"
-			(uuid "a727dda7-90a2-4305-b556-bd8cedecc0f6")
-		)
-		(pin "3"
-			(uuid "b038e341-6d89-4ce9-8b0c-896e7e0a7044")
-		)
-		(pin "1"
-			(uuid "7778eff0-4df4-46d2-a174-5dcc38e187c8")
-		)
-		(instances
-			(project "PIB"
-				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08/cc1f88ed-408c-4ec5-ab26-d4cb3df82b9c"
-					(reference "J10")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 177.8 73.66 0)
 		(unit 1)
@@ -3233,7 +3233,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 127.9652 69.85 0)
 			(hide yes)
 			(show_name no)
@@ -3976,7 +3976,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 106.3752 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -4048,7 +4048,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "53261-0671"
+		(property "Value" "53398-0671"
 			(at 209.55 58.4199 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4059,7 +4059,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Connector_Molex:Molex_PicoBlade_53261-0671_1x06-1MP_P1.25mm_Horizontal"
+		(property "Footprint" "Connector_Molex:Molex_PicoBlade_53398-0671_1x06-1MP_P1.25mm_Vertical"
 			(at 208.28 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -4410,7 +4410,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 120.3452 100.33 0)
 			(hide yes)
 			(show_name no)
