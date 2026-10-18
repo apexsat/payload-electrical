@@ -1984,6 +1984,15 @@
 			)
 		)
 		(symbol "ACS37042KLHBLT-030B3_1_1"
+			(text "ACS37042"
+				(at 0 7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+						(color 0 132 132 1)
+					)
+				)
+			)
 			(pin power_in line
 				(at 8.89 -3.81 180)
 				(length 2.54)
