@@ -1901,7 +1901,7 @@
 				)
 			)
 		)
-		(path "/a3e2437a-f450-49da-ac0f-e1add7c59a42/f61d3112-cbef-40ed-a4b9-dc9f42acad64")
+		(path "/a3e2437a-f450-49da-ac0f-e1add7c59a42/e2c1c4fb-7f16-4c59-88d0-1fd3d3041402")
 		(sheetname "/Valve Driver/")
 		(sheetfile "Valve Driver.kicad_sch")
 		(units
@@ -8069,7 +8069,7 @@
 				)
 			)
 		)
-		(path "/a3e2437a-f450-49da-ac0f-e1add7c59a42/c06553c9-4005-4f22-889c-766ec819f157")
+		(path "/a3e2437a-f450-49da-ac0f-e1add7c59a42/296f61c8-bab4-4034-92a0-1dcaf7e8693b")
 		(sheetname "/Valve Driver/")
 		(sheetfile "Valve Driver.kicad_sch")
 		(units
@@ -37084,7 +37084,7 @@
 			)
 		)
 		(property ki_fp_filters "VSSOP*")
-		(path "/a3e2437a-f450-49da-ac0f-e1add7c59a42/74ba074a-3b94-48e7-acc5-daf57c27f6fe")
+		(path "/a3e2437a-f450-49da-ac0f-e1add7c59a42/38dcc1ef-68dd-4293-920a-5ac7a473e191")
 		(sheetname "/Valve Driver/")
 		(sheetfile "Valve Driver.kicad_sch")
 		(units
