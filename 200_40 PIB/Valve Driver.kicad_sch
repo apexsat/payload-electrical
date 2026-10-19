@@ -6308,7 +6308,6 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "27030481-2a7f-426c-a252-afe18dfd88f7")
 		(property "Reference" "#PWR013"
 			(at 24.13 36.83 0)
@@ -6321,8 +6320,8 @@
 				)
 			)
 		)
-		(property "Value" "BAT_HOT"
-			(at 24.13 27.94 0)
+		(property "Value" "VBAT_PROT"
+			(at 24.13 28.956 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects

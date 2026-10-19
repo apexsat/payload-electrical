@@ -5,7 +5,7 @@
 | **Board** | 200_40 Payload Interface Board (APEx PMPD thruster, 6U CubeSat) |
 | **Reviewed files** | `PIB.kicad_sch`, `Rogowski.kicad_sch`, `Valve Driver.kicad_sch`, `DPT Mux.kicad_sch`, `PIB.kicad_pcb` (parity only), `firmware/firmware.ioc` (pin/clock config) |
 | **Reference docs** | `Payload ICD.pdf` (Rev 2.0, CDR), `PIB Block Diagram.drawio.png`, `200_60 DPT Sensor Board` |
-| **Design state** | branch `pib-split`, `b189dc3` + uncommitted main-sheet and Rogowski changes (2026-10-19) |
+| **Design state** | branch `pib-split`, `2d73650` + uncommitted changes, including the upstream eFuse (U19) and the new load-switch sheets (2026-10-19) |
 | **PCB** | Not yet updated from the schematic; layout follows the schematic changes. Parity isn't tracked here. When updating, give D11/D36 copper for heat (F9), then regenerate the fab outputs and the iBOM. |
 | **Tools** | KiCad 10.0.4 (`kicad-cli` ERC, netlist, DRC w/ schematic parity) |
 | **Last updated** | 2026-10-19 |
@@ -19,10 +19,8 @@
 ## Summary
 
 The pin-to-pad check is clean for every footprint. The main risks are:
-- **The PIB J5 ↔ igniter board J3 pinouts are incompatible.** With the mirrored mapping that lines up the signals, the ±5 V rails cross, and the PIB's VBAT_IGN pins land on unconnected igniter pins (C13).
 - The GSE latching-valve pulse needs bench checks: polarity, and pulse width against the valve spec (C11).
-- The Rogowski front end still needs ESD on J7 and its TBD values sized once the coil is characterized (C5).
-- The heaters have no on-orbit hardware cutoff (C9).
+- The Rogowski front end is complete. What's left is checking the reset-switch leakage against R98 and the coil's flight suitability (C5).
 - D11 (20 V OR-ing Schottky) is under-rated for ~23 V GSE transients, and D36 still needs checking against the latching-valve pulse current (F9).
 
 The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD items need to be brought in line with the schematic (see [ICD Update Actions](#icd-update-actions)).
@@ -33,17 +31,20 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 - GSE OPEN/~CLOSE (J1.2) is a 3.3 V digital logic line.
 - The NC valve (valve 2) is a Lee LHDB1223518H: non-latching, normally closed, rated for continuous 12 V DC (not spike-and-hold), about 600 mW, so about 50 mA (≈ 240 Ω). It is held open continuously during burns and GSE fills.
 - Each heater is well under 10 W (TBD).
-- The ADM1270 12 V undervoltage threshold is intentional: the thruster branches cut off before the EPS low-voltage cutoff, which avoids deep-discharging the pack and sequences the two cutoffs.
+- Power architecture: the EPS supplies `VBAT_HOT` with a 4 A OCP. `VBAT_HOT` (from J3, D3 TVS) → U19 upstream eFuse (3.6 A, set to trip before the EPS) → `VBAT_PROT` → heaters, LT3065 `+12V`, and the discharge (U5) and igniter (U7) branch eFuses. The undervoltage cutoffs are staged and intentional: the branches trip at 12.75 V and the upstream at 12.0 V, both before the EPS cutoff, which protects the pack and sheds the thruster first.
 - The CDH connector is the vertical (MS) part.
 - Only 2 P/T sensors (tank, frit) are fitted; a third may be added later.
 - Op amps with heavy-ion DSEE test heritage (OP27/OP37 family) are preferred over RRIO parts that lack it. Clamp the outputs to the ADC range instead.
-- `/~{PD_RST}` (PA12) is the shared active-low reset for the Rogowski integrator and the igniter peak detectors. The igniter board is adding an inverter so its reset matches (in progress, not yet pushed).
+- `/~{PD_RST}` (PA12) is the shared active-low reset for the Rogowski integrator and the igniter peak detectors. The igniter board inverts it (Q5 → `/IGNITER_nRST`) to drive its peak-detector reset FETs.
+- **BOM policy:** every resistor whose value sets a threshold, gain, current limit or timing uses **0.1% tolerance**. That includes UV/OV, ISET, FB_PG and FLB dividers, regulator feedback (R17/R18, R75), IMAX (R2), the Rogowski network and V<sub>REF</sub> divider, NTC bias and pulse-timing resistors. Generic pull-ups, pull-downs and series/gate resistors (e.g. 10k/100k pull-downs, 100 Ω series) can stay at standard tolerance. Current-sense resistors are 1%.
+- Discharge branch load (`VBAT_DCHG`, J12): 20 W average, flat, as 0.8 s on / 0.2 s idle per second. That's ≈ 25 W while drawing: 1.5 A at 16.8 V, up to 2.1 A at the 12 V cutoff.
+- Rogowski sensor: the flight unit flies only the PEM CWTMini50HF/150 coil head, with the PIB integrating. The complete CWT transducer (0.2 mV/A, ±6 V at 30 kA) is ground calibration equipment.
 - Discharge current is a damped ring: 16.26 kA peak, about 24 kHz, about 65 µs long, bidirectional.
 
 | Category | Items |
 |---|---|
-| Critical | 5 (1 optional, 1 verify) |
-| Significant | 6 |
+| Critical | 4 (2 optional, 2 verify) |
+| Significant | 5 |
 | Footprint / Part | 9 |
 | Project setup | 2 |
 | ICD / Block diagram | 8 |
@@ -53,33 +54,33 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 
 ## Critical (safety or function)
 
-### C5 — Rogowski integrator: J7 ESD, value sizing — `OPEN`
-- **Where:** Rogowski sheet (working copy, uncommitted).
-  - The signal chain: J7.1 (MMCX) → R95 (TBD, termination) → C69 (1 µF) → R79 (TBD) → U11.2 (OP27), with C45 (TBD) ∥ R98 (TBD, leak) ∥ Q3/Q4 (BSS138 reset switch) from U11.2 to U11.6.
+### C5 — Rogowski front end: switch leakage and coil flight suitability — `VERIFY`
+- **Sensor:** the flight unit flies only the coil head of a PEM CWTMini50HF/150. The PIB does the integration. The complete CWT transducer (with PEM's integrator: 0.2 mV/A, ±6 V at 30 kA) is ground equipment and can serve as the calibration reference.
+- **Where:** Rogowski sheet (working copy).
+  - Signal chain: J7.1 (MMCX, D38 SD12C-01F bidirectional 12 V TVS, R95 100k bleeder to GND) → C69 (4.7 µF) → R79 (2.00k) → U11.2 (OP27), with C45 (10 nF C0G) ∥ R98 (1 M) ∥ Q3/Q4 (BSS138 reset switch) from U11.2 to U11.6.
   - U11.3 (+) sits at V<sub>REF</sub> = VDDA/2 (R96/R97 10k/10k, C70 1 µF). Supplies are ±5 V.
   - Reset: `~{ROGOWSKI_RST}` (main-sheet net `/~{PD_RST}`, PA12, shared with the igniter peak-detector reset on J5.2) → R100 → Q5 (BSS138, R101 gate pull-down). Q5's drain, pulled up to +5 V by R99, drives the Q3/Q4 gates. The integrator is held in reset whenever the GPIO is low or high-Z.
-  - Output: U11.6 → R102 (100 Ω) → clamp D40 (BAT54J, to +3.3V) / D39 (BAT54J, to GND) → R104 (1k) → PA1 with C71 (470 pF). This is matched to the PA0 network (C6).
+  - Output: U11.6 → R102 (100 Ω) → clamp D40 (BAT54J, to +3.3V) / D39 (BAT54J, to GND) → R104 (1k) → PA1 with C71 (470 pF), matched to the PA0 network.
 - **Problems:**
-  1. **No ESD protection on J7.1.**
-  2. **R79, C45, R98 and R95 are TBD.** They're waiting on M (Q8).
+  1. **Reset-switch leakage (check):** while integrating, Q3/Q4 off-state leakage × R98 (1 M) appears as offset. That's typically nA, a few mV, at the ≈ 1.5 V V<sub>DS</sub> here, but the datasheet max (often 0.5–1 µA at 50 V, more when hot) would be 0.5–1 V. Check BSS138 leakage at low V<sub>DS</sub> and temperature.
+  2. **Coil flight suitability is unconfirmed:** whether the coil detaches from the CWT integrator, its cable and connector to J7, its temperature rating and its outgassing.
 - **Fix:**
-  - **Firmware sequencing:** Hold reset during power-up (C69 charges with τ ≈ (R79 + R95)·C69). Release it shortly before the shot, then sample a baseline after release. That removes switch leakage × R98, op-amp offset and charge injection (≈ C<sub>gd</sub>·ΔV<sub>g</sub>/C45, a few mV).
+  - **Leakage:** if the BSS138 leakage is significant, reduce R98 (adjusting C45 / relying on firmware droop correction) or use a lower-leakage switch.
+  - **Firmware sequencing:** hold reset during power-up (C69 charges with τ ≈ (R79 + 154 Ω coil)·C69 ≈ 10 ms). Release it shortly before the shot, then sample a baseline after release. That removes switch leakage × R98, op-amp offset and charge injection (≈ C<sub>gd</sub>·ΔV<sub>g</sub>/C45, a few mV).
   - **Gain headroom:** size the gain so the expected peak stays within about 0.15–3.15 V, so the D39/D40 clamp only acts on faults.
-  - **J7:** Add ESD/TVS protection at J7.1, ahead of C69. Rate it for the peak coil voltage M × ~2.45 kA/µs.
-- **Value sizing (once M is known):**
-  - **Gain:** V<sub>out,pk</sub> = M · I<sub>pk</sub> / (R79 · C45). For 16.26 kA → 1.5 V, R79 · C45 = M · 16 260 / 1.5.
-  - **Droop:** R98 · C45 and R79 · C69 each ≈ 10 ms. Total droop ≈ T/τ<sub>AC</sub> + T/τ<sub>leak</sub> ≈ 1.3% at T ≈ 65 µs.
-    - Keep R98 ≤ ~100k (OP27 bias current × R98 = a few mV), giving C45 ≥ ~60 nF in C0G.
-    - With a pre-shot baseline, R98 can go to about 1–2 MΩ and C45 to about 5–10 nF.
-    - Firmware droop correction (I ∝ y + (1/τ)∫y dt) would allow shorter time constants.
-  - **C69 (1 µF):** X7R is acceptable. Its bias-driven piezo error is about 10⁻⁴–10⁻³ of the coil signal, and its tolerance only shifts droop by about ±0.1%. Specify 1206 or larger, 25–50 V, AEC-Q200, flexible termination. R79 ≈ 10k gives 10 ms; avoid tantalum.
-  - **R95:**
-    - Start at 50 Ω and keep R95/(2πL<sub>coil</sub>) ≥ 240 kHz (L<sub>coil</sub> ≤ ~33 µH at 50 Ω).
-    - Tune on the bench for no ringing at the coil's self-resonance (≈ ½·√(L/C<sub>coil</sub>)). Keep R79 ≥ 10× R95.
-    - **Size and rating:** set by V<sub>pk</sub> = M × ~2.45 kA/µs, both for working voltage (0603 ≈ 50–75 V, 0805 ≈ 150 V, 1206 ≈ 200 V typical) and for single-pulse energy (≈ V<sub>pk</sub>²/R × 16 µs, about 0.2 mJ at M = 10 nH into 50 Ω). Average power is negligible.
-      - **0603 is fine if M ≲ 20 nH** (V<sub>pk</sub> ≲ 50 V); use an anti-surge type (ERJ-P03 / CRCW-HP class) and check its pulse-load curve.
-      - If layout happens before M is known, use 0805: you can't upsize from an 0603 footprint later.
-      - R79 also sees about the full coil voltage, so the same voltage limits apply to it.
+- **Value sizing (M ≈ 1.7 nH):** the flight shot's peak onset dI/dt is ≈ 3.1 kA/µs (16.26 kA, ~24 kHz, damped ~0.6× per half-cycle), so the peak coil voltage is ≈ 5.3 V (≤ ~6 V with M uncertainty). Gain target: R79·C45 = M·16 260/1.5 V ≈ 18 µs.
+
+  | Part | Proposed | Result |
+  |---|---|---|
+  | R79 | 2.00k (0.1%) | Peak summing current ≈ 2.7 mA; ≥ 10× R95 |
+  | C45 | 10 nF C0G | Output peak = M·I<sub>pk</sub>/((R79 + Z<sub>s</sub>)·C45) ≈ 1.28 V with the coil's Z<sub>s</sub> = 154 Ω (0.37–2.93 V around 1.65 V); ≈ 1.41 V at M + 10% |
+  | R98 | 1.00 M (0.1%) | τ<sub>leak</sub> = 10 ms; OP27 bias × R98 ≈ 40–60 mV offset, removed by the pre-shot baseline |
+  | C69 | 4.7 µF X7R, 0603, ≥ 10 V (16 V preferred) | It sees ≈ 1.65 V DC and negligible AC (≈ 1.4 Ω at 24 kHz vs ≈ 2.15 kΩ). τ<sub>AC</sub> = (R79 + Z<sub>s</sub>)·C69 ≈ 10 ms nominal, ≈ 7–9 ms after DC-bias derating; total droop ≈ 1.3–1.6% at 65 µs |
+  | R95 | 100k bleeder (not a termination) | The coil has 154 Ω source resistance (DC multimeter), and a 50 Ω load cut the signal ≈ 3–4×, so the coil must see only high impedance (PEM's integrator is 3 MΩ). 100k only defines DC and bleeds static. |
+
+  - **C69:** X7R in 0603 is acceptable. Its bias-driven piezo error is about 10⁻⁴–10⁻³ of the coil signal, its tolerance and DC-bias loss only shift droop slightly (calibrated), and 0603 is less prone to flex cracking than larger cases. Avoid tantalum.
+  - **Coil source resistance (measured 2026-10-19):** 154 Ω DC. The 50 Ω-load shot showed the same resistive behaviour: the step and the slow portion were attenuated alike. With R79 = 2k the loss is ≈ 7% (calibrated out). If the 154 Ω is copper, ±40 °C moves the gain ≈ ±1.1%. Correct with the PIB thermistor, or use the option below.
+  - **Lower-tempco option:** R79 4.99k, C45 4.7 nF C0G, R98 ≈ 2.2 M, C69 2.2 µF. That gives ≈ 1.14 V peak and ≈ ±0.5% tempco, at the cost of ≈ 90–130 mV of bias offset (removed by the baseline).
   - **ADC rate and LT8580 ripple:** The planned rate is 2–4 MSPS (80–160 samples per period). The −5 V LT8580 switches at 846 kHz, which is below Nyquist at both rates, so it appears as an in-band tone that a digital low-pass removes.
     - Its harmonics alias to 78 kHz (7th) at 2 or 3 MSPS, and to 230 kHz at worst (5th) at 4 MSPS. Prefer 4 MSPS.
     - The LT8580 free-runs (SYNC = GND), so its tolerance and drift move these aliases. If the bench PA1 noise floor shows the ripple matters, drive SYNC from an HSE-derived MCU timer, e.g. f<sub>sw</sub> = fs × 2/9 ≈ 889 kHz at 4 MSPS (check the SYNC range).
@@ -91,17 +92,11 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 - **Risk:** Nominal signals are 0 to <3.3 V. However, the igniter-board op amps run on ±5 V, so a fault, overrange, power-sequencing event or HV arc can push an output to a rail, and the ESD diodes are not continuous clamps.
 - **Hardening:** Use the same scheme as PA0/PA1: series R ≈ 1k plus a BAT54 pair to +3.3V/GND at each input. These are slow channels (peak-detect, NTC, supply), so the delay doesn't matter.
 
-### C9 — Heaters and BAT branches lack hardware protection / cutoff — `OPEN`
-- **Where:** Main sheet, Q9/Q11 (low-side heater switches on `BAT_HOT`); Valve Driver U1 (LT3065 `SHDN` tied to IN).
-- **Problems (on orbit; launch inhibits are in EPS):**
-  - A heater FET that fails on keeps heating a pressurized tank, with no hardware over-temperature cutoff.
-  - There is no PIB-level overcurrent protection on the BAT input, heaters or 12 V regulator.
-  - The 12 V rail is always on whenever BAT is present.
-  - This contradicts the ICD: "BAT will have overcurrent protection…" and "only pass BAT to … heaters, if 3.3V is also powered and the microcontroller is healthy."
-- **Heater sizing:** Worst case is 2 × 10 W at 12 V = 1.67 A, which puts about 0.83 A on each of J2's shared BAT pins (2, 3) and return pins (1, 4). That's within PicoBlade's ~1 A/contact but tight at the 10 W bound. Confirm once wattage is fixed.
-- **Minimum fix:**
-  - (a) A hardware over-temperature cutoff on the heaters: either a thermostat in series, or a comparator on a tank NTC that pulls the heater gates low.
-  - (b) Either a heater/12 V branch eFuse (~2 A) gated by a hardware-healthy signal, or ICD wording that matches the as-built protection.
+### C9 — No hardware heater over-temperature cutoff — `OPTIONAL`
+- **Where:** Main sheet, Q9/Q11 (low-side heater switches on `VBAT_PROT`).
+- U19 now gives the BAT bus overcurrent protection and MCU-controlled gating (`/BAT_EN`, PA10, pulled off at reset). A heater FET that fails on can therefore be cut by firmware through U19, but that also drops the `+12V` valve rail and depends on firmware noticing the over-temperature.
+- **Option:** add an independent hardware cutoff, either a series thermostat or a comparator on a tank NTC that pulls the heater gates low.
+- **Heater sizing:** Worst case is 2 × 10 W at 12 V = 1.67 A, ≈ 0.83 A on each of J2's shared BAT pins (2, 3) and return pins (1, 4). That's within PicoBlade's ~1 A/contact but tight at the 10 W bound. Confirm once wattage is fixed.
 
 ### C11 — GSE latching-valve pulse circuit: pulse width and polarity checks — `VERIFY`
 - **Where:** Valve Driver sheet (working copy).
@@ -114,23 +109,6 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
   3. **No UVLO gating:** at GSE power-up, U18's ~OPEN output rises with `3.3V_EGSE` and couples through C74, so expect a CLOSE pulse at reduced `+12V`. GSE procedure: send an explicit CLOSE once powered, and space commands ≥ ~2× the pulse width. Overlapping pulses brake the coil, which is safe.
   4. **BAT54C symbol:** confirm pins 1/2 are the anodes and pin 3 the common cathode (the symbol's pins are unnamed).
 
-### C13 — PIB J5 and igniter board J3 pinouts are incompatible — `OPEN`
-- **Where:** PIB J5 (53398-1371) ↔ igniter board J3 (53261-1371, `200_80 Igniter Supply Board`).
-- **Problem:** A 1:1 mapping lines up nothing. The mirrored mapping (PIB pin n ↔ igniter pin 14 − n) lines up the signals (PULSE, RST, NTC, I_PK, V_PK, V_SUPPLY, GNDs), but then:
-
-  | PIB J5 | PIB net | Igniter J3 | Igniter net |
-  |---|---|---|---|
-  | 7 | **+5V** | 7 | **−5V** |
-  | 8 | **−5V** | 6 | **+5V** |
-  | 12, 13 | VBAT_IGN | 2, 1 | unconnected |
-
-  - **The ±5 V rails cross**, shorting the PIB +5 V into the igniter −5 V and vice versa. That's damaging on first power-up.
-  - The PIB's ADM1270-protected VBAT_IGN branch feeds nothing. The igniter flyback (LT8301, VIN/EN on 5V) runs from J3.6 instead, which would load the PIB +5 V rail.
-- **Harness:** Off-the-shelf PicoBlade double-ended assemblies are **mirrored** (pin n ↔ N + 1 − n, per the supplier drawing; confirm for the exact part bought). So the crossing above is what a standard cable produces.
-- **Fix:**
-  - **Swap PIB J5.7 and J5.8** to J5.7 = −5V and J5.8 = +5V. That matches igniter J3.7 (−5V) and J3.6 (+5V) through a mirrored cable.
-  - Resolve VBAT_IGN. Either route it to igniter J3.1/J3.2 and run the flyback from it (the ADM1270 eFuse branch, as the PIB intends), or drop the PIB VBAT_IGN branch and check the PIB +5 V budget for the igniter flyback load.
-
 ---
 
 ## Significant
@@ -140,32 +118,25 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 - DPT board J1 (Pico-Lock 503480-0640): 1 SCLK, 2 DOUT, 3 DIN, 4 MCLK, 5 VDD, 6 GND.
 - A 1:1 harness would put power on SCLK. **Fix:** Align the pin orders or document the cross-wired harness.
 
-### S5 — LT3065 PWRGD not connected to the MCU — `OPEN`
-- PWRGD (U1.4, open-drain, R1 pull-up to +3.3V) goes to the `12V_PG` hierarchical label on the Valve Driver sheet, but the parent sheet has no matching sheet pin (ERC `hier_label_mismatch`), so it reaches no GPIO.
-- **Fix:** Add the `12V_PG` sheet pin and route it to a free GPIO (PA2, PA10, PA11 or PC15).
-
-### S7 — ADM1270 auto-retry: FET stress, start-up capacitance, PWRGD fault logic — `VERIFY`
-- **As built (intentional):** R51/R64 (0 Ω) tie ~FAULT to ENABLE, so both eFuses (U5 discharge, U7 igniter) auto-retry. Fault state is read through PWRGD: `/DISCHARGE_PGOOD` on PC13 and `/IGNITER_PGOOD` on PC14, each with a 10k pull-up.
-- **Timing (ADM1270 Rev. A):** with TIMER = 10 nF (C30/C35) and TIMER_OFF = 100 nF (C29/C34):
+### S7 — ADM1270 auto-retry: start-up capacitance and PWRGD fault logic — `VERIFY`
+- **As built (intentional):** R51/R64/R116 (0 Ω) tie ~FAULT to ENABLE, so all three eFuses (U5 discharge, U7 igniter, U19 upstream) auto-retry. U19 uses C81 = 22 nF (≈ 2.2 ms on-time, so U5 clears a branch fault first) and C80 = 100 nF. Fault state is read through PWRGD: `/DISCHARGE_PGOOD` on PC13, `/IGNITER_PGOOD` on PC14 and `/BAT_PGOOD` on PA11, each with a 10k pull-up.
+- **Timing (ADM1270 Rev. A):** with TIMER = 10 nF (C30/C35) and TIMER_OFF = 100 nF (C29/C34/C80):
   - On time = 2.0 V × C<sub>TIMER</sub>/20 µA ≈ **1.0 ms** (0.8–1.25 ms).
   - Off time = 2.0 V × C<sub>TIMER_OFF</sub>/1 µA ≈ **200 ms** (150–265 ms).
   - Retry duty ≈ **0.5%** (≤ 0.8%). Initial power-on delay ≈ 10 ms.
-- **Foldback:** R57/R56 (U5) and R66/R67 (U7) give V<sub>FLB</sub> ≈ 0.233·V<sub>OUT</sub>. The current limit is 10 mV/R<sub>SENSE</sub> (7–13 mV) at V<sub>OUT</sub> = 0, rising to the full 50 mV at V<sub>OUT</sub> ≈ 4.7–5.7 V.
+- **Foldback:** the current-limit reference is the lower of V<sub>ISET</sub> and V<sub>FLB</sub>, giving V<sub>SENSE</sub> ≈ 50 mV/V × V<sub>FLB</sub> with a 10 mV floor. U5/U19 use 100k/10k dividers (V<sub>FLB</sub> = V<sub>OUT</sub>/11; full current above ≈ 7–8.6 V out), and U7 uses 33k/10k.
 - **Checks:**
-  1. **Q1 (Si7489DP) stress, discharge branch:** Worst-case current-limit dissipation is at V<sub>OUT</sub> ≈ 5.7 V (a partial short): (16.8 − 5.7) V × 3.33 A ≈ **37 W** (≈ 41 W at the 18 V OV limit). That's ≈ 37–51 mJ per retry; with the 200 ms off time the sustained-fault average is only ≈ 0.2 W (≤ 0.4 W). A dead short is only ≈ 11 W.
-     - Remaining check: the Si7489DP single-pulse SOA at ~11 V / 3.3 A for ~1.25 ms.
-     - The igniter branch (0.5 A limit) peaks at ≈ 5.5 W and averages ≈ 0.3 W, which is fine.
-  2. **Start-up into load capacitance:** The current limit is also the inrush limit, and the 1 ms timer runs throughout. Starting from 0 V through foldback, the branch can charge only about **147 µF on `VBAT_DCHG`** and **22 µF on `VBAT_IGN`** (no load current) before timing out.
+  1. **Start-up into load capacitance:** The current limit is also the inrush limit, and the 1 ms timer runs throughout. Starting from 0 V through foldback, the branch can charge only about **≈ 130 µF on `VBAT_DCHG`** (≈ 100 µF at worst-case tolerances) and **21 µF on `VBAT_IGN`** (no load current) before timing out.
      - Confirm the input capacitance of the HV discharge converter on J12. It isn't in the repo; `200_70` holds only the sense board. If the capacitance exceeds that limit, the branch never starts and retries every ~200 ms.
-     - **Fix if needed:** raise C30 (which also raises the per-retry stress in check 1) or soft-start the load.
-  3. **Firmware fault logic:** PWRGD (≈ 11 V threshold) is also low when the branch is commanded off (ENABLE low or ARM safe) or when BAT is below the 12 V UV. Flag a fault only when the branch is commanded on, BAT is in range, and PWRGD stays low or keeps toggling past a debounce window. PWRGD pulses during retries.
+     - **Fix if needed:** raise C30 (each 10 nF adds ≈ 1 ms of on time; re-check Q1 SOA beyond ~3 ms) or soft-start the load.
+  2. **Firmware fault logic** (also applies to U19's `/BAT_PGOOD` on PA11): PWRGD (≈ 11 V threshold) is also low when the branch is commanded off (ENABLE low or ARM safe) or when BAT is below the 12 V UV. Flag a fault only when the branch is commanded on, BAT is in range, and PWRGD stays low or keeps toggling past a debounce window. PWRGD pulses during retries.
 
 ### S14 — Non-ARM 74HC08 inputs float at reset — `OPTIONAL`
 - R88 holds `/ARM/~{SAFE}` low, so all eight gated outputs are low during reset. The other inputs (`IGNITER_EN`, `DISCHARGE_EN`, `IGNITER_PULSE`, `VALVE1_L/H`, `VALVE2_EN`, `VALVE3_L/H`) float while the STM32 pins are high-Z.
 - That's safe, but floating HC inputs can draw extra supply current or oscillate. Add 100k pull-downs if layout space allows.
 
 ### S15 — `+12V` in LT3065 dropout at low battery — `VERIFY`
-- The LT3065 regulates 12.6 V (R18 20k / R17 1k), so `+12V` ≈ 12.3 V after D11 while BAT ≳ 12.9 V. Below that the regulator is in dropout and `+12V` ≈ BAT − ~0.6 V, about 11.4 V at the 12 V undervoltage point. The valve driver is on `BAT_HOT`, not behind an ADM1270, so the valves can still be commanded below that. In GSE mode, `+12V` = `12V_GSE` − V<sub>F</sub>(D36).
+- The LT3065 regulates 12.6 V (R18 20k / R17 1k), so `+12V` ≈ 12.3 V after D11 while BAT ≳ 12.9 V. Below that the regulator is in dropout and `+12V` ≈ BAT − ~0.6 V, about 11.4 V just before U19's 12.0 V undervoltage cutoff (the LT3065 is on `VBAT_PROT`). In GSE mode, `+12V` = `12V_GSE` − V<sub>F</sub>(D36).
 - **Check:** latching-valve operation at about 11.4 V and at cold (Q3). The NC valve is rated 12 V and sees ≈ 12.3 V nominal.
 
 ### S16 — DPT MCLK timer not configured in firmware — `OPEN` (firmware)
@@ -179,20 +150,22 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, SOT95P280X145-5N, HARWIN M80, ABM3B, PowerPAK SO-8, SOD-323). MIC4424 pads 1/8 are NC, which is correct. SP0502BAJT on SC-70 is correct.
 
 ### F1 — No MPNs or capacitor ratings — `OPEN`
-- Only U1 carries an MPN field, and only some resistors have a tolerance. No capacitor has a voltage or dielectric rating. **Fix:** Add `MPN` and `Manufacturer` fields project-wide.
+- Only U1 carries an MPN field, and only some resistors have a tolerance. No capacitor has a voltage or dielectric rating. **Fix:** Add `MPN` and `Manufacturer` fields project-wide, and a `Tolerance` field that marks the 0.1% resistors per the BOM policy in the design context.
 
 ### F2 — BAT-rail capacitor voltage rating — `OPEN`
-- C1, C28, C33, C62, C66, C67 see up to the SMF18A clamp (~29 V), so they need 50 V parts.
+- C79 (`VBAT_HOT`), C1, C28, C33, C62, C82 (`VBAT_PROT`) and C66, C67 see up to the SMF18A clamp (~29 V), so they need 50 V parts.
 - The 10 µF 0805 capacitors, especially C4 (the coupling capacitor in the −5 V converter, ~10 V across it), lose most of their capacitance under DC bias. Use 25 V+ X7R, and 1206 where needed.
 
-### F3 — R35 sense resistor power/footprint — `OPEN`
-- 15 mΩ at 3.33 A ≈ 0.17 W in 0805. Use a current-sense part rated ≥ 0.5 W with a Kelvin footprint.
+### F3 — Sense-resistor rating and accuracy (R38, R35) — `OPEN`
+- **R38** (upstream, 10 mΩ, 0805) carries the whole bus: up to ≈ 3–4 A, so ≈ 0.09–0.16 W, at or above a standard 0805's 1/8 W. Use a ≥ 0.25–0.5 W current-sense part.
+- **R35** (discharge, 10 mΩ, 0805) dissipates ≈ 44 mW at 2.1 A, which is fine.
+- At 10 mΩ, 1 mΩ of solder and trace resistance shifts each current limit by ≈ 10%. Use low-TCR current-sense parts with Kelvin footprints, routing SENSE+/SENSE− from the pads.
 
 ### F4 — FB1 footprint/value — `OPEN`
 - FB1 uses `R_0603` and its value is "120". Specify a ferrite part number (impedance at 100 MHz, DCR, current) and use an inductor/ferrite footprint.
 
 ### F5 — Symbol/value mismatches — `OPEN`
-- Q1/Q2: symbol `Si7141DP` (20 V part), value Si7489DP (100 V).
+- Q1/Q2/Q6: symbol `Si7141DP` (20 V part), value Si7489DP (100 V).
 - Q9/Q10/Q11: symbol `IRF7403`, value IRF7832.
 - U14/U15: symbol `74LS08`, value 74HC08PW.
 - The pinouts match, but the description and datasheet fields will mislead BOM and assembly.
@@ -219,13 +192,12 @@ Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, 
 ## Project Setup
 
 ### P3 — Empty title blocks — `OPEN`
-- None of the 4 sheets has a title, revision, date or company.
+- None of the 6 sheets (including the two load-switch sheets) has a title, revision, date or company.
 
 ### P4 — ERC cleanup — `OPEN`
-- With stock libraries loaded: 15 messages:
-  - 10× `power_pin_not_driven`: needs PWR_FLAGs.
-  - 4× `pin_not_connected`: U4 PA2, PA10, PA11, PC15. Add no-connect flags or use them.
-  - 1× `hier_label_mismatch`: `12V_PG` (S5).
+- With stock libraries loaded: 12 messages:
+  - 11× `power_pin_not_driven`: needs PWR_FLAGs.
+  - 1× `pin_not_connected`: U4 PC15. Add a no-connect flag or use it.
 
 ---
 
@@ -239,7 +211,7 @@ Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, 
 | D4 | P/T sensors | 3 (frit, tank refrigerant, tank propellant) | 2 DPT channels (tank, frit) | `ICD` — list 2, noting a possible future third |
 | D5 | Igniter channels | Integral V, integral I, total pulse energy | J5: peak V, peak I, supply V | `ICD` — trim to as-built channels |
 | D6 | GSE architecture | Separate H-bridge + 12 V NMOS, diode-OR'd, "completely separated" | Shares flight drivers. `+12V` diode-OR'd from LT3065 and `12V_GSE` (D11/D36). The Q10 gate is diode-OR'd (D50, BAT54C) between GSE and flight, so either can open valve 2 and neither can force it closed. The latching valve gets an RC-timed pulse (~100 ms) on each GSE OPEN/CLOSE edge, diode-OR'd with flight (D47/D48), so either side can drive a MIC4424 input high. Conflicting commands put both inputs high, which brakes the coil | `ICD` |
-| D9 | BAT OCP / MCU-healthy gating | Claimed | Not implemented (C9) | `OPEN` |
+| D9 | BAT OCP / MCU-healthy gating | Claimed | Upstream eFuse U19 on all BAT loads, enabled by the MCU (`/BAT_EN`), with OV 18 V and staged UV | `ICD` — describe as built |
 | D10 | PIB thermistors | 2 | 1 (TH1 on PB1) | `ICD` — change to 1 |
 
 ### ICD Update Actions
@@ -250,7 +222,7 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
 - [ ] **Electrical connectors (D1):** G125-MS12605M2P (vertical), not MH12605M4P.
 - [ ] **Sensor channels (D4, D5):** 2 P/T sensors (tank, frit; third optional/future). Igniter channels trimmed to peak V, peak I, supply V (plus whatever is derived in firmware).
 - [ ] **Power interfaces (D3):** 5 V is required, not TBD (−5 V converter, LG16 flow sensor, HV board op amps, integrator).
-- [ ] **BAT protection paragraph (C9, D9):** match the as-built protection (per-HV-branch ADM1270 eFuses; heater and 12 V branch protection once decided). State that launch inhibits are provided by EPS under UNP NS requirements.
+- [ ] **BAT protection paragraph (D9):** describe the as-built protection: an upstream ADM1270 eFuse (U19) on the whole BAT bus, enabled by the MCU and reporting `BAT_PGOOD`, with OV 18 V and UV 12.0 V. Per-branch ADM1270s on the discharge and igniter supplies, with UV 12.75 V for staged shedding. State that launch inhibits are provided by EPS under UNP NS requirements.
 - [ ] **Data interfaces:** IGNITER (J3.22) is a buffered copy (U8) of the gated igniter pulse.
 - [ ] **Thermistors (D10):** 1 PIB thermistor, not 2.
 
@@ -261,7 +233,7 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
 | ID | Question | Known so far |
 |---|---|---|
 | Q3 | Latching valve data: part number, coil current, and required pulse width. These set the C11 pulse RC and the D36 pulse rating (F9). | NC valve: LHDB1223518H, 12 V DC continuous, ~600 mW (~50 mA). Library also has LHLA1252x11H (likely the latching valve; confirm). |
-| Q8 | Rogowski coil sensitivity: mutual inductance, in V per A/µs? This is needed to size the coil termination, R79 and C45 for about ±1.5 V full scale (C5). | Discharge current measured 2025-09-03: 16.26 kA peak, damped ring at about 24 kHz (41 µs period), about 3 half-cycles over ~65 µs, bidirectional. |
+| Q8 | Flight Rogowski coil (PEM CWTMini50HF/150 coil head): confirm the precise open-circuit M (offset-corrected integral at the trough ÷ CT peak). | **Measured 2026-10-19** (380 µF from 200 V via a shorting stick, CT reference): open-circuit **M ≈ 1.7 nH (±10%)** from ∫V<sub>coil</sub>dt vs CT and from the onset step. **Coil resistance 154 Ω DC.** A 50 Ω load attenuated the signal ≈ 3–4×, resistively. The steps in dI/dt at ≈ 41 and 84 µs come from the shorting-stick arc. The transducer trough read ≈ 10–20% above the CT (rough read); check the CT scaling. |
 
 ---
 
@@ -277,11 +249,13 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
   - `12V_GSE` (D10, U6) is on the source side of D36, so flight power can't back-feed the EGSE regulator or the EGSE pin.
 - **Q10 gate:** D50 (BAT54C) diode-ORs flight and GSE (GSE anode on `EGSE_OPEN_F`, behind R46), through R110 (100 Ω), giving ≈ 3.1 V from either side; R6 pulls the gate off to ≈ 0 V, never in the 1.35–2.35 V threshold band. Neither side can back-power the other. IRF7832 Fig. 3 shows tens of A typical at about 3 V, so 3.3 V-class drive is adequate for the heater and valve FETs.
 - **D37:** NC-valve flyback diode, oriented correctly.
+- **J7 protection:** D38 (SD12C-01F, bidirectional 12 V standoff) at J7.1 ahead of C69 stays off at the ≈ 5–6 V coil peak. R95 (100k) defines DC with the coil unplugged and costs ≈ 0.15% against the coil's 154 Ω.
 - **PA0/PA1 front ends:** Each channel has 100 Ω (R106 / R102) → BAT54J pair to +3.3V/GND (D43/D44, D39/D40) → 1k (R105 / R104) → pin with 470 pF (C72 / C71). Orientation is correct, and the matched RCs (f<sub>c</sub> ≈ 339 kHz, ≈ 0.47 µs, −0.02 dB / −4° at 24 kHz) keep the V×I timing aligned. Injection in a fault is ≪ 0.1 mA.
 - **GSE pulse circuit:** J1.2 is isolated by R46 (1k) with R45 pull-down. U18 buffers both phases, so no RC cap loads the GSE line. U18 (74LVC2G14) and U9 (74LVC2G17) are Schmitt parts with I<sub>off</sub>. D41/D42 clamp the RC nodes to GND (orientation correct). D47/D48 (BAT54C) diode-OR flight and GSE into U3 INA/INB with R41/R42 pull-downs, so there's no back-power in either direction on valve 3. U9 and U18 are decoupled (C31, C75).
 - **IGNITER to CDH:** U8 (74AHC1G125, OE tied to GND, decoupled by C77) buffers `IGNITER_PULSE_GATED` onto J3.22 through R29.
 - **PIB thermistor:** TH1 10k NTC / R109 10k from VDDA / C76 100 nF on PB1 gives ≈ VDDA/2 at 25 °C, ratiometric with the ADC reference.
 - **J8 / reset:** J8.5 = +3.3V VTref through R108 (1k), which is short-protected. MAX823 ~RESET drives NRST directly (R77 pull-up), so SW1 is always a hardware reset; use a manual connect-under-reset for recovery. JP1 in the WDI line disables only the watchdog.
+- **PIB J5 ↔ igniter J3:** through a standard mirrored PicoBlade cable (pin n ↔ 14 − n), all signals, grounds and ±5 V match pin-for-pin (igniter board at `acfe0a1`).
 - **J3 ESD:** J3.22–24 are protected by D45/D46/D49 (PESD3V3U1UL) on the connector side of R29/R30/R31.
 - **Symbol libraries:** U1/U2/U3 come from `0_PAY_Symbol_Library`, which is in the project's `sym-lib-table`.
 - **Valve 1 (U2):** U15 drives INA/INB directly, with R39/R40 pull-downs (no GSE path).
@@ -294,5 +268,14 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
   - Output 0.6 × (1 + 20k/1k) = 12.6 V. I<sub>MAX</sub> = 300 mA (R2 = 1k), with C10 22 nF on IMAX, C11 10 nF REF/BYP, C6 10 µF and C22 10 nF feedforward. Foldback is not engaged.
   - Thermal: the continuous load is the NC valve (~50 mA), so about 0.21 W at 4.2 V headroom (16.8 V in). The 300 mA current-limit worst case is ≈ 1.26 W (≈ 45 °C rise).
 - **MAX823:** RESET source current is 800 µA max, so the STM32 and ST-Link can overdrive it. SOT-23-5 pin mapping is correct.
-- **ADM1270:** current limits 50 mV / 15 mΩ = 3.33 A and 50 mV / 100 mΩ = 0.5 A. PG threshold ≈ 11 V. In the auto-retry configuration, ENABLE sits at ≈ 3.0 V via R52/R53 (V<sub>IH</sub> 1.2 V) and ~FAULT pulls it to ≲ 0.2 V (V<sub>IL</sub> 0.4 V), which meets the datasheet's FAULT pull-up requirement.
+- **Pass-FET SOA (Si7489DP):** With the 100k/10k foldback, the worst retry pulse (18 V in, max limit, V<sub>OUT</sub> at end of foldback) is ≈ 36 W on Q1 for ≤ 1.25 ms and ≈ 37 W on Q6 for ≤ 2.75 ms. Z<sub>thJC</sub> gives ≈ 5–7 °C rise per pulse, with ≈ 2.5× margin to a rough derated SOA-chart reading. The sustained-fault average is ≤ 0.3 W (Q1) and ≤ 0.7 W (Q6). Q2 (0.5 A) peaks at ≈ 7 W.
+- **Selectivity:** U19's on-time (≥ 1.76 ms) exceeds U5's (≤ 1.25 ms), so a discharge-branch fault is cleared by U5 before U19 can trip.
+- **Discharge branch in normal operation:** Q1 conduction loss at the worst-case 2.1 A on-current is ≈ 2.1² × 0.041 Ω × 1.5 (hot) × 0.8 duty ≈ 0.2 W. J12 (Harwin M80, two VBAT_DCHG contacts and three GND contacts, ~3 A/contact class) carries ≈ 1 A per contact.
+- **ADM1270 thresholds (0.1% divider resistors recommended):**
+  - U19 (R111/R112/R113 = 33k/1k/2k): UV 12.0 V falling / 12.72 V rising, OV 18.0 V rising / 17.46 V falling.
+  - U5 and U7 (158k/3.92k/9.53k): UV 12.75 V falling / 13.52 V rising, OV 18.0 V rising / ≈ 17.5 V falling.
+  - PG thresholds ≈ 11 V. Igniter limit 50 mV / 100 mΩ = 0.5 A.
+  - Auto-retry ENABLE levels: ≈ 3.0 V via the 10k/100k dividers (V<sub>IH</sub> 1.2 V), pulled to ≲ 0.2 V by ~FAULT (V<sub>IL</sub> 0.4 V).
+  - ISET dividers sit well clear of the 2.55–2.65 V reference-select threshold (U19 1.44 V, U5 1.28 V), and their VCAP loads (≈ 15 µA, ≈ 22 µA) are far under the 100 µA limit.
+- **Bus control and telemetry:** `/BAT_EN` (PA10, R115 pull-down, so the bus is off while the MCU is in reset), `/BAT_PGOOD` (PA11), `/12V_PG` (PA2, LT3065 PWRGD with R1 pull-up to +3.3V).
 - **MIC4424:** SOIC-8 mapping is correct.
