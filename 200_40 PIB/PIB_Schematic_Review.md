@@ -5,7 +5,7 @@
 | **Board** | 200_40 Payload Interface Board (APEx PMPD thruster, 6U CubeSat) |
 | **Reviewed files** | `PIB.kicad_sch`, `Rogowski.kicad_sch`, `Valve Driver.kicad_sch`, `DPT Mux.kicad_sch`, `PIB.kicad_pcb` (parity only), `firmware/firmware.ioc` (pin/clock config) |
 | **Reference docs** | `Payload ICD.pdf` (Rev 2.0, CDR), `PIB Block Diagram.drawio.png`, `200_60 DPT Sensor Board` |
-| **Design state** | branch `pib-split`, commit `3aa27f2` |
+| **Design state** | branch `pib-split`, `153cef1` + uncommitted main-sheet, Rogowski and Valve Driver changes (2026-10-19) |
 | **Tools** | KiCad 10.0.4 (`kicad-cli` ERC, netlist, DRC w/ schematic parity) |
 | **Last updated** | 2026-10-19 |
 
@@ -18,13 +18,14 @@
 ## Summary
 
 The pin-to-pad check is clean for every footprint. The main risks are:
-- The GSE path holds the latching valve at DC 12 V instead of pulsing it (C11).
+- **The PIB J5 ↔ igniter board J3 pinouts are incompatible.** With the mirrored mapping that lines up the signals, the ±5 V rails cross, and the PIB's VBAT_IGN pins land on unconnected igniter pins (C13).
+- The Rogowski reset shares PA12 with the igniter peak-detector reset, at opposite polarity, so the two can never both be armed (C12).
+- The GSE latching-valve pulse needs bench checks: polarity, and pulse width against the valve spec (C11).
 - It's unconfirmed whether the NC valve (valve 2) is rated for steady 12 V. The Q10 drive holds full 12 V on it continuously, which is wrong for a spike-and-hold coil (C10).
-- The Rogowski integrator is unstable and needs a mid-scale offset for its bidirectional output (C5).
+- The Rogowski front end still needs ESD on J7 and its TBD values sized once the coil is characterized (C5).
 - The heaters have no on-orbit hardware cutoff (C9).
 - The SOD-323 OR-ing Schottkys (20 V, 1 A, 200 mW) are marginal for the GSE path (F9).
-- GSE mode back-powers the unpowered flight 3.3 V rail by about 5 mA (S13).
-- The PCB is out of sync with the schematic (29 parity issues, P6).
+- The PCB is well out of sync with the schematic (142 parity issues, P6).
 
 The BOM is not production-ready (no MPNs or capacitor ratings), and `Outputs/` holds gerbers from a different project. Several ICD items need to be brought in line with the schematic (see [ICD Update Actions](#icd-update-actions)).
 
@@ -36,14 +37,15 @@ The BOM is not production-ready (no MPNs or capacitor ratings), and `Outputs/` h
 - Each heater is well under 10 W (TBD).
 - The CDH connector is the vertical (MS) part.
 - Only 2 P/T sensors (tank, frit) are fitted; a third may be added later.
-- The Rogowski readout is bidirectional.
+- Op amps with heavy-ion DSEE test heritage (OP27/OP37 family) are preferred over RRIO parts that lack it. Clamp the outputs to the ADC range instead.
+- Discharge current is a damped ring: 16.26 kA peak, about 24 kHz, about 65 µs long, bidirectional.
 
 | Category | Items |
 |---|---|
-| Critical | 5 (1 optional) |
-| Significant | 12 |
+| Critical | 7 (1 optional, 2 verify) |
+| Significant | 8 |
 | Footprint / Part | 9 |
-| Project setup | 6 |
+| Project setup | 5 |
 | ICD / Block diagram | 9 |
 | Open questions | 2 |
 
@@ -51,28 +53,46 @@ The BOM is not production-ready (no MPNs or capacitor ratings), and `Outputs/` h
 
 ## Critical (safety or function)
 
-### C5 — Rogowski integrator won't work as designed — `OPEN`
-- **Where:** Rogowski sheet, U11 (OP37), C45/R79 = TBD, J7.
+### C5 — Rogowski integrator: shared reset, J7 ESD, value sizing — `OPEN`
+- **Where:** Rogowski sheet (working copy, uncommitted).
+  - The signal chain: J7.1 (MMCX) → R95 (TBD, termination) → C69 (1 µF) → R79 (TBD) → U11.2 (OP27), with C45 (TBD) ∥ R98 (TBD, leak) ∥ Q3/Q4 (BSS138 reset switch) from U11.2 to U11.6.
+  - U11.3 (+) sits at V<sub>REF</sub> = VDDA/2 (R96/R97 10k/10k, C70 1 µF). Supplies are ±5 V.
+  - Reset: `ROGOWSKI_RST` (main-sheet net `/PD_RST`, PA12, shared with J5.2; see C12) → R100 → Q5 (BSS138, R101 gate pull-down). Q5's drain, pulled up to +5 V by R99, drives the Q3/Q4 gates. The integrator is held in reset whenever the GPIO is low or high-Z.
+  - Output: U11.6 → R102 (100 Ω) → clamp D40 (BAT54J, to +3.3V) / D39 (BAT54J, to GND) → R104 (1k) → PA1 with C71 (470 pF). This is matched to the PA0 network (C6).
 - **Problems:**
-  1. The OP37 is decompensated (stable only at a gain of 5 or more). An integrator reaches unity gain at high frequency, so it will oscillate.
-  2. There is no DC feedback path (no resistor across C45) and no reset switch, so the output drifts to a rail. The block diagram shows a reset; the schematic has none.
-  3. The ±5 V rails let the output drive PA1 (ADC) far outside its −0.3 V to VDD+0.3 V limits.
-  4. There is no coil termination resistor and no ESD protection on J7.
-  5. The readout is bidirectional, so the output needs a mid-scale offset.
+  1. **The reset shares PA12 with the igniter peak-detector reset, at opposite polarity** (C12).
+  2. **No ESD protection on J7.1.**
+  3. **R79, C45, R98 and R95 are TBD.** They're waiting on M (Q8).
+  4. *Minor:* The reset net is now active-low (GPIO high = integrate), but it's still named `ROGOWSKI_RST`. The `I_ROGOWSKI` sheet pin and hierarchical label are typed as input; make them output.
 - **Fix:**
-  - Use a unity-gain-stable, rail-to-rail op amp on a single supply (0/3.3 V, or 0/+5 V with a clamp), with GBW ≳ 10 MHz for the 20 µs pulse content. A single supply removes item 3 and the dependence on −5 V.
-  - Reference the non-inverting input to a buffered V<sub>DDA</sub>/2 (≈ 1.65 V, divided from VDDA so it tracks the ADC reference). The output then swings about mid-scale.
-  - Size the coil termination, R79 and C45 so the expected peak fits in about ±1.5 V.
-  - Add a leak resistor or a GPIO-driven reset switch, coil termination, and ESD protection on J7.
-  - The coil isn't characterized yet (Q8). Lay out R79/C45 and the leak resistor as adjustable 0603 footprints, plus a DNP reset-switch footprint.
+  - **Reset:** Give it its own GPIO (C12) and rename it `~{ROGOWSKI_RST}`.
+  - **Firmware sequencing:** Hold reset during power-up (C69 charges with τ ≈ (R79 + R95)·C69). Release it shortly before the shot, then sample a baseline after release. That removes switch leakage × R98, op-amp offset and charge injection (≈ C<sub>gd</sub>·ΔV<sub>g</sub>/C45, a few mV).
+  - **Gain headroom:** size the gain so the expected peak stays within about 0.15–3.15 V, so the D39/D40 clamp only acts on faults.
+  - **J7:** Add ESD/TVS protection at J7.1, ahead of C69. Rate it for the peak coil voltage M × ~2.45 kA/µs.
+- **Value sizing (once M is known):**
+  - **Gain:** V<sub>out,pk</sub> = M · I<sub>pk</sub> / (R79 · C45). For 16.26 kA → 1.5 V, R79 · C45 = M · 16 260 / 1.5.
+  - **Droop:** R98 · C45 and R79 · C69 each ≈ 10 ms. Total droop ≈ T/τ<sub>AC</sub> + T/τ<sub>leak</sub> ≈ 1.3% at T ≈ 65 µs.
+    - Keep R98 ≤ ~100k (OP27 bias current × R98 = a few mV), giving C45 ≥ ~60 nF in C0G.
+    - With a pre-shot baseline, R98 can go to about 1–2 MΩ and C45 to about 5–10 nF.
+    - Firmware droop correction (I ∝ y + (1/τ)∫y dt) would allow shorter time constants.
+  - **C69 (1 µF):** X7R is acceptable. Its bias-driven piezo error is about 10⁻⁴–10⁻³ of the coil signal, and its tolerance only shifts droop by about ±0.1%. Specify 1206 or larger, 25–50 V, AEC-Q200, flexible termination. R79 ≈ 10k gives 10 ms; avoid tantalum.
+  - **R95:**
+    - Start at 50 Ω and keep R95/(2πL<sub>coil</sub>) ≥ 240 kHz (L<sub>coil</sub> ≤ ~33 µH at 50 Ω).
+    - Tune on the bench for no ringing at the coil's self-resonance (≈ ½·√(L/C<sub>coil</sub>)). Keep R79 ≥ 10× R95.
+    - **Size and rating:** set by V<sub>pk</sub> = M × ~2.45 kA/µs, both for working voltage (0603 ≈ 50–75 V, 0805 ≈ 150 V, 1206 ≈ 200 V typical) and for single-pulse energy (≈ V<sub>pk</sub>²/R × 16 µs, about 0.2 mJ at M = 10 nH into 50 Ω). Average power is negligible.
+      - **0603 is fine if M ≲ 20 nH** (V<sub>pk</sub> ≲ 50 V); use an anti-surge type (ERJ-P03 / CRCW-HP class) and check its pulse-load curve.
+      - If layout happens before M is known, use 0805: you can't upsize from an 0603 footprint later.
+      - R79 also sees about the full coil voltage, so the same voltage limits apply to it.
+  - **ADC rate and LT8580 ripple:** The planned rate is 2–4 MSPS (80–160 samples per period). The −5 V LT8580 switches at 846 kHz, which is below Nyquist at both rates, so it appears as an in-band tone that a digital low-pass removes.
+    - Its harmonics alias to 78 kHz (7th) at 2 or 3 MSPS, and to 230 kHz at worst (5th) at 4 MSPS. Prefer 4 MSPS.
+    - The LT8580 free-runs (SYNC = GND), so its tolerance and drift move these aliases. If the bench PA1 noise floor shows the ripple matters, drive SYNC from an HSE-derived MCU timer, e.g. f<sub>sw</sub> = fs × 2/9 ≈ 889 kHz at 4 MSPS (check the SYNC range).
+    - Expected ripple at the output is sub-LSB (≈ 0.3 mV, via the OP27's V− PSRR). Use 1 nF rather than 470 pF in the PA0/PA1 RC if more rejection is needed: −14.6 dB vs −8.6 dB at 846 kHz.
+  - **Bandwidth:** The measured current is a damped ring at about 24 kHz (41 µs period, ~65 µs long). The OP27's 8 MHz GBW gives about 330× loop gain at 24 kHz (≈ 0.3% error), and its 2.8 V/µs slew is well above the ~0.25 V/µs needed.
 
-### C6 — ADC inputs from the ±5 V HV boards are unclamped — `OPTIONAL`
-- **Where:** `ADC_V_DCHG` (J6 → PA0, only D18 PESD5V0S1UL with no series R); `ADC_V_IGN_PK`, `ADC_I_IGN_PK`, `ADC_V_IGN_SUPPLY` (J5, only PESD3V3U1UL).
-- **Risk:** Nominal signals are 0 to <3.3 V. However, the HV-board op amps run on ±5 V, so a fault, overrange, power-sequencing event or HV arc can push an output to a rail, and the ESD diodes are not continuous clamps.
-- **Hardening:** Add a series R plus a low-capacitance Schottky pair to VDDA/GND at each PIB ADC input.
-  - Fast channels (PA0, and PA1 via C5): R ≈ 47–100 Ω with a local reservoir capacitor, so the ADC's short sampling time is still met.
-  - Slow channels (peak-detect, NTC, supply): R ≈ 1k.
-  - Alternatively, clamp the output stages on the HV boards.
+### C6 — Igniter-board ADC inputs are unclamped — `OPTIONAL`
+- **Where:** `ADC_V_IGN_PK`, `ADC_I_IGN_PK`, `ADC_V_IGN_SUPPLY`, `ADC_NTC_IGN` (J5): each has only a PESD3V3U1UL, with no series R.
+- **Risk:** Nominal signals are 0 to <3.3 V. However, the igniter-board op amps run on ±5 V, so a fault, overrange, power-sequencing event or HV arc can push an output to a rail, and the ESD diodes are not continuous clamps.
+- **Hardening:** Use the same scheme as PA0/PA1: series R ≈ 1k plus a BAT54 pair to +3.3V/GND at each input. These are slow channels (peak-detect, NTC, supply), so the delay doesn't matter.
 
 ### C9 — Heaters and BAT branches lack hardware protection / cutoff — `OPEN`
 - **Where:** Main sheet, Q9/Q11 (low-side heater switches on `BAT_HOT`); Valve Driver U1 (LT3065 `SHDN` tied to IN).
@@ -87,7 +107,7 @@ The BOM is not production-ready (no MPNs or capacitor ratings), and `Outputs/` h
   - (b) Either a heater/12 V branch eFuse (~2 A) gated by a hardware-healthy signal, or ICD wording that matches the as-built protection.
 
 ### C10 — Confirm the NC valve is rated for continuous 12 V, not spike-and-hold — `VERIFY`
-- **Where:** Valve Driver sheet. Q10 (IRF7832) is a single low-side switch on J4.6, with the coil to `+12V` (J4.5) and D37 freewheeling across it. Gate drive is `VALVE2_EN_GATED` (via R5) and GSE `OPEN/~CLOSE` (via R47). The valve is non-latching and normally closed.
+- **Where:** Valve Driver sheet. Q10 (IRF7832) is a single low-side switch on J4.6, with the coil to `+12V` (J4.5) and D37 freewheeling across it. Gate drive is `VALVE2_EN_GATED` diode-OR'd with GSE `OPEN/~CLOSE` through D50 (BAT54C), with R6 as the pull-down. The valve is non-latching and normally closed.
 - **Why it matters:** While open, Q10 holds the full `+12V` (about 11.5 V, S15) across the coil, for the whole burn or GSE fill. That's only correct if the coil is rated for continuous 12 V.
   - Some solenoid valves are **spike-and-hold**: 12 V gives a short pull-in spike, and then the voltage drops to a lower holding level.
   - On a spike-and-hold coil, continuous 12 V overheats the coil. In vacuum that heat can only leave by conduction. It also draws several times the needed holding current from the LT3065 (300 mA limit), D11/D36 (F9) and J4.
@@ -96,36 +116,50 @@ The BOM is not production-ready (no MPNs or capacitor ratings), and `Outputs/` h
   - PWM Q10 after pull-in. `VALVE2_EN` (PB5) would need a timer channel. D37 already freewheels the coil during the PWM off-time.
   - Add a series hold resistor bypassed during pull-in.
   - Use a dedicated spike-and-hold driver.
-  - Whichever you pick, the GSE path through R47 is DC-only and needs the same treatment.
+  - Whichever you pick, the GSE path through D50 is DC-only and needs the same treatment.
 
-### C11 — GSE path holds the latching valve at DC 12 V instead of pulsing it — `OPEN`
-- **Where:** Valve Driver sheet.
-  - U9 (74LVC2G126, on `3.3V_EGSE`, OE from the R46/R45 UVLO) drives U3 (MIC4424, valve 3, J4.3/J4.4) directly.
-  - U9.3 → `Net-(U3-INA)` follows GSE OPEN. This is the **open path**.
-  - U9.6 → `Net-(U3-INB)` follows the inverted OPEN from U8, which is the close path.
-  - Each input node also has R42/R41 (100k to GND) and R10/R11 (1k from flight U15).
-- **Problem:** U9's outputs are DC levels, so while GSE commands OPEN the MIC4424 holds the latching coil at a continuous 12 V. When it commands CLOSE, the coil is held in the opposite polarity. A latching valve only needs a short pulse. Continuous drive overheats the coil and draws continuous GSE current through D36 (F9).
-- **Fix:** Add HF-pass (series coupling) capacitors between U9 and the U3 inputs, so each GSE edge produces a pulse that decays through the node's pull-down.
-  - **Open path first:** a series C between U9.3 and `Net-(U3-INA)`.
-  - **Close path too:** the same treatment on U9.6 → `Net-(U3-INB)`. Otherwise the close side is still held at DC.
-- **Sizing:** The pulse ends when the input decays below the MIC4424 V<sub>IH</sub> (2.4 V), so t<sub>pulse</sub> ≈ RC · ln(3.3 / 2.4) ≈ 0.32 · RC. R is whatever the node sees to ground:
-  - As built in GSE mode, the dominant load is R10/R11 (1k) into the unpowered, clamped U15. A 50 ms pulse would need about 150 µF, which is impractical.
-  - Design this together with S13. With R10/R11 raised to 10k, R ≈ 9.1k and C ≈ 17 µF for 50 ms. With the flight side isolated (an I<sub>off</sub> buffer), R ≈ 100k (R41/R42) and C ≈ 1.6 µF.
-  - Set the actual pulse width from the latching valve datasheet (Q3), with margin at cold and at the lowest `+12V`.
-- **Other checks:**
-  - The falling edge drives the input to about −3.3 V. Check the MIC4424 negative input rating, or add a small Schottky clamp to GND on each input.
-  - Enabling U9 (GSE power-up with OPEN already high) creates an edge, and therefore a pulse. Confirm that is acceptable.
-  - If the pulse width must be tight across temperature and capacitor tolerance, use a one-shot (74LVC1G123-class) instead of the RC.
-  - Flight drive through R10/R11 stays DC-coupled. The coupling capacitor sits only in U9's output path.
+### C11 — GSE latching-valve pulse circuit: pulse width and polarity checks — `VERIFY`
+- **Where:** Valve Driver sheet (working copy).
+  - **Input:** J1.2 `/OPEN/~{CLOSE}` (D5 ESD) → R46 (1k) → R45 (100k to GND) → U18 gate 2 (74LVC2G14) → ~OPEN. Gate 1 re-inverts that to a buffered OPEN.
+  - **OPEN edge:** OPEN → C73 (1 µF) → RC node (R47 100k, D41 clamp) → U9 2A (74LVC2G17) → D47 (BAT54C) → U3 **INB**, shared with flight `VALVE3_H`.
+  - **CLOSE edge:** ~OPEN → C74 (1 µF) → RC node (R107 100k, D42 clamp) → U9 1A → D48 → U3 **INA** (`VALVE3_L`).
+- **Checks:**
+  1. **Polarity:** confirm on the bench that INB (`VALVE3_H`) drives the valve open, for both GSE and flight.
+  2. **Pulse width:** t ≈ τ·ln(3.3/V<sub>T−</sub>), with τ = 100 ms and V<sub>T−</sub> the 74LVC2G17's negative-going threshold (datasheet). Check this against the latching valve's required pulse width (Q3), with X7R tolerance. BAT54J leakage at the RC nodes shortens the pulse when hot, which is negligible at room-temperature GSE use.
+  3. **No UVLO gating:** at GSE power-up, U18's ~OPEN output rises with `3.3V_EGSE` and couples through C74, so expect a CLOSE pulse at reduced `+12V`. GSE procedure: send an explicit CLOSE once powered, and space commands ≥ ~2× the pulse width. Overlapping pulses brake the coil, which is safe.
+  4. **BAT54C symbol:** confirm pins 1/2 are the anodes and pin 3 the common cathode (the symbol's pins are unnamed).
+
+### C12 — Rogowski reset and igniter peak-detector reset share PA12 at opposite polarity — `OPEN`
+- **Where:** Main-sheet net `/PD_RST` (U4.46 PA12) goes to J5.2 and to R100 (Rogowski sheet).
+  - On the igniter board, J3.12 `IGNITER_RST` drives the gates of the BSS123 Q2/Q4, which short the peak-detect caps C34/C35. That reset is **active-high**.
+  - The Rogowski reset (Q5 → Q3/Q4) is **active-low**: GPIO low or high-Z holds the integrator in reset.
+- **Problem:**
+  - GPIO high: the integrator runs, but the igniter peak detectors are held discharged.
+  - GPIO low: the peak detectors are armed, but the integrator is held in reset.
+  - No state arms both, so the igniter peaks and the discharge current can't be captured in the same shot. The two resets also can't be timed independently.
+- **Fix:** Move the Rogowski reset to its own GPIO: PA2, PA10 or PA11 are free; avoid PC15.
+  - Keep a pull-down on `/PD_RST` (e.g. 100k at J5.2). Today the only DC path to GND is through R100/R101, so after the split the igniter BSS123 gates would float while the MCU is in reset.
+
+### C13 — PIB J5 and igniter board J3 pinouts are incompatible — `OPEN`
+- **Where:** PIB J5 (53398-1371) ↔ igniter board J3 (53261-1371, `200_80 Igniter Supply Board`).
+- **Problem:** A 1:1 mapping lines up nothing. The mirrored mapping (PIB pin n ↔ igniter pin 14 − n) lines up the signals (PULSE, RST, NTC, I_PK, V_PK, V_SUPPLY, GNDs), but then:
+
+  | PIB J5 | PIB net | Igniter J3 | Igniter net |
+  |---|---|---|---|
+  | 7 | **+5V** | 7 | **−5V** |
+  | 8 | **−5V** | 6 | **+5V** |
+  | 12, 13 | VBAT_IGN | 2, 1 | unconnected |
+
+  - **The ±5 V rails cross**, shorting the PIB +5 V into the igniter −5 V and vice versa. That's damaging on first power-up.
+  - The PIB's ADM1270-protected VBAT_IGN branch feeds nothing. The igniter flyback (LT8301, VIN/EN on 5V) runs from J3.6 instead, which would load the PIB +5 V rail.
+- **Harness:** Off-the-shelf PicoBlade double-ended assemblies are **mirrored** (pin n ↔ N + 1 − n, per the supplier drawing; confirm for the exact part bought). So the crossing above is what a standard cable produces.
+- **Fix:**
+  - **Swap PIB J5.7 and J5.8** to J5.7 = −5V and J5.8 = +5V. That matches igniter J3.7 (−5V) and J3.6 (+5V) through a mirrored cable.
+  - Resolve VBAT_IGN. Either route it to igniter J3.1/J3.2 and run the flyback from it (the ADM1270 eFuse branch, as the PIB intends), or drop the PIB VBAT_IGN branch and check the PIB +5 V budget for the igniter flyback load.
 
 ---
 
 ## Significant
-
-### S1 — CDH IGNITER pin is the actual gated igniter drive — `OPEN`
-- `/IGNITER_PULSE_GATED` drives J5.1 (igniter board) and J3.22 through only R29 (100 Ω). A short in the CDH harness loads the real igniter drive, and the 74HC08 output would exceed its 25 mA rating. This contradicts the block diagram note ("not the same net").
-- J3.22–24 also have no ESD diodes, unlike every other J3 signal.
-- **Fix (agreed):** Put a single-gate 3.3 V buffer (74LVC1G125/1G17 class) between `IGNITER_PULSE_GATED` and R29, with its ESD diode on the J3 side. Add ESD protection on J3.22–24.
 
 ### S4 — DPT harness pin order mismatch — `OPEN`
 - PIB J9/J10 (PicoBlade 53398-0671): 1 3V3, 2 GND, 3 SCK, 4 DOUT, 5 DIN, 6 MCLK.
@@ -144,30 +178,6 @@ The BOM is not production-ready (no MPNs or capacitor ratings), and `Outputs/` h
 - R51 and R64 (0 Ω) connect FAULT to ENABLE, so a fault pulls ENABLE low. The result is effectively auto-retry rather than latch-off, and the MCU can't observe FAULT.
 - **Confirm this is intended.** Otherwise route FAULT to a GPIO.
 
-### S8 — SWD header has no target voltage reference — `OPEN`
-- J8 has no 3.3 V pin, so the ST-Link can't sense the target voltage. Add VTref, or move to a Tag-Connect TC2030 footprint.
-
-### S10 — Slow/unbuffered logic in the GSE path — `OPEN`
-- U8 (74LVC1GU04) is an unbuffered inverter fed by an RC input (R43/R44).
-- U9's OE sits on a ~2.26 V divider (R46/R45) with no hysteresis.
-- **Fix:** Use Schmitt-input parts (e.g. 74LVC1G14, 74LVC2G17-style) on these slow nodes.
-
-### S11 — PIB thermistors missing — `OPEN`
-- The ICD lists 2 PIB thermistors. `/ADC_NTC_PIB` (U4.25, PB1) connects to nothing, and no thermistor footprints are present.
-
-### S13 — GSE mode back-powers the unpowered flight 3.3 V rail — `OPEN`
-- **Where:** Valve Driver sheet.
-  - U9 drives U3 INA/INB directly. Those nodes are also driven through R10/R11 (1k) from U15.
-  - GSE OPEN drives the Q10 gate through R47 (100 Ω), and the flight side drives it through R5 (1k) from U14.
-- **Problem:** In GSE-only mode, +3.3V is unpowered. Current flows from the GSE-side drivers through R10/R11 (≈ 2.7 mA) and R47→R5 (≈ 2.5 mA) into the 74HC08 output clamp diodes, then into the flight 3.3 V rail. That's about 5 mA in total.
-  - It can lift the rail to a partial voltage and half-power the STM32, MAX823 and DPT parts.
-  - R88 holds ARM low, so the gated outputs stay low unless the MCU starts and actively drives ARM.
-- **Fix options:**
-  - Raise R10/R11/R12/R38 to about 10k. The MIC4424 input current is negligible.
-  - Scale the Q10 pair up together (e.g. R5 = 10k, R47 = 1k, R6 → 1M). That keeps 10:1 GSE dominance with the flight gate at about 3.2 V, and cuts back-power to about 0.25 mA.
-  - Or buffer the flight outputs with an I<sub>off</sub> part (74LVC/AUP) that goes high-Z when unpowered.
-- The choice sets the RC in C11, so design the two together. Measure the flight 3.3 V rail in GSE-only mode on the bench.
-
 ### S14 — Non-ARM 74HC08 inputs float at reset — `OPTIONAL`
 - R88 holds `/ARM/~{SAFE}` low, so all eight gated outputs are low during reset. The other inputs (`IGNITER_EN`, `DISCHARGE_EN`, `IGNITER_PULSE`, `VALVE1_L/H`, `VALVE2_EN`, `VALVE3_L/H`) float while the STM32 pins are high-Z.
 - That's safe, but floating HC inputs can draw extra supply current or oscillate. Add 100k pull-downs if layout space allows.
@@ -179,6 +189,10 @@ The BOM is not production-ready (no MPNs or capacitor ratings), and `Outputs/` h
 ### S16 — DPT MCLK timer not configured in firmware — `OPEN` (firmware)
 - `/DPT_MCLK` is driven from PC7, and `firmware.ioc` assigns PC7 to `TIM3_CH2` with TIM3 clocked at 64 MHz (HSE 8 MHz via PLL). The prescaler, period and OC mode are at CubeMX defaults: OC "Frozen" doesn't toggle the pin, and the default period gives about 488 Hz.
 - **Fix:** Either set OC mode to Toggle with ARR = 976 (32.75 kHz), or use PWM mode 1 with ARR = 1952 and CCR = 976 (32.77 kHz). Both are within the MS5540C's 30–35 kHz range.
+
+### S17 — J5.2 lost its ESD diode — `OPEN`
+- D27 (PESD3V3U1UL) is still on the old `IGNITER_RST` label, which now connects to nothing (ERC isolated label). The live J5.2 net `/PD_RST` has no ESD protection, unlike the other J5 signals.
+- **Fix:** Move D27 to `/PD_RST` and delete the stale label.
 
 ---
 
@@ -209,13 +223,13 @@ Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, 
 - PicoBlade (J2, J4, J5, J9, J10, J11, J13, J15) is friction-lock only, which is a vibration risk. The DPT board already uses latching Pico-Lock. Consider Pico-Lock, CLIK-Mate, or Gecko.
 
 ### F8 — Flight population — `OPEN`
-- SW1 (B3F-1000 through-hole tactile switch) and J8 (debug header): mark as DNP for flight units.
-- **JP1 (`WD_ENABLE`) must be bridged for flight.** It is a normally-open solder jumper between the MAX823 ~RESET output and NRST. While open, the MAX823 watchdog, power-on/brown-out supervision and the SW1 manual reset never reach the MCU. During development, reset through J8.5 or the STM32's internal POR. Keep R77 (the NRST pull-up while JP1 is open). Add JP1 to the assembly notes and the flight build checklist.
+- SW1 (SKRKAHE020 tactile switch) and J8 (debug header): decide flight population. A DNP SW1 on flight units is typical.
+- **JP1 (`WD_ENABLE`) must be bridged for flight.** It is a normally-open solder jumper between `/WDG_IN` (PB2, R76) and MAX823 WDI (U12.4). While open, WDI floats and the watchdog is disabled; MAX823 POR supervision and the SW1 reset still reach NRST. Add it to the assembly notes and the flight build checklist.
 
 ### F9 — OR-ing / flyback Schottky ratings (NSVR1020MW2T1G) — `VERIFY`
 - **Parts:** D11, D36, D37 are onsemi NSVR1020MW2T1G: 20 V V<sub>R</sub>, 1 A, V<sub>F</sub> 0.54 V max at 1 A, **200 mW P<sub>D</sub>**, SOD-323, AEC-Q101. The symbol `Datasheet` field is empty.
 - **D11 (LT3065 → `+12V`):** I<sub>MAX</sub> caps the current at 300 mA, giving ≈ 0.12 W. In GSE-only mode its V<sub>R</sub> equals `12V_GSE`. D10 (SMF14A) clamps GSE transients at roughly 23 V, which **exceeds the 20 V V<sub>R</sub>**.
-- **D36 (`12V_GSE` → `+12V`):** Carries the NC valve's holding current continuously during a fill, plus the latching-valve current (continuous until C11 is fixed). At about 0.4 A, V<sub>F</sub> × I ≈ 0.18 W, which is at the 200 mW limit.
+- **D36 (`12V_GSE` → `+12V`):** Carries the NC valve's holding current continuously during a fill, plus ~100 ms latching-valve pulses. At about 0.4 A, V<sub>F</sub> × I ≈ 0.18 W, which is at the 200 mW limit.
 - **D37 (NC valve flyback):** Conducts the coil current briefly at turn-off. It's OK if the coil current is ≤ 1 A. Valve closing is slow with a plain freewheel diode; add a series zener if closing time matters.
 - **Recommendation:** Once the coil currents are known (Q3), use a 2–3 A, 30–40 V Schottky in SOD-123FL or SMA for D11/D36. Give them copper for heat in vacuum.
 
@@ -227,28 +241,22 @@ Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, 
 ## Project Setup
 
 ### P1 — `Outputs/` contains another project's gerbers — `OPEN`
-- `PIB-job.gbrjob` reports the "lm5022-flyback" project (KiCad 9.0.6, 2-layer, 82.05 × 44.85 mm). The PIB is a 4-layer board. `lm5022-flyback.zip` is also present. Delete and regenerate before any fab order. Check `bom/ibom.html` too.
-
-### P2 — Broken symbol library links — `OPEN`
-- U1 uses `LT3065EDDPBF:LT3065EDDPBF`, and U2/U3 use `MIC4424YM:MIC4424YM`. Those nicknames aren't in the project's `sym-lib-table`. The symbols exist in `0_PAY_Symbol_Library`; remap them there.
+- `PIB-job.gbrjob` still reports the "lm5022-flyback" project (2-layer). The PIB is a 4-layer board. Delete `Outputs/` and regenerate before any fab order. Check `bom/ibom.html` too.
 
 ### P3 — Empty title blocks — `OPEN`
 - None of the 4 sheets has a title, revision, date or company.
 
 ### P4 — ERC cleanup — `OPEN`
-- With stock libraries loaded: 17 messages (16 errors, 1 warning):
+- With stock libraries loaded: 16 messages:
   - 11× `power_pin_not_driven`: needs PWR_FLAGs; also LT3065 PWRGD is typed as a power input (S5).
-  - 5× `pin_not_connected`: U4 PA2, PA10, PA11, PC15, PD2. Add no-connect flags or use them.
-  - 1× isolated label `ADC_NTC_PIB` (S11).
+  - 4× `pin_not_connected`: U4 PA2, PA10, PA11, PC15. Add no-connect flags or use them.
+  - 1× isolated label `IGNITER_RST` (S17).
 
 ### P5 — KiCad version — `OPEN`
 - The files are KiCad 10 format (`version 20260306`), so the whole team needs KiCad 10.
 
 ### P6 — PCB out of sync with schematic — `OPEN`
-- DRC with schematic parity reports **29 issues**:
-  - 11 missing footprints: D11, D36, D37, R88–R94, JP1.
-  - Value mismatches: C26/C27 (PCB 27 pF, schematic 12 pF), R47 (PCB 1k, schematic 100 Ω).
-  - Net conflicts: U1 OUT / C6 / C22 / R18 on `Net-(D11-A)`, Q10 drain / J4.6 on `Net-(D37-A)`, and PA2 unconnected.
+- DRC with schematic parity reports **142 footprint issues**, covering the diode-OR / flyback / pull-down / JP1 parts, the Rogowski, PA0 and GSE pulse rework, the IGNITER buffer, TH1, J8 VTref and the removed parts.
 - **Fix:** Run Update PCB from Schematic (F8), place the new parts and re-route. D11/D36 need copper for heat (F9).
 
 ---
@@ -262,21 +270,22 @@ Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, 
 | D3 | 5 V rail | "TBD" | Required: −5 V supply, LG16, HV boards, integrator | `ICD` |
 | D4 | P/T sensors | 3 (frit, tank refrigerant, tank propellant) | 2 DPT channels (tank, frit) | `ICD` — list 2, noting a possible future third |
 | D5 | Igniter channels | Integral V, integral I, total pulse energy | J5: peak V, peak I, supply V | `ICD` — trim to as-built channels |
-| D6 | GSE architecture | Separate H-bridge + 12 V NMOS, diode-OR'd, "completely separated" | Shares flight drivers. `+12V` diode-OR'd from LT3065 and `12V_GSE` (D11/D36). The Q10 gate uses a 10:1 resistor ratio (R47 100 Ω vs R5 1k), so the GSE line overrides the flight command whenever it is driven; J1.2 sits at ≈ 3.2 V when flight opens valve 2 with GSE unmated | `ICD` |
-| D7 | Rogowski reset | Block diagram shows reset input | None (C5) | `OPEN` |
-| D8 | IGNITER vs Igniter_Pulse | Separate nets | Same net (S1) | `OPEN` — buffer to be added (S1) |
+| D6 | GSE architecture | Separate H-bridge + 12 V NMOS, diode-OR'd, "completely separated" | Shares flight drivers. `+12V` diode-OR'd from LT3065 and `12V_GSE` (D11/D36). The Q10 gate is diode-OR'd (D50, BAT54C) between GSE and flight, so either can open valve 2 and neither can force it closed. The latching valve gets an RC-timed pulse (~100 ms) on each GSE OPEN/CLOSE edge, diode-OR'd with flight (D47/D48), so either side can drive a MIC4424 input high. Conflicting commands put both inputs high, which brakes the coil | `ICD` |
+| D7 | Rogowski reset | Block diagram shows reset input | Q3/Q4 reset switch with +5 V level shifter (Q5), wired to PA12, which it shares with the igniter peak-detector reset at opposite polarity (C12) | `OPEN` |
 | D9 | BAT OCP / MCU-healthy gating | Claimed | Not implemented (C9) | `OPEN` |
+| D10 | PIB thermistors | 2 | 1 (TH1 on PB1) | `ICD` — change to 1 |
 
 ### ICD Update Actions
 
 Checklist of ICD edits the review has generated. Tick these off as the ICD is revised.
 
-- [ ] **GSE section and Table 3 (D2, D6):** OPEN/~CLOSE is a 3.3 V digital logic line on J1.2; J1.1 = 12V_GSE; J1.3/4 = GND. Remove the "both pairs of 12V" wording and the 14/15 pin numbers. Describe the as-built scheme: shared valve drivers, `+12V` diode-OR'd from LT3065 and `12V_GSE`, the GSE line overriding the flight NC-valve command while driven, and the latching valve pulsed from GSE edges (C11). Replace "diode OR'd … completely separated".
+- [ ] **GSE section and Table 3 (D2, D6):** OPEN/~CLOSE is a 3.3 V digital logic line on J1.2; J1.1 = 12V_GSE; J1.3/4 = GND. Remove the "both pairs of 12V" wording and the 14/15 pin numbers. Describe the as-built scheme: shared valve drivers, `+12V` diode-OR'd from LT3065 and `12V_GSE`, the NC valve diode-OR'd between flight and GSE (either opens it, neither forces it closed), and the latching valve pulsed (~100 ms) on each GSE OPEN/CLOSE edge (C11). Replace "diode OR'd … completely separated".
 - [ ] **Electrical connectors (D1):** G125-MS12605M2P (vertical), not MH12605M4P.
 - [ ] **Sensor channels (D4, D5):** 2 P/T sensors (tank, frit; third optional/future). Igniter channels trimmed to peak V, peak I, supply V (plus whatever is derived in firmware).
 - [ ] **Power interfaces (D3):** 5 V is required, not TBD (−5 V converter, LG16 flow sensor, HV board op amps, integrator).
 - [ ] **BAT protection paragraph (C9, D9):** match the as-built protection (per-HV-branch ADM1270 eFuses; heater and 12 V branch protection once decided). State that launch inhibits are provided by EPS under UNP NS requirements.
-- [ ] **Data interfaces (S1, D8):** IGNITER is a buffered copy of the gated igniter pulse.
+- [ ] **Data interfaces:** IGNITER (J3.22) is a buffered copy (U8) of the gated igniter pulse.
+- [ ] **Thermistors (D10):** 1 PIB thermistor, not 2.
 
 ---
 
@@ -285,7 +294,7 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
 | ID | Question | Known so far |
 |---|---|---|
 | Q3 | Valve part numbers and coil data:<br>• Is the NC valve rated for continuous 12 V, or is it spike-and-hold (C10)?<br>• What is each valve's coil current?<br>• What pulse width does the latching valve need?<br>These set the C11 pulse RC, the F9 diode sizing, D37's rating, the continuous LT3065 load (300 mA limit) and J4 pin current. | Library has LHLA1252x11H and LHDB0442245D. The NC valve is non-latching and ran on plain 12 V DC on the bench. |
-| Q8 | Rogowski: peak current and pulse width? | Not characterized yet; readout is bidirectional (C5). |
+| Q8 | Rogowski coil sensitivity: mutual inductance, in V per A/µs? This is needed to size the coil termination, R79 and C45 for about ±1.5 V full scale (C5). | Discharge current measured 2025-09-03: 16.26 kA peak, damped ring at about 24 kHz (41 µs period), about 3 half-cycles over ~65 µs, bidirectional. |
 
 ---
 
@@ -298,11 +307,19 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
 - **ARM/SAFE:** R88 pull-down holds all eight 74HC08 gated outputs low during reset and watchdog reset.
 - **GSE power path:**
   - D11/D36 diode-OR into `+12V`. The LT3065 loop (C6, C22, R18) stays on the regulator side.
-  - `12V_GSE` (D10, R46/R45, U6) is on the source side of D36, so flight power can't back-feed the GSE UVLO or EGSE pin.
-- **Q10 gate:** In every valid flight/GSE state the gate is ≥ 3.0 V (on) or ≤ 0.3 V (off), never in the 1.35–2.35 V threshold band. IRF7832 Fig. 3 shows tens of A typical at about 3 V, so 3.3 V-class drive is adequate for the heater and valve FETs.
+  - `12V_GSE` (D10, U6) is on the source side of D36, so flight power can't back-feed the EGSE regulator or the EGSE pin.
+- **Q10 gate:** D50 (BAT54C) diode-ORs flight and GSE (GSE anode on `EGSE_OPEN_F`, behind R46), through R110 (100 Ω), giving ≈ 3.1 V from either side; R6 pulls the gate off to ≈ 0 V, never in the 1.35–2.35 V threshold band. Neither side can back-power the other. IRF7832 Fig. 3 shows tens of A typical at about 3 V, so 3.3 V-class drive is adequate for the heater and valve FETs.
 - **D37:** NC-valve flyback diode, oriented correctly.
+- **PA0/PA1 front ends:** Each channel has 100 Ω (R106 / R102) → BAT54J pair to +3.3V/GND (D43/D44, D39/D40) → 1k (R105 / R104) → pin with 470 pF (C72 / C71). Orientation is correct, and the matched RCs (f<sub>c</sub> ≈ 339 kHz, ≈ 0.47 µs, −0.02 dB / −4° at 24 kHz) keep the V×I timing aligned. Injection in a fault is ≪ 0.1 mA.
+- **GSE pulse circuit:** J1.2 is isolated by R46 (1k) with R45 pull-down. U18 buffers both phases, so no RC cap loads the GSE line. U18 (74LVC2G14) and U9 (74LVC2G17) are Schmitt parts with I<sub>off</sub>. D41/D42 clamp the RC nodes to GND (orientation correct). D47/D48 (BAT54C) diode-OR flight and GSE into U3 INA/INB with R41/R42 pull-downs, so there's no back-power in either direction on valve 3. U9 and U18 are decoupled (C31, C75).
+- **IGNITER to CDH:** U8 (74AHC1G125, OE tied to GND, decoupled by C77) buffers `IGNITER_PULSE_GATED` onto J3.22 through R29.
+- **PIB thermistor:** TH1 10k NTC / R109 10k from VDDA / C76 100 nF on PB1 gives ≈ VDDA/2 at 25 °C, ratiometric with the ADC reference.
+- **J8 / reset:** J8.5 = +3.3V VTref through R108 (1k), which is short-protected. MAX823 ~RESET drives NRST directly (R77 pull-up), so SW1 is always a hardware reset; use a manual connect-under-reset for recovery. JP1 in the WDI line disables only the watchdog.
+- **J3 ESD:** J3.22–24 are protected by D45/D46/D49 (PESD3V3U1UL) on the connector side of R29/R30/R31.
+- **Symbol libraries:** U1/U2/U3 come from `0_PAY_Symbol_Library`, which is in the project's `sym-lib-table`.
+- **Valve 1 (U2):** U15 drives INA/INB directly, with R39/R40 pull-downs (no GSE path).
 - **DPT mux:** R89–R94 pull-downs keep the deselected sensor's SCK/DIN and the unselected DOUT input defined.
-- **J3:** pinout matches ICD Table 2. GSE OPEN/~CLOSE input protection (D5 PESD3V3U1UL, R43/R44, LVC logic with I<sub>off</sub>) suits 3.3 V logic.
+- **J3:** pinout matches ICD Table 2. GSE OPEN/~CLOSE input protection (D5 PESD3V3U1UL, R46 1k series, R45 pull-down, LVC Schmitt logic with I<sub>off</sub>) suits 3.3 V logic.
 - **LG16 flow sensor J15:** pinout (1 SDA, 2 SCL, 3 VDD, 4 GND, 5 NC), 5 V supply and 3.3 V I²C all match the datasheet. Sensor operating range is +10…+50 °C.
 - **LT8580 −5 V:** R75 60.4k → −5.03 V. D1 orientation is correct.
 - **LT3065 (U1):**
