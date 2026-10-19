@@ -1480,6 +1480,172 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Device:D_Schottky"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "D"
+				(at 0 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "D_Schottky"
+				(at 0 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Schottky diode"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "diode Schottky"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "D_Schottky_0_1"
+				(polyline
+					(pts
+						(xy -1.905 0.635) (xy -1.905 1.27) (xy -1.27 1.27) (xy -1.27 -1.27) (xy -0.635 -1.27) (xy -0.635 -0.635)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 1.27) (xy 1.27 -1.27) (xy -1.27 0) (xy 1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 0) (xy -1.27 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "D_Schottky_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:R"
 			(pin_numbers
 				(hide yes)
@@ -2520,6 +2686,12 @@
 		(uuid "1ae071f8-59e3-4b0d-8a52-f531829cc232")
 	)
 	(junction
+		(at 114.3 22.86)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1c0e170b-6990-44ac-a2f3-642afea2052d")
+	)
+	(junction
 		(at 125.73 83.82)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2536,6 +2708,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "288d6d9e-e756-492d-9862-8f2c246ce55f")
+	)
+	(junction
+		(at 88.9 22.86)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "367e7a80-9350-4fc1-b193-4f86dd536d75")
 	)
 	(junction
 		(at 171.45 36.83)
@@ -2622,12 +2800,6 @@
 		(uuid "98c0f590-83b0-48fe-9118-63a7e19a2d19")
 	)
 	(junction
-		(at 88.9 22.86)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "a952dfaa-2670-40c9-ae3c-632fc6ea85f3")
-	)
-	(junction
 		(at 161.29 44.45)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2644,6 +2816,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "b3fbdea8-6996-4a70-98ce-15786f6da0f7")
+	)
+	(junction
+		(at 213.36 95.25)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "bcf098f5-50a5-4c0e-beb1-8a82ec8163e5")
 	)
 	(junction
 		(at 46.99 38.1)
@@ -2668,6 +2846,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c48d9d16-3bda-42ea-86a7-0f1e81f91e4d")
+	)
+	(junction
+		(at 213.36 102.87)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "c617ffc6-a594-4a01-9daa-87cc9c9a549e")
 	)
 	(junction
 		(at 68.58 38.1)
@@ -2755,7 +2939,7 @@
 	)
 	(wire
 		(pts
-			(xy 212.09 102.87) (xy 220.98 102.87)
+			(xy 212.09 102.87) (xy 213.36 102.87)
 		)
 		(stroke
 			(width 0)
@@ -2925,6 +3109,26 @@
 	)
 	(wire
 		(pts
+			(xy 105.41 45.72) (xy 114.3 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "30dbc677-8757-47ff-8198-d1e8380deb76")
+	)
+	(wire
+		(pts
+			(xy 88.9 22.86) (xy 97.79 22.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "32d7ce79-cde3-45b3-a428-3809c79cec1f")
+	)
+	(wire
+		(pts
 			(xy 62.23 168.91) (xy 62.23 175.26)
 		)
 		(stroke
@@ -3055,6 +3259,16 @@
 	)
 	(wire
 		(pts
+			(xy 213.36 102.87) (xy 220.98 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "54f97786-227e-49fa-9708-44cee71e7eae")
+	)
+	(wire
+		(pts
 			(xy 156.21 50.8) (xy 156.21 58.42)
 		)
 		(stroke
@@ -3165,6 +3379,16 @@
 	)
 	(wire
 		(pts
+			(xy 105.41 22.86) (xy 114.3 22.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "70a48e71-a40b-47fa-87b6-4a728245c310")
+	)
+	(wire
+		(pts
 			(xy 161.29 36.83) (xy 171.45 36.83)
 		)
 		(stroke
@@ -3245,13 +3469,23 @@
 	)
 	(wire
 		(pts
-			(xy 218.44 95.25) (xy 204.47 95.25)
+			(xy 218.44 95.25) (xy 213.36 95.25)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "8adbea71-a35e-40f9-bf84-2d052352c77c")
+	)
+	(wire
+		(pts
+			(xy 87.63 45.72) (xy 97.79 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8caf4602-66ff-4eed-9958-5f1bb83435f1")
 	)
 	(wire
 		(pts
@@ -3402,6 +3636,16 @@
 			(type default)
 		)
 		(uuid "a6c4b234-452a-451b-88a0-7234d0e65082")
+	)
+	(wire
+		(pts
+			(xy 213.36 95.25) (xy 204.47 95.25)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a6d247a6-ea07-41eb-b7fe-b4d90b0db63b")
 	)
 	(wire
 		(pts
@@ -3642,6 +3886,16 @@
 			(type default)
 		)
 		(uuid "e1208dda-798e-43bf-bf4d-ec2d21caebe2")
+	)
+	(wire
+		(pts
+			(xy 114.3 45.72) (xy 114.3 22.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e66b424a-6939-460b-83d0-4a5f68b815df")
 	)
 	(wire
 		(pts
@@ -3930,6 +4184,86 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 101.6 22.86 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0774b998-768d-410c-a9e0-6cee52ccc6ff")
+		(property "Reference" "D11"
+			(at 101.9175 16.51 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "NSVR1020MW2T1G"
+			(at 101.9175 19.05 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-323"
+			(at 101.6 22.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 101.6 22.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Schottky diode"
+			(at 101.6 22.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "7d4eeadc-d356-4bd9-abf3-0dd12ca498df")
+		)
+		(pin "1"
+			(uuid "923d6de2-59b6-4ad5-ab5a-f4f7e9d1e8c2")
+		)
+		(instances
+			(project "PIB"
+				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08/a3e2437a-f450-49da-ac0f-e1add7c59a42"
+					(reference "D11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 76.2 34.29 0)
 		(mirror y)
@@ -4030,7 +4364,7 @@
 				)
 			)
 		)
-		(property "Value" "1K"
+		(property "Value" "100R"
 			(at 186.69 116.84 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4479,6 +4813,84 @@
 			(project "PIB"
 				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08/a3e2437a-f450-49da-ac0f-e1add7c59a42"
 					(reference "C7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+12V")
+		(at 114.3 22.86 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "24ced3fd-d4b6-4e40-ad6f-6c01f97b79d3")
+		(property "Reference" "#PWR014"
+			(at 114.3 26.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+12V"
+			(at 114.3 17.78 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 114.3 22.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 114.3 22.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+12V\""
+			(at 114.3 22.86 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "d0043de4-0a19-4f3e-9cdd-a3ca31526484")
+		)
+		(instances
+			(project "PIB"
+				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08/a3e2437a-f450-49da-ac0f-e1add7c59a42"
+					(reference "#PWR014")
 					(unit 1)
 				)
 			)
@@ -4990,84 +5402,6 @@
 			(project "PIB"
 				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08/a3e2437a-f450-49da-ac0f-e1add7c59a42"
 					(reference "C68")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+12V")
-		(at 88.9 22.86 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "3cd86928-f2b2-4be2-9ae7-954a78c29478")
-		(property "Reference" "#PWR014"
-			(at 88.9 26.67 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "+12V"
-			(at 88.9 17.78 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 88.9 22.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 88.9 22.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+12V\""
-			(at 88.9 22.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "21ac6617-8754-40d5-bc87-8b379f13c385")
-		)
-		(instances
-			(project "PIB"
-				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08/a3e2437a-f450-49da-ac0f-e1add7c59a42"
-					(reference "#PWR014")
 					(unit 1)
 				)
 			)
@@ -6937,6 +7271,84 @@
 	)
 	(symbol
 		(lib_id "power:+12V")
+		(at 87.63 45.72 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "86035d7b-e3f9-4911-8eef-5dba2607393f")
+		(property "Reference" "#PWR0152"
+			(at 87.63 49.53 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "12V_GSE"
+			(at 87.63 40.64 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 87.63 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 87.63 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+12V\""
+			(at 87.63 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "f174ccd6-a1c2-40eb-b734-4eee84837fb4")
+		)
+		(instances
+			(project "PIB"
+				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08/a3e2437a-f450-49da-ac0f-e1add7c59a42"
+					(reference "#PWR0152")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+12V")
 		(at 17.78 107.95 0)
 		(unit 1)
 		(body_style 1)
@@ -7338,6 +7750,86 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 101.6 45.72 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a8529ccb-ecf8-48e1-8106-b53bdd5abaf1")
+		(property "Reference" "D36"
+			(at 101.9175 39.37 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "NSVR1020MW2T1G"
+			(at 101.9175 41.91 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-323"
+			(at 101.6 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 101.6 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Schottky diode"
+			(at 101.6 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "981fbc26-8e2b-4573-9831-6a0edea61cc5")
+		)
+		(pin "1"
+			(uuid "e9b184ff-7923-4915-bcea-94be70186748")
+		)
+		(instances
+			(project "PIB"
+				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08/a3e2437a-f450-49da-ac0f-e1add7c59a42"
+					(reference "D36")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "74xGxx:74LVC1GU04DRL")
 		(at 58.42 134.62 0)
 		(unit 1)
@@ -7501,6 +7993,88 @@
 			(project "PIB"
 				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08/a3e2437a-f450-49da-ac0f-e1add7c59a42"
 					(reference "R10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 213.36 99.06 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "af125fd7-f331-4cff-b643-d1ce3bb82d43")
+		(property "Reference" "D37"
+			(at 215.9 97.4724 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "NSVR1020MW2T1G"
+			(at 215.9 100.0124 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-323"
+			(at 213.36 99.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 213.36 99.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Schottky diode"
+			(at 213.36 99.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "caab5b46-40f6-4471-8e5c-b8284d71dd5f")
+		)
+		(pin "1"
+			(uuid "f36144f0-480f-4714-9616-c2762c4a04eb")
+		)
+		(instances
+			(project "PIB"
+				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08/a3e2437a-f450-49da-ac0f-e1add7c59a42"
+					(reference "D37")
 					(unit 1)
 				)
 			)

@@ -6445,6 +6445,184 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Jumper:SolderJumper_2_Open"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "JP"
+				(at 0 2.032 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "SolderJumper_2_Open"
+				(at 0 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 -7.62 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Solder Jumper, 2-pole, open"
+				(at 0 -5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "solder jumper SPST"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "SolderJumper*Open*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "SolderJumper_2_Open_0_1"
+				(polyline
+					(pts
+						(xy -0.254 1.016) (xy -0.254 -1.016)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -0.254 -1.016)
+					(mid -1.2656 0)
+					(end -0.254 1.016)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(arc
+					(start 0.254 1.016)
+					(mid 1.2656 0)
+					(end 0.254 -1.016)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.254 1.016) (xy 0.254 -1.016)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "SolderJumper_2_Open_1_1"
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 0 180)
+					(length 3.81)
+					(name "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "MCU_ST_STM32G4:STM32G431RBTx"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -11158,7 +11336,7 @@
 	)
 	(rectangle
 		(start 201.93 151.13)
-		(end 279.4 189.23)
+		(end 304.8 189.23)
 		(stroke
 			(width 0)
 			(type default)
@@ -11488,7 +11666,7 @@
 		(uuid "134c7fdf-5169-4efb-b0bf-1142ba3b712f")
 	)
 	(junction
-		(at 203.2 81.28)
+		(at 195.58 76.2)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "143d2753-7bf3-4176-bb17-3ef6bb280592")
@@ -13993,16 +14171,6 @@
 	)
 	(wire
 		(pts
-			(xy 279.4 54.61) (xy 298.45 54.61)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6c2673ef-6ea4-417a-bb2b-c00b3ffe186f")
-	)
-	(wire
-		(pts
 			(xy 279.4 100.33) (xy 298.45 100.33)
 		)
 		(stroke
@@ -14350,16 +14518,6 @@
 			(type default)
 		)
 		(uuid "80458d85-2a0e-419f-9906-5a7891cc458c")
-	)
-	(wire
-		(pts
-			(xy 243.84 85.09) (xy 222.25 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "82679435-7233-4369-9721-9d8f1d2f5b2c")
 	)
 	(wire
 		(pts
@@ -14873,7 +15031,7 @@
 	)
 	(wire
 		(pts
-			(xy 203.2 81.28) (xy 212.09 81.28)
+			(xy 195.58 76.2) (xy 204.47 76.2)
 		)
 		(stroke
 			(width 0)
@@ -16213,7 +16371,17 @@
 	)
 	(wire
 		(pts
-			(xy 199.39 81.28) (xy 203.2 81.28)
+			(xy 243.84 90.17) (xy 224.79 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ecc33464-0a71-4617-928b-a743447ea0b4")
+	)
+	(wire
+		(pts
+			(xy 191.77 76.2) (xy 195.58 76.2)
 		)
 		(stroke
 			(width 0)
@@ -16423,6 +16591,16 @@
 	)
 	(wire
 		(pts
+			(xy 274.32 172.72) (xy 288.29 172.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f96db524-e1cc-4c6c-81c8-2d0293ba0dcb")
+	)
+	(wire
+		(pts
 			(xy 353.06 208.28) (xy 353.06 205.74)
 		)
 		(stroke
@@ -16443,7 +16621,17 @@
 	)
 	(wire
 		(pts
-			(xy 262.89 172.72) (xy 269.24 172.72)
+			(xy 215.9 85.09) (xy 243.84 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "faa16e37-c214-4cf4-a4f8-372fe1856d51")
+	)
+	(wire
+		(pts
+			(xy 262.89 172.72) (xy 264.16 172.72)
 		)
 		(stroke
 			(width 0)
@@ -16491,7 +16679,7 @@
 		)
 		(uuid "ffbee6af-72ea-484b-9d68-bfbeafc503f1")
 	)
-	(label "RCC_LSCO"
+	(label "DPT_MCLK"
 		(at 342.9 33.02 0)
 		(effects
 			(font
@@ -16642,7 +16830,7 @@
 		(uuid "1cc820a2-d51c-4d5c-ba55-c1536ab1ba9e")
 	)
 	(label "ADC_V_DCHG"
-		(at 212.09 81.28 180)
+		(at 204.47 76.2 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -16910,6 +17098,16 @@
 			(justify left bottom)
 		)
 		(uuid "51d3920a-3938-43be-be1d-833634a30f7f")
+	)
+	(label "DPT_MCLK"
+		(at 224.79 90.17 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "56f55204-8260-4970-b164-a9ccd3994d00")
 	)
 	(label "VALVE2_EN_GATED"
 		(at 96.52 74.93 0)
@@ -17351,16 +17549,6 @@
 		)
 		(uuid "a5531c21-30e7-43b6-b8fb-14800807dd15")
 	)
-	(label "RCC_LSCO"
-		(at 298.45 54.61 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "a79cba5f-1f0d-4a33-b630-e0ba972893c7")
-	)
 	(label "VALVE3_H_GATED"
 		(at 224.79 267.97 180)
 		(effects
@@ -17502,7 +17690,7 @@
 		(uuid "c6200043-c6ae-4d7e-a3f6-4bf3584d0342")
 	)
 	(label "nRST"
-		(at 269.24 172.72 180)
+		(at 288.29 172.72 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -18536,6 +18724,84 @@
 			(project "PIB"
 				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08"
 					(reference "#PWR084")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 215.9 92.71 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0cadb023-a518-4ad2-abc7-3c019c95e916")
+		(property "Reference" "#PWR0151"
+			(at 215.9 99.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 215.9 97.79 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 215.9 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 215.9 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 215.9 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "15c47445-07e3-4941-8ab3-5dc11c74718d")
+		)
+		(instances
+			(project "PIB"
+				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08"
+					(reference "#PWR0151")
 					(unit 1)
 				)
 			)
@@ -21792,7 +22058,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 203.2 88.9 0)
+		(at 195.58 83.82 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -21803,7 +22069,7 @@
 		(fields_autoplaced yes)
 		(uuid "30f29a44-414a-43b9-bc51-109ade6e7969")
 		(property "Reference" "#PWR0147"
-			(at 203.2 95.25 0)
+			(at 195.58 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21814,7 +22080,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 203.2 93.98 0)
+			(at 195.58 88.9 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -21824,7 +22090,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 203.2 88.9 0)
+			(at 195.58 83.82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21835,7 +22101,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 203.2 88.9 0)
+			(at 195.58 83.82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21846,7 +22112,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 203.2 88.9 0)
+			(at 195.58 83.82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22983,7 +23249,7 @@
 				)
 			)
 		)
-		(property "Value" "27pF"
+		(property "Value" "12pF"
 			(at 210.82 68.326 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -24376,7 +24642,7 @@
 				)
 			)
 		)
-		(property "Value" "27pF"
+		(property "Value" "12pF"
 			(at 210.82 53.34 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -30329,6 +30595,85 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 215.9 88.9 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "901f56fb-b68c-482a-a6db-ee0bd2873d82")
+		(property "Reference" "R88"
+			(at 213.614 88.9 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10K"
+			(at 215.9 88.9 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 214.122 88.9 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 215.9 88.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 215.9 88.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "a0e00c4e-0dca-497c-80b7-fce379f9dbae")
+		)
+		(pin "2"
+			(uuid "0d47c1b4-7057-4907-9121-3d5e2cec9db7")
+		)
+		(instances
+			(project "PIB"
+				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08"
+					(reference "R88")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3.3V")
 		(at 214.63 163.83 0)
 		(unit 1)
@@ -32263,7 +32608,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 194.31 86.36 0)
+		(at 186.69 81.28 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -32274,7 +32619,7 @@
 		(fields_autoplaced yes)
 		(uuid "a465933e-7ba6-47bd-b84b-136299976691")
 		(property "Reference" "#PWR092"
-			(at 194.31 92.71 0)
+			(at 186.69 87.63 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -32285,7 +32630,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 194.31 91.44 0)
+			(at 186.69 86.36 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -32295,7 +32640,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 194.31 86.36 0)
+			(at 186.69 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -32306,7 +32651,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 194.31 86.36 0)
+			(at 186.69 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -32317,7 +32662,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 194.31 86.36 0)
+			(at 186.69 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -34578,7 +34923,7 @@
 	)
 	(symbol
 		(lib_id "Diode:PESD5V0S1UL")
-		(at 203.2 85.09 270)
+		(at 195.58 80.01 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -34588,7 +34933,7 @@
 		(dnp no)
 		(uuid "bd047de2-781c-4e62-9e12-7f10ec710b74")
 		(property "Reference" "D18"
-			(at 205.74 83.8199 90)
+			(at 198.12 78.7399 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -34599,7 +34944,7 @@
 			)
 		)
 		(property "Value" "PESD5V0S1UL"
-			(at 205.74 86.3599 90)
+			(at 198.12 81.2799 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -34610,7 +34955,7 @@
 			)
 		)
 		(property "Footprint" "Diode_SMD:D_SOD-882"
-			(at 198.12 85.09 0)
+			(at 190.5 80.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -34621,7 +34966,7 @@
 			)
 		)
 		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESD5V0S1UL.pdf"
-			(at 208.28 85.09 0)
+			(at 200.66 80.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -34632,7 +34977,7 @@
 			)
 		)
 		(property "Description" "Unidirectional ESD protection diode, 5V, SOD-882"
-			(at 210.82 85.09 0)
+			(at 203.2 80.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -39111,7 +39456,7 @@
 	)
 	(symbol
 		(lib_id "Connector:Conn_Coaxial")
-		(at 194.31 81.28 0)
+		(at 186.69 76.2 0)
 		(mirror y)
 		(unit 1)
 		(body_style 1)
@@ -39123,7 +39468,7 @@
 		(fields_autoplaced yes)
 		(uuid "eb5096eb-a7b0-4a00-b7d8-ec4ceac5e059")
 		(property "Reference" "J6"
-			(at 194.6274 74.93 0)
+			(at 187.0074 69.85 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -39133,7 +39478,7 @@
 			)
 		)
 		(property "Value" "MMCX"
-			(at 194.6274 77.47 0)
+			(at 187.0074 72.39 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -39143,7 +39488,7 @@
 			)
 		)
 		(property "Footprint" "Connector_Coaxial:MMCX_Molex_73415-1471_Vertical"
-			(at 194.31 81.28 0)
+			(at 186.69 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -39154,7 +39499,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 194.31 81.28 0)
+			(at 186.69 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -39165,7 +39510,7 @@
 			)
 		)
 		(property "Description" "coaxial connector (BNC, SMA, SMB, SMC, Cinch/RCA, LEMO, ...)"
-			(at 194.31 81.28 0)
+			(at 186.69 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -40191,6 +40536,85 @@
 			(project "PIB"
 				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08"
 					(reference "R74")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Jumper:SolderJumper_2_Open")
+		(at 269.24 172.72 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "f502370e-1c2d-45a4-8f6d-f21315dbc043")
+		(property "Reference" "JP1"
+			(at 269.24 175.26 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "WD_ENABLE"
+			(at 269.494 177.546 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm"
+			(at 269.24 172.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 269.24 180.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Solder Jumper, 2-pole, open"
+			(at 269.24 177.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "4435b0e6-a41a-45be-9e35-5bad7f0ce57e")
+		)
+		(pin "2"
+			(uuid "2d864af7-bdd6-4c08-85fa-5688ab21ed02")
+		)
+		(instances
+			(project "PIB"
+				(path "/2bb2e4a1-de70-477a-a246-143db0a21e08"
+					(reference "JP1")
 					(unit 1)
 				)
 			)
