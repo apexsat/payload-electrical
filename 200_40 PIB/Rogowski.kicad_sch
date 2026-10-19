@@ -2341,7 +2341,7 @@
 		(uuid "947eea9a-f608-4954-b0c1-8480f23ecf1a")
 	)
 	(hierarchical_label "V_DISCHARGE"
-		(shape input)
+		(shape output)
 		(at 110.49 152.4 0)
 		(effects
 			(font
@@ -2351,7 +2351,7 @@
 		)
 		(uuid "1f314cdb-5367-46cc-bd54-db6a97424216")
 	)
-	(hierarchical_label "ROGOWSKI_RST"
+	(hierarchical_label "~{ROGOWSKI_RST}"
 		(shape input)
 		(at 48.26 40.64 180)
 		(effects
@@ -2363,7 +2363,7 @@
 		(uuid "46d0e4bc-9dc8-4621-a9d5-f4e233af63e2")
 	)
 	(hierarchical_label "I_ROGOWSKI"
-		(shape input)
+		(shape output)
 		(at 129.54 68.58 0)
 		(effects
 			(font

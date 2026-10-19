@@ -17547,7 +17547,7 @@
 		)
 		(uuid "1bbae090-ef60-44fb-bb06-acda9eae7619")
 	)
-	(label "PD_RST"
+	(label "~{PD_RST}"
 		(at 298.45 80.01 180)
 		(effects
 			(font
@@ -17977,7 +17977,7 @@
 		)
 		(uuid "735bb528-6359-4f26-87f0-f64c62f15895")
 	)
-	(label "PD_RST"
+	(label "~{PD_RST}"
 		(at 161.29 180.34 0)
 		(effects
 			(font
@@ -18237,7 +18237,7 @@
 		)
 		(uuid "962a73bb-6ef5-469b-9630-20a68be11efc")
 	)
-	(label "IGNITER_RST"
+	(label "~{PD_RST}"
 		(at 175.26 223.52 180)
 		(effects
 			(font
@@ -18637,7 +18637,7 @@
 		)
 		(uuid "f619d89b-f1ec-4688-8925-61c518be0cea")
 	)
-	(label "PD_RST"
+	(label "~{PD_RST}"
 		(at 213.36 81.28 180)
 		(effects
 			(font
@@ -20803,7 +20803,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10nF"
+		(property "Value" "100nF"
 			(at 93.98 226.06 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -40908,7 +40908,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10nF"
+		(property "Value" "100nF"
 			(at 93.98 157.48 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -43205,29 +43205,29 @@
 				(justify left top)
 			)
 		)
-		(pin "I_ROGOWSKI" input
-			(at 200.66 76.2 0)
-			(uuid "3cbed21f-000f-474e-82de-f7292af27f1b")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(pin "ROGOWSKI_RST" input
-			(at 200.66 81.28 0)
-			(uuid "1eedd503-72c6-4057-9b98-f11059be08db")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(pin "V_DISCHARGE" input
+		(pin "V_DISCHARGE" output
 			(at 200.66 78.74 0)
 			(uuid "227541e3-95f3-4a42-b980-e058526a7ce2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I_ROGOWSKI" output
+			(at 200.66 76.2 0)
+			(uuid "322065ff-4c88-417d-b2ac-0d2d94c1760e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "~{ROGOWSKI_RST}" input
+			(at 200.66 81.28 0)
+			(uuid "bafca061-8f42-4554-9dc7-528f3020e575")
 			(effects
 				(font
 					(size 1.27 1.27)
