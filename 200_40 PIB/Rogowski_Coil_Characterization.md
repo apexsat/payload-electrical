@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Purpose** | Record of the measurements that size the PIB Rogowski integrator (Rogowski sheet, U11). The design and open checks live in `PIB_Schematic_Review.md`, items C5 and Q8. |
+| **Purpose** | Record of the measurements that size the PIB Rogowski integrator (Rogowski sheet, U11). The open calibration check lives in `PIB_Schematic_Review.md`, item Q8. |
 | **Flight configuration** | Only the bare coil head flies. The PIB does the integration. The complete CWT transducer, with PEM's battery-powered integrator, is ground calibration equipment only. |
 | **Scope** | Teledyne LeCroy WavePro 735Zi (3.5 GHz, 40 GS/s) |
 | **Recorded** | 2026-10-20, from measurements taken 2025-09-03 and 2026-10-19 |
@@ -130,4 +130,4 @@ As built on the Rogowski sheet:
 2. **Coil in its flight mounting position:** Rogowski sensitivity varies a few percent with conductor position inside the coil, so calibrate M as the coil will be mounted.
 3. **Pickup floor:** one shot with the coil near the discharge but not around the conductor, to measure electrostatic and magnetic pickup from the 400 V electrodes.
 4. **CT scaling check** against the CWT transducer (section 4 discrepancy).
-5. **Coil flight suitability, not a scope shot:** whether the coil detaches from the CWT integrator, its cable and connector to the PIB MMCX, its temperature rating, and outgassing.
+5. **After the BNC → MMCX re-termination:** re-measure the coil's DC resistance (154 Ω before) and M through the final cable and connector. The integrator gain depends on R79 + Z<sub>s</sub>. (The coil detaches from the CWT integrator by BNC, confirmed 2026-10-20.)
