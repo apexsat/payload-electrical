@@ -2241,7 +2241,7 @@
 		(uuid "fcc31a75-eedf-48e6-b364-866ab2dc3280")
 	)
 	(label "DISCHARGE_HV"
-		(at 38.1 72.39 0)
+		(at 64.77 68.58 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2261,7 +2261,7 @@
 		(uuid "2e986f59-7e8a-451d-a06d-5ee8dfb64e3d")
 	)
 	(label "DISCHARGE_V"
-		(at 149.86 63.5 0)
+		(at 177.8 66.04 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4344,7 +4344,7 @@
 				)
 			)
 		)
-		(property "Value" "HV_IN"
+		(property "Value" "112659"
 			(at 59.69 63.5 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4354,7 +4354,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "0_PAY_Footprint_Library:CONN_112659"
 			(at 59.69 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -4365,7 +4365,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.amphenolrf.com/en-us/part/112659/317/"
 			(at 59.69 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -4376,7 +4376,7 @@
 				)
 			)
 		)
-		(property "Description" "HV input: pin 1 = discharge -400 V node, pin 2 = HV return. Connector must be rated >= 800 V."
+		(property "Description" "Amphenol RF 112659, 50 ohm right-angle through-hole BNC jack, 500 Vrms working voltage. Pin 1 = center contact, DISCHARGE_HV (-400 V nominal); pin 2 = shield / HV return (GND)."
 			(at 59.69 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -5179,7 +5179,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Diode_SMD:D_SOD-123"
 			(at 177.8 69.85 0)
 			(hide yes)
 			(show_name no)
@@ -5190,7 +5190,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.onsemi.com/pdf/datasheet/mmsz4678t1-d.pdf"
 			(at 177.8 69.85 0)
 			(hide yes)
 			(show_name no)
