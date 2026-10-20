@@ -5,10 +5,10 @@
 | **Board** | 200_40 Payload Interface Board (APEx PMPD thruster, 6U CubeSat) |
 | **Reviewed files** | `PIB.kicad_sch`, `Rogowski.kicad_sch`, `Valve Driver.kicad_sch`, `DPT Mux.kicad_sch`, `PIB.kicad_pcb` (parity only), `firmware/firmware.ioc` (pin/clock config) |
 | **Reference docs** | `Payload ICD.pdf` (Rev 2.0, CDR), `PIB Block Diagram.drawio.png`, `200_60 DPT Sensor Board` |
-| **Design state** | branch `pib-split`, `2d73650` + uncommitted changes, including the upstream eFuse (U19) and the new load-switch sheets (2026-10-19) |
-| **PCB** | Not yet updated from the schematic; layout follows the schematic changes. Parity isn't tracked here. When updating, give D11/D36 copper for heat (F9), then regenerate the fab outputs and the iBOM. |
+| **Design state** | branch `pib-split`, `d2c2d1b` (2026-10-20); schematics unchanged in the working copy |
+| **PCB** | Layout in progress. Schematic parity is clean (0 issues, 2026-10-20). After a zone refill, DRC still shows 194 unconnected items and 34 shorts, which is expected mid-route. Before release: give D11/D36 copper for heat (F9), then regenerate the fab outputs and the iBOM. |
 | **Tools** | KiCad 10.0.4 (`kicad-cli` ERC, netlist, DRC w/ schematic parity) |
-| **Last updated** | 2026-10-19 |
+| **Last updated** | 2026-10-20 |
 
 **Status key:** `OPEN` (needs a design change) · `VERIFY` (needs a datasheet, bench or part check) · `OPTIONAL` (recommended hardening, not required) · `ICD` (schematic is correct; the ICD must change)
 
@@ -20,7 +20,6 @@
 
 The pin-to-pad check is clean for every footprint. The main risks are:
 - The GSE latching-valve pulse needs bench checks: polarity, and pulse width against the valve spec (C11).
-- The Rogowski front end is complete. What's left is checking the reset-switch leakage against R98 and the coil's flight suitability (C5).
 - D11 (20 V OR-ing Schottky) is under-rated for ~23 V GSE transients, and D36 still needs checking against the latching-valve pulse current (F9).
 
 The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD items need to be brought in line with the schematic (see [ICD Update Actions](#icd-update-actions)).
@@ -43,9 +42,9 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 
 | Category | Items |
 |---|---|
-| Critical | 4 (2 optional, 2 verify) |
-| Significant | 5 |
-| Footprint / Part | 9 |
+| Critical | 3 (2 optional, 1 verify) |
+| Significant | 4 |
+| Footprint / Part | 8 |
 | Project setup | 2 |
 | ICD / Block diagram | 8 |
 | Open questions | 2 |
@@ -53,39 +52,6 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 ---
 
 ## Critical (safety or function)
-
-### C5 — Rogowski front end: switch leakage and coil flight suitability — `VERIFY`
-- **Sensor:** the flight unit flies only the coil head of a PEM CWTMini50HF/150. The PIB does the integration. The complete CWT transducer (with PEM's integrator: 0.2 mV/A, ±6 V at 30 kA) is ground equipment and can serve as the calibration reference.
-- **Where:** Rogowski sheet (working copy).
-  - Signal chain: J7.1 (MMCX, D38 SD12C-01F bidirectional 12 V TVS, R95 100k bleeder to GND) → C69 (4.7 µF) → R79 (2.00k) → U11.2 (OP27), with C45 (10 nF C0G) ∥ R98 (1 M) ∥ Q3/Q4 (BSS138 reset switch) from U11.2 to U11.6.
-  - U11.3 (+) sits at V<sub>REF</sub> = VDDA/2 (R96/R97 10k/10k, C70 1 µF). Supplies are ±5 V.
-  - Reset: `~{ROGOWSKI_RST}` (main-sheet net `/~{PD_RST}`, PA12, shared with the igniter peak-detector reset on J5.2) → R100 → Q5 (BSS138, R101 gate pull-down). Q5's drain, pulled up to +5 V by R99, drives the Q3/Q4 gates. The integrator is held in reset whenever the GPIO is low or high-Z.
-  - Output: U11.6 → R102 (100 Ω) → clamp D40 (BAT54J, to +3.3V) / D39 (BAT54J, to GND) → R104 (1k) → PA1 with C71 (470 pF), matched to the PA0 network.
-- **Problems:**
-  1. **Reset-switch leakage (check):** while integrating, Q3/Q4 off-state leakage × R98 (1 M) appears as offset. That's typically nA, a few mV, at the ≈ 1.5 V V<sub>DS</sub> here, but the datasheet max (often 0.5–1 µA at 50 V, more when hot) would be 0.5–1 V. Check BSS138 leakage at low V<sub>DS</sub> and temperature.
-  2. **Coil flight suitability is unconfirmed:** whether the coil detaches from the CWT integrator, its cable and connector to J7, its temperature rating and its outgassing.
-- **Fix:**
-  - **Leakage:** if the BSS138 leakage is significant, reduce R98 (adjusting C45 / relying on firmware droop correction) or use a lower-leakage switch.
-  - **Firmware sequencing:** hold reset during power-up (C69 charges with τ ≈ (R79 + 154 Ω coil)·C69 ≈ 10 ms). Release it shortly before the shot, then sample a baseline after release. That removes switch leakage × R98, op-amp offset and charge injection (≈ C<sub>gd</sub>·ΔV<sub>g</sub>/C45, a few mV).
-  - **Gain headroom:** size the gain so the expected peak stays within about 0.15–3.15 V, so the D39/D40 clamp only acts on faults.
-- **Value sizing (M ≈ 1.7 nH):** the flight shot's peak onset dI/dt is ≈ 3.1 kA/µs (16.26 kA, ~24 kHz, damped ~0.6× per half-cycle), so the peak coil voltage is ≈ 5.3 V (≤ ~6 V with M uncertainty). Gain target: R79·C45 = M·16 260/1.5 V ≈ 18 µs.
-
-  | Part | Proposed | Result |
-  |---|---|---|
-  | R79 | 2.00k (0.1%) | Peak summing current ≈ 2.7 mA; ≥ 10× R95 |
-  | C45 | 10 nF C0G | Output peak = M·I<sub>pk</sub>/((R79 + Z<sub>s</sub>)·C45) ≈ 1.28 V with the coil's Z<sub>s</sub> = 154 Ω (0.37–2.93 V around 1.65 V); ≈ 1.41 V at M + 10% |
-  | R98 | 1.00 M (0.1%) | τ<sub>leak</sub> = 10 ms; OP27 bias × R98 ≈ 40–60 mV offset, removed by the pre-shot baseline |
-  | C69 | 4.7 µF X7R, 0603, ≥ 10 V (16 V preferred) | It sees ≈ 1.65 V DC and negligible AC (≈ 1.4 Ω at 24 kHz vs ≈ 2.15 kΩ). τ<sub>AC</sub> = (R79 + Z<sub>s</sub>)·C69 ≈ 10 ms nominal, ≈ 7–9 ms after DC-bias derating; total droop ≈ 1.3–1.6% at 65 µs |
-  | R95 | 100k bleeder (not a termination) | The coil has 154 Ω source resistance (DC multimeter), and a 50 Ω load cut the signal ≈ 3–4×, so the coil must see only high impedance (PEM's integrator is 3 MΩ). 100k only defines DC and bleeds static. |
-
-  - **C69:** X7R in 0603 is acceptable. Its bias-driven piezo error is about 10⁻⁴–10⁻³ of the coil signal, its tolerance and DC-bias loss only shift droop slightly (calibrated), and 0603 is less prone to flex cracking than larger cases. Avoid tantalum.
-  - **Coil source resistance (measured 2026-10-19):** 154 Ω DC. The 50 Ω-load shot showed the same resistive behaviour: the step and the slow portion were attenuated alike. With R79 = 2k the loss is ≈ 7% (calibrated out). If the 154 Ω is copper, ±40 °C moves the gain ≈ ±1.1%. Correct with the PIB thermistor, or use the option below.
-  - **Lower-tempco option:** R79 4.99k, C45 4.7 nF C0G, R98 ≈ 2.2 M, C69 2.2 µF. That gives ≈ 1.14 V peak and ≈ ±0.5% tempco, at the cost of ≈ 90–130 mV of bias offset (removed by the baseline).
-  - **ADC rate and LT8580 ripple:** The planned rate is 2–4 MSPS (80–160 samples per period). The −5 V LT8580 switches at 846 kHz, which is below Nyquist at both rates, so it appears as an in-band tone that a digital low-pass removes.
-    - Its harmonics alias to 78 kHz (7th) at 2 or 3 MSPS, and to 230 kHz at worst (5th) at 4 MSPS. Prefer 4 MSPS.
-    - The LT8580 free-runs (SYNC = GND), so its tolerance and drift move these aliases. If the bench PA1 noise floor shows the ripple matters, drive SYNC from an HSE-derived MCU timer, e.g. f<sub>sw</sub> = fs × 2/9 ≈ 889 kHz at 4 MSPS (check the SYNC range).
-    - Expected ripple at the output is sub-LSB (≈ 0.3 mV, via the OP27's V− PSRR). Use 1 nF rather than 470 pF in the PA0/PA1 RC if more rejection is needed: −14.6 dB vs −8.6 dB at 846 kHz.
-  - **Bandwidth:** The measured current is a damped ring at about 24 kHz (41 µs period, ~65 µs long). The OP27's 8 MHz GBW gives about 330× loop gain at 24 kHz (≈ 0.3% error), and its 2.8 V/µs slew is well above the ~0.25 V/µs needed.
 
 ### C6 — Igniter-board ADC inputs are unclamped — `OPTIONAL`
 - **Where:** `ADC_V_IGN_PK`, `ADC_I_IGN_PK`, `ADC_V_IGN_SUPPLY`, `ADC_NTC_IGN` (J5): each has only a PESD3V3U1UL, with no series R.
@@ -107,16 +73,10 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
   1. **Polarity:** confirm on the bench that INB (`VALVE3_H`) drives the valve open, for both GSE and flight.
   2. **Pulse width:** t ≈ τ·ln(3.3/V<sub>T−</sub>), with τ = 100 ms and V<sub>T−</sub> the 74LVC2G17's negative-going threshold (datasheet). Check this against the latching valve's required pulse width (Q3), with X7R tolerance. BAT54J leakage at the RC nodes shortens the pulse when hot, which is negligible at room-temperature GSE use.
   3. **No UVLO gating:** at GSE power-up, U18's ~OPEN output rises with `3.3V_EGSE` and couples through C74, so expect a CLOSE pulse at reduced `+12V`. GSE procedure: send an explicit CLOSE once powered, and space commands ≥ ~2× the pulse width. Overlapping pulses brake the coil, which is safe.
-  4. **BAT54C symbol:** confirm pins 1/2 are the anodes and pin 3 the common cathode (the symbol's pins are unnamed).
 
 ---
 
 ## Significant
-
-### S4 — DPT harness pin order mismatch — `OPEN`
-- PIB J9/J10 (PicoBlade 53398-0671): 1 3V3, 2 GND, 3 SCK, 4 DOUT, 5 DIN, 6 MCLK.
-- DPT board J1 (Pico-Lock 503480-0640): 1 SCLK, 2 DOUT, 3 DIN, 4 MCLK, 5 VDD, 6 GND.
-- A 1:1 harness would put power on SCLK. **Fix:** Align the pin orders or document the cross-wired harness.
 
 ### S7 — ADM1270 auto-retry: start-up capacitance and PWRGD fault logic — `VERIFY`
 - **As built (intentional):** R51/R64/R116 (0 Ω) tie ~FAULT to ENABLE, so all three eFuses (U5 discharge, U7 igniter, U19 upstream) auto-retry. U19 uses C81 = 22 nF (≈ 2.2 ms on-time, so U5 clears a branch fault first) and C80 = 100 nF. Fault state is read through PWRGD: `/DISCHARGE_PGOOD` on PC13, `/IGNITER_PGOOD` on PC14 and `/BAT_PGOOD` on PA11, each with a 10k pull-up.
@@ -150,7 +110,15 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, SOT95P280X145-5N, HARWIN M80, ABM3B, PowerPAK SO-8, SOD-323). MIC4424 pads 1/8 are NC, which is correct. SP0502BAJT on SC-70 is correct.
 
 ### F1 — No MPNs or capacitor ratings — `OPEN`
-- Only U1 carries an MPN field, and only some resistors have a tolerance. No capacitor has a voltage or dielectric rating. **Fix:** Add `MPN` and `Manufacturer` fields project-wide, and a `Tolerance` field that marks the 0.1% resistors per the BOM policy in the design context.
+- **MPN / Manufacturer:** no part has them. U1 alone carries vendor-import fields (`MP`, `MF`), named differently from the rest. Add `MPN` and `Manufacturer` project-wide.
+- **Capacitors:** none has a voltage or dielectric rating (see F2).
+- **Tolerance (partly done):** `0.1%, 25ppm/C` is now set on the NTC biases (R3, R4, R78, R87, R109) and on every eFuse UV/OV, FB_PG and FLB divider. Per the BOM policy, these still need it:
+  - ISET dividers: R122/R123 (U5), R124/R125 (U19)
+  - LT3065: R17/R18 (feedback), R2 (IMAX)
+  - LT8580 feedback: R75
+  - Rogowski: R79, R98, and the V<sub>REF</sub> divider R96/R97
+  - Pulse timing: R47, R107
+  - Current-sense: R35, R38, R65 at 1%
 
 ### F2 — BAT-rail capacitor voltage rating — `OPEN`
 - C79 (`VBAT_HOT`), C1, C28, C33, C62, C82 (`VBAT_PROT`) and C66, C67 see up to the SMF18A clamp (~29 V), so they need 50 V parts.
@@ -165,9 +133,8 @@ Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, 
 - FB1 uses `R_0603` and its value is "120". Specify a ferrite part number (impedance at 100 MHz, DCR, current) and use an inductor/ferrite footprint.
 
 ### F5 — Symbol/value mismatches — `OPEN`
-- Q1/Q2/Q6: symbol `Si7141DP` (20 V part), value Si7489DP (100 V).
-- Q9/Q10/Q11: symbol `IRF7403`, value IRF7832.
-- U14/U15: symbol `74LS08`, value 74HC08PW.
+- Q9/Q10/Q11: symbol `IRF7403`, value IRF7832. The Datasheet field still links the IRF7403.
+- U14/U15: symbol `74LS08` (DIP footprint filter), value 74HC08PW. The Datasheet field still links the SN74LS08.
 - The pinouts match, but the description and datasheet fields will mislead BOM and assembly.
 
 ### F7 — Flight connector retention — `OPEN`
@@ -183,9 +150,6 @@ Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, 
 - **D36 (`12V_GSE` → `+12V`):** Carries the NC valve's ~50 mA continuously during a fill (≈ 15 mW, fine), plus ~100 ms latching-valve pulses at a current that's still unknown (Q3). Check the latching-valve pulse current against the 1 A rating and the pulse-power limit.
 - **D37 (NC valve flyback):** Conducts the ~50 mA coil current briefly at turn-off, well within rating. Valve closing is slow with a plain freewheel diode; add a series zener if closing time matters.
 - **Recommendation:** D11 needs a ≥ 30–40 V part for the GSE transient (e.g. a 1–2 A, 40 V Schottky in SOD-123FL). Re-check D36 once the latching-valve pulse current is known (Q3).
-
-### F10 — Crystal load capacitance — `VERIFY`
-- C26/C27 = 12 pF assumes `ABM3B-8.000MHZ-10-D1G-T` has C<sub>L</sub> = 10 pF, with about 4 pF stray. Confirm the "-10-" code in Abracon's part-numbering guide, and trim after measuring frequency on the first board.
 
 ---
 
@@ -233,7 +197,7 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
 | ID | Question | Known so far |
 |---|---|---|
 | Q3 | Latching valve data: part number, coil current, and required pulse width. These set the C11 pulse RC and the D36 pulse rating (F9). | NC valve: LHDB1223518H, 12 V DC continuous, ~600 mW (~50 mA). Library also has LHLA1252x11H (likely the latching valve; confirm). |
-| Q8 | Flight Rogowski coil (PEM CWTMini50HF/150 coil head): confirm the precise open-circuit M (offset-corrected integral at the trough ÷ CT peak). | **Measured 2026-10-19** (380 µF from 200 V via a shorting stick, CT reference): open-circuit **M ≈ 1.7 nH (±10%)** from ∫V<sub>coil</sub>dt vs CT and from the onset step. **Coil resistance 154 Ω DC.** A 50 Ω load attenuated the signal ≈ 3–4×, resistively. The steps in dI/dt at ≈ 41 and 84 µs come from the shorting-stick arc. The transducer trough read ≈ 10–20% above the CT (rough read); check the CT scaling. |
+| Q8 | Flight Rogowski coil (PEM CWTMini50HF/150 coil head): confirm the precise open-circuit M (offset-corrected integral at the trough ÷ CT peak). **After the BNC → MMCX re-termination, re-measure the coil's DC resistance and M through the final cable and connector.** The integrator gain depends on R79 + Z<sub>s</sub>. | **Measured 2026-10-19** (380 µF from 200 V via a shorting stick, CT reference): open-circuit **M ≈ 1.7 nH (±10%)** from ∫V<sub>coil</sub>dt vs CT and from the onset step. **Coil resistance 154 Ω DC.** A 50 Ω load attenuated the signal ≈ 3–4×, resistively. The steps in dI/dt at ≈ 41 and 84 µs come from the shorting-stick arc. The transducer trough read ≈ 10–20% above the CT (rough read); check the CT scaling. |
 
 ---
 
@@ -249,6 +213,12 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
   - `12V_GSE` (D10, U6) is on the source side of D36, so flight power can't back-feed the EGSE regulator or the EGSE pin.
 - **Q10 gate:** D50 (BAT54C) diode-ORs flight and GSE (GSE anode on `EGSE_OPEN_F`, behind R46), through R110 (100 Ω), giving ≈ 3.1 V from either side; R6 pulls the gate off to ≈ 0 V, never in the 1.35–2.35 V threshold band. Neither side can back-power the other. IRF7832 Fig. 3 shows tens of A typical at about 3 V, so 3.3 V-class drive is adequate for the heater and valve FETs.
 - **D37:** NC-valve flyback diode, oriented correctly.
+- **Rogowski reset switch (Q3/Q4/Q5 = BSS131):** Infineon specifies I<sub>D(off)</sub> ≤ 10 nA at 240 V, 25 °C (5 µA at 150 °C).
+  - **Offset:** × R98 (1 M) that's ≤ 10 mV at 25 °C. Interpolated bounds at 240 V are ~20 mV at 40 °C and ~60 mV at 60 °C. At the real ≈ 1.5 V V<sub>DS</sub> it's far lower, and only one device leaks in the back-to-back pair. The offset is static and removed by the pre-shot baseline.
+  - **Gate drive:** off-state V<sub>GS</sub> ≈ −1.65 V. On-state, the gates get ≈ 3.3 V above the V<sub>REF</sub>-side node, vs a 1.8 V max V<sub>th</sub>. Reset settles in ≈ 1 µs (2 × R<sub>DS(on)</sub> · C45).
+  - **Q5** from the 3.3 V GPIO pulls the gates to ≈ tens of mV against R99.
+  - **Pinout:** SOT-23, G 1 / S 2 / D 3.
+  - **Firmware:** hold reset through power-up (C69 charges in ≈ 10 ms), release just before the shot, then take a baseline. That removes leakage × R98, op-amp bias offset and the ≈ 10–20 mV reset-release step.
 - **J7 protection:** D38 (SD12C-01F, bidirectional 12 V standoff) at J7.1 ahead of C69 stays off at the ≈ 5–6 V coil peak. R95 (100k) defines DC with the coil unplugged and costs ≈ 0.15% against the coil's 154 Ω.
 - **PA0/PA1 front ends:** Each channel has 100 Ω (R106 / R102) → BAT54J pair to +3.3V/GND (D43/D44, D39/D40) → 1k (R105 / R104) → pin with 470 pF (C72 / C71). Orientation is correct, and the matched RCs (f<sub>c</sub> ≈ 339 kHz, ≈ 0.47 µs, −0.02 dB / −4° at 24 kHz) keep the V×I timing aligned. Injection in a fault is ≪ 0.1 mA.
 - **GSE pulse circuit:** J1.2 is isolated by R46 (1k) with R45 pull-down. U18 buffers both phases, so no RC cap loads the GSE line. U18 (74LVC2G14) and U9 (74LVC2G17) are Schmitt parts with I<sub>off</sub>. D41/D42 clamp the RC nodes to GND (orientation correct). D47/D48 (BAT54C) diode-OR flight and GSE into U3 INA/INB with R41/R42 pull-downs, so there's no back-power in either direction on valve 3. U9 and U18 are decoupled (C31, C75).
@@ -279,3 +249,8 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
   - ISET dividers sit well clear of the 2.55–2.65 V reference-select threshold (U19 1.44 V, U5 1.28 V), and their VCAP loads (≈ 15 µA, ≈ 22 µA) are far under the 100 µA limit.
 - **Bus control and telemetry:** `/BAT_EN` (PA10, R115 pull-down, so the bus is off while the MCU is in reset), `/BAT_PGOOD` (PA11), `/12V_PG` (PA2, LT3065 PWRGD with R1 pull-up to +3.3V).
 - **MIC4424:** SOIC-8 mapping is correct.
+- **DPT harness (J9/J10 ↔ DPT J1):** the DPT board's J1 is now PicoBlade 53261-0671: 1 MCLK, 2 DIN, 3 DOUT, 4 SCLK, 5 GND, 6 3V3. That is the exact mirror of PIB J9/J10 (1 3V3, 2 GND, 3 SCK, 4 DOUT, 5 DIN, 6 MCLK), so a standard mirrored PicoBlade cable (pin n ↔ 7 − n) matches pin-for-pin, the same convention as J5. Directions check out: sensor DOUT → `TANK/FRIT_DOUT` → U16 mux input; U13 → DIN (DPT board at `8c08317`).
+- **BAT54C (D47/D48/D50):** the stock `Diode:BAT54C` symbol has anodes on pins 1/2 and the common cathode on pin 3, matching the Diodes Inc. SOT-23 pinout. The OR wiring (anodes from the GSE and flight sources, cathode to INA/INB or R110) is correct.
+- **Si7489DP symbol (Q1/Q2/Q6):** now `0_PAY_Symbol_Library:Si7489DP` (−100 V, P-channel): S = 1–3, G = 4, D = 5. The `PowerPAK_SO-8_Single` footprint numbers all five drain pads "5", so every drain pad carries the output net on the PCB.
+- **Crystal:** `ABM3B-8.000MHZ-10-D1G-T` is C<sub>L</sub> = 10 pF (distributor listings), so C26/C27 = 12 pF with ≈ 4 pF stray is right. Trim after measuring frequency on the first board.
+- **Libraries:** every symbol resolves (no ERC library-mismatch warnings), all 37 PCB 3D-model paths resolve, and PCB ↔ schematic parity is clean.
