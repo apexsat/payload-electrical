@@ -21854,7 +21854,7 @@
 			(unit
 				(name "A")
 				(pins "28" "7" "5" "6" "55" "8" "9" "10" "11" "22" "23" "38" "39" "40"
-					"41" "52" "53" "54" "2" "3" "4" "1" "16" "32" "47" "15" "63" "31" "48"
+					"41" "52" "53" "54" "2" "3" "4" "1" "16" "32" "31" "63" "15" "47" "48"
 					"27" "64" "29" "12" "13" "14" "17" "18" "19" "20" "21" "42" "43" "44"
 					"45" "46" "49" "50" "51" "24" "25" "26" "56" "57" "58" "59" "60" "61"
 					"62" "30" "33" "34" "35" "36" "37"
@@ -35508,19 +35508,19 @@
 			)
 		)
 	)
-	(footprint "Connector_Harwin:Harwin_Gecko_G125-MS12605M2P_2x13_P1.25mm_Vertical"
+	(footprint "0_PAY_Footprint_Library:Harwin_Gecko_G125-MS12605M2P_2x13_P1.25mm_Vertical"
 		(layer "F.Cu")
 		(uuid "c5732012-a213-4998-b490-5483f2a6c5c9")
 		(at 190.4 112.7 90)
 		(descr "Harwin Male Vertical Surface Mount Double Row 1.25mm (0.049 inch) Pitch PCB Connector, G125-MS12605M2P, 13 Pins per row (https://cdn.harwin.com/pdfs/G125-MS1XX05M2P.pdf)")
 		(tags "connector Harwin Gecko vertical")
 		(property "Reference" "J3"
-			(at -13.7 2.8 90)
+			(at -13.6 2.8 90)
 			(layer "F.SilkS")
 			(uuid "e3b66e86-b105-43a3-a12c-724b15361e1a")
 			(effects
 				(font
-					(size 0.8 0.8)
+					(size 1 1)
 					(thickness 0.15)
 				)
 			)
@@ -35766,7 +35766,7 @@
 			(uuid "a195612a-c189-48a1-ba90-4ca67a4d68c8")
 			(effects
 				(font
-					(size 0.8 0.8)
+					(size 1 1)
 					(thickness 0.15)
 				)
 			)
@@ -41455,7 +41455,7 @@
 			)
 		)
 	)
-	(footprint "Package_SO:PowerPAK_SO-8_Single"
+	(footprint "0_PAY_Footprint_Library:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "e7ff3372-407b-455f-ae41-b2e8f67ff3f2")
 		(at 198.02 79.09)
@@ -41483,7 +41483,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.vishay.com/docs/65596/si7141dp.pdf"
+		(property "Datasheet" "https://www.vishay.com/docs/73436/si7489dp.pdf"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -41496,7 +41496,7 @@
 				)
 			)
 		)
-		(property "Description" "-60A Id, -20V Vds, 1.9 mOhm Ron, PowerPAK-8"
+		(property "Description" "-28A Id, -100V Vds, 33mOhm Rdson"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -41510,7 +41510,7 @@
 			)
 		)
 		(property ki_fp_filters "PowerPAK*SO*Single*")
-		(path "/b15475c3-f8e3-47f9-959a-ae9213f8378e")
+		(path "/78dc09e9-5dbe-4e6c-a3fa-869771efb964")
 		(sheetname "/")
 		(sheetfile "PIB.kicad_sch")
 		(units
@@ -41736,7 +41736,7 @@
 			(uuid "2e9f7ee3-e484-4481-b748-8ddd02bf3cc9")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/PowerPAK_SO-8_Single.step"
+		(model "${KIPRJMOD}/../0_PAY_3D_Model_Library/PowerPakSO-8.STEP"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -41744,7 +41744,7 @@
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz 0 0 0)
+				(xyz -90 -0 -0)
 			)
 		)
 	)
@@ -54312,7 +54312,7 @@
 			)
 		)
 	)
-	(footprint "Package_SO:PowerPAK_SO-8_Single"
+	(footprint "0_PAY_Footprint_Library:PowerPAK_SO-8_Single"
 		(layer "B.Cu")
 		(uuid "4c0c2219-b734-45d0-aba1-76cd582ecf9d")
 		(at 205.1 131.195 -90)
@@ -54324,7 +54324,7 @@
 			(uuid "048e4e7d-257c-48a9-94a2-f84f474465b9")
 			(effects
 				(font
-					(size 0.8 0.8)
+					(size 1 1)
 					(thickness 0.15)
 				)
 				(justify mirror)
@@ -54342,7 +54342,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" "https://www.vishay.com/docs/65596/si7141dp.pdf"
+		(property "Datasheet" "https://www.vishay.com/docs/73436/si7489dp.pdf"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -54356,7 +54356,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Description" "-60A Id, -20V Vds, 1.9 mOhm Ron, PowerPAK-8"
+		(property "Description" "-28A Id, -100V Vds, 33mOhm Rdson"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -54371,7 +54371,7 @@
 			)
 		)
 		(property ki_fp_filters "PowerPAK*SO*Single*")
-		(path "/8137034e-e0af-4d52-b7f8-edbfa09911b4/a5e8f43d-5a22-47d9-a8cc-a3037bdd25ab")
+		(path "/8137034e-e0af-4d52-b7f8-edbfa09911b4/637cee8c-7911-44d9-8e2d-04e5d4c93e1c")
 		(sheetname "/Discharge Load Switch/")
 		(sheetfile "Discharge Load Switch.kicad_sch")
 		(units
@@ -54510,7 +54510,7 @@
 			(uuid "121d3784-e904-494a-b073-b2c629d1385c")
 			(effects
 				(font
-					(size 0.8 0.8)
+					(size 1 1)
 					(thickness 0.15)
 				)
 				(justify mirror)
@@ -54598,7 +54598,7 @@
 			(uuid "1a882cf0-8cd9-4421-9d93-10c087f9b644")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/PowerPAK_SO-8_Single.step"
+		(model "${KIPRJMOD}/../0_PAY_3D_Model_Library/PowerPakSO-8.STEP"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -54606,7 +54606,7 @@
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz 0 0 0)
+				(xyz -90 -0 -0)
 			)
 		)
 	)
@@ -59643,26 +59643,26 @@
 			)
 		)
 	)
-	(footprint "Package_SO:PowerPAK_SO-8_Single"
+	(footprint "0_PAY_Footprint_Library:PowerPAK_SO-8_Single"
 		(layer "B.Cu")
 		(uuid "8c7cc9bc-e8da-4ec0-8666-7ea679ca00c8")
 		(at 204.6 99.95)
 		(descr "PowerPAK SO-8 Single (https://www.vishay.com/docs/71655/powerpak.pdf, https://www.vishay.com/docs/72599/72599.pdf)")
 		(tags "PowerPAK SO-8 Single")
 		(property "Reference" "Q2"
-			(at 4.1 1.55 90)
+			(at 0 3.5 180)
 			(layer "B.SilkS")
 			(uuid "46d5a578-e8fb-46a3-b151-46e2b2101392")
 			(effects
 				(font
-					(size 0.8 0.8)
+					(size 1 1)
 					(thickness 0.15)
 				)
 				(justify mirror)
 			)
 		)
 		(property "Value" "Si7489DP"
-			(at 0 -3.5 0)
+			(at 0 -3.5 180)
 			(layer "B.Fab")
 			(uuid "99182bd2-764d-4857-9513-a8076f315fd8")
 			(effects
@@ -59673,7 +59673,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" "https://www.vishay.com/docs/65596/si7141dp.pdf"
+		(property "Datasheet" "https://www.vishay.com/docs/73436/si7489dp.pdf"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -59687,7 +59687,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Description" "-60A Id, -20V Vds, 1.9 mOhm Ron, PowerPAK-8"
+		(property "Description" "-28A Id, -100V Vds, 33mOhm Rdson"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -59702,7 +59702,7 @@
 			)
 		)
 		(property ki_fp_filters "PowerPAK*SO*Single*")
-		(path "/7f136174-6704-4399-958d-df8d2f380711/f27f4a5d-b6de-433e-8e79-249ed75fc2d1")
+		(path "/7f136174-6704-4399-958d-df8d2f380711/a620cc9e-0f7f-49a2-9f1d-2f8a79c59b1b")
 		(sheetname "/Igniter Load Switch/")
 		(sheetfile "Igniter Load Switch.kicad_sch")
 		(units
@@ -59836,12 +59836,12 @@
 			(uuid "87fcdcf0-5b4d-4d6b-a792-fbfe24575305")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0 180)
 			(layer "B.Fab")
 			(uuid "2fbb34cd-be06-494a-812b-320d7f455a3e")
 			(effects
 				(font
-					(size 0.8 0.8)
+					(size 1 1)
 					(thickness 0.15)
 				)
 				(justify mirror)
@@ -59929,7 +59929,7 @@
 			(uuid "c35b58cf-7475-4742-ae8a-97e78f3dd561")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/PowerPAK_SO-8_Single.step"
+		(model "${KIPRJMOD}/../0_PAY_3D_Model_Library/PowerPakSO-8.STEP"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -59937,7 +59937,7 @@
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz 0 0 0)
+				(xyz -90 -0 -0)
 			)
 		)
 	)
@@ -60906,7 +60906,7 @@
 			(uuid "d9d8ef8b-a7d7-4b48-a210-6378d5fabf74")
 		)
 		(embedded_fonts no)
-		(model "C:/Users/alanj/Documents/GitHub/payload-electrical/0_PAY_3D_Model_Library/LT8580EDD_PBF.step"
+		(model "${KIPRJMOD}/../0_PAY_3D_Model_Library/LT8580EDD_PBF.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -62820,7 +62820,7 @@
 			(uuid "0468639f-1a7c-4c74-8026-713c6e88a777")
 		)
 		(embedded_fonts no)
-		(model "C:/Users/alanj/Documents/GitHub/payload-electrical/0_PAY_3D_Model_Library/LT3065EDDPBF.step"
+		(model "${KIPRJMOD}/../0_PAY_3D_Model_Library/LT3065EDDPBF.step"
 			(offset
 				(xyz 0 0 0)
 			)
