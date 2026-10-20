@@ -4,10 +4,12 @@
 |---|---|
 | **Board** | 200_40 Payload Interface Board (APEx PMPD thruster, 6U CubeSat) |
 | **Reviewed files** | `PIB.kicad_sch`, `Rogowski.kicad_sch`, `Valve Driver.kicad_sch`, `DPT Mux.kicad_sch`, `PIB.kicad_pcb` (parity only), `firmware/firmware.ioc` (pin/clock config) |
-| **Reference docs** | `Payload ICD.pdf` (Rev 2.0, CDR), `PIB Block Diagram.drawio.png`, `200_60 DPT Sensor Board` |
+| **Scope** | The PIB (200_40) only. The igniter board (200_80) is a boilerplate design and out of scope; only the PIB side of the J5 interface is reviewed. |
+| **Reference docs** | `Payload ICD.pdf` (Rev 2.0, CDR), `PIB Block Diagram.drawio.png`, `200_60 DPT Sensor Board`, `Rogowski_Coil_Characterization.md` (coil measurements and integrator sizing) |
+| **Datasheets used** | In `200_40 PIB/`: ADM1270 (Rev. A; timer, foldback and ISET figures) and Si7489DP (SOA and thermal impedance). In the repo root: LT3065 (Rev. F). Also LMP202x (TI SNOSAY9G, Rev. G), which is no longer in the repo. |
 | **Design state** | branch `pib-split`, `d2c2d1b` (2026-10-20); schematics unchanged in the working copy |
 | **PCB** | Layout in progress. Schematic parity is clean (0 issues, 2026-10-20). After a zone refill, DRC still shows 194 unconnected items and 34 shorts, which is expected mid-route. Before release: give D11/D36 copper for heat (F9), then regenerate the fab outputs and the iBOM. |
-| **Tools** | KiCad 10.0.4 (`kicad-cli` ERC, netlist, DRC w/ schematic parity) |
+| **Tools** | KiCad 10.0.4 (`kicad-cli` ERC, netlist, DRC w/ schematic parity). To re-run: point `KICAD_CONFIG_HOME` at a scratch directory whose `10.0/` holds only the stock `sym-lib-table`/`fp-lib-table` (from `/usr/share/kicad/template/`), so library warnings are real; run `kicad-cli sch erc --severity-all PIB.kicad_sch`; and compare `kicad-cli sch export netlist` output between revisions (`git archive` the old one) to see exactly which parts and nets changed. |
 | **Last updated** | 2026-10-20 |
 
 **Status key:** `OPEN` (needs a design change) · `VERIFY` (needs a datasheet, bench or part check) · `OPTIONAL` (recommended hardening, not required) · `ICD` (schematic is correct; the ICD must change)
@@ -33,7 +35,7 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 - Power architecture: the EPS supplies `VBAT_HOT` with a 4 A OCP. `VBAT_HOT` (from J3, D3 TVS) → U19 upstream eFuse (3.6 A, set to trip before the EPS) → `VBAT_PROT` → heaters, LT3065 `+12V`, and the discharge (U5) and igniter (U7) branch eFuses. The undervoltage cutoffs are staged and intentional: the branches trip at 12.75 V and the upstream at 12.0 V, both before the EPS cutoff, which protects the pack and sheds the thruster first.
 - The CDH connector is the vertical (MS) part.
 - Only 2 P/T sensors (tank, frit) are fitted; a third may be added later.
-- Op amps with heavy-ion DSEE test heritage (OP27/OP37 family) are preferred over RRIO parts that lack it. Clamp the outputs to the ADC range instead.
+- Op amps with heavy-ion DSEE test heritage (OP27/OP37 family) are preferred over RRIO parts that lack it. Clamp the outputs to the ADC range instead. The heavy-ion-tested LMP2022 is **not** suitable for the Rogowski or other fast paths: it's auto-zero, slew-limited to ≈ 40 mV/µs, and TI recommends closed-loop bandwidth under 20 kHz (LMP202x datasheet §8.1.5). It's fine for slow sensors only.
 - `/~{PD_RST}` (PA12) is the shared active-low reset for the Rogowski integrator and the igniter peak detectors. The igniter board inverts it (Q5 → `/IGNITER_nRST`) to drive its peak-detector reset FETs.
 - **BOM policy:** every resistor whose value sets a threshold, gain, current limit or timing uses **0.1% tolerance**. That includes UV/OV, ISET, FB_PG and FLB dividers, regulator feedback (R17/R18, R75), IMAX (R2), the Rogowski network and V<sub>REF</sub> divider, NTC bias and pulse-timing resistors. Generic pull-ups, pull-downs and series/gate resistors (e.g. 10k/100k pull-downs, 100 Ω series) can stay at standard tolerance. Current-sense resistors are 1%.
 - Discharge branch load (`VBAT_DCHG`, J12): 20 W average, flat, as 0.8 s on / 0.2 s idle per second. That's ≈ 25 W while drawing: 1.5 A at 16.8 V, up to 2.1 A at the 12 V cutoff.
@@ -197,7 +199,7 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
 | ID | Question | Known so far |
 |---|---|---|
 | Q3 | Latching valve data: part number, coil current, and required pulse width. These set the C11 pulse RC and the D36 pulse rating (F9). | NC valve: LHDB1223518H, 12 V DC continuous, ~600 mW (~50 mA). Library also has LHLA1252x11H (likely the latching valve; confirm). |
-| Q8 | Flight Rogowski coil (PEM CWTMini50HF/150 coil head): confirm the precise open-circuit M (offset-corrected integral at the trough ÷ CT peak). **After the BNC → MMCX re-termination, re-measure the coil's DC resistance and M through the final cable and connector.** The integrator gain depends on R79 + Z<sub>s</sub>. | **Measured 2026-10-19** (380 µF from 200 V via a shorting stick, CT reference): open-circuit **M ≈ 1.7 nH (±10%)** from ∫V<sub>coil</sub>dt vs CT and from the onset step. **Coil resistance 154 Ω DC.** A 50 Ω load attenuated the signal ≈ 3–4×, resistively. The steps in dI/dt at ≈ 41 and 84 µs come from the shorting-stick arc. The transducer trough read ≈ 10–20% above the CT (rough read); check the CT scaling. |
+| Q8 | Flight Rogowski coil (PEM CWTMini50HF/150 coil head): confirm the precise open-circuit M (offset-corrected integral at the trough ÷ CT peak). **After the BNC → MMCX re-termination, re-measure the coil's DC resistance and M through the final cable and connector.** The integrator gain depends on R79 + Z<sub>s</sub>. | **Measured 2026-10-19** (380 µF from 200 V via a shorting stick, CT reference): open-circuit **M ≈ 1.7 nH (±10%)** from ∫V<sub>coil</sub>dt vs CT and from the onset step. **Coil resistance 154 Ω DC.** A 50 Ω load attenuated the signal ≈ 3–4×, resistively. The steps in dI/dt at ≈ 41 and 84 µs come from the shorting-stick arc. The transducer trough read ≈ 10–20% above the CT (rough read); check the CT scaling. Full test record: `Rogowski_Coil_Characterization.md`. |
 
 ---
 
