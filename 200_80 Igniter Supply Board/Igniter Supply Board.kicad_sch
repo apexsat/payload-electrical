@@ -3986,336 +3986,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Diode:PESD3V3U1UL"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "D"
-				(at 0 2.54 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "PESD3V3U1UL"
-				(at 0 -2.54 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" "Diode_SMD:D_SOD-882"
-				(at 0 -5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESD3V3U1UL.pdf"
-				(at 0 5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Ultra low capacitance unidirectional ESD protection diode, 3.3V, SOD-882"
-				(at 0 7.62 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "diode"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "D*SOD?882"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "PESD3V3U1UL_0_1"
-				(polyline
-					(pts
-						(xy -1.27 -1.27) (xy -1.27 1.27) (xy -0.762 1.27)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 0) (xy -1.27 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 -1.27) (xy 1.27 1.27) (xy -1.27 0) (xy 1.27 -1.27)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "PESD3V3U1UL_1_1"
-				(pin passive line
-					(at -3.81 0 0)
-					(length 2.54)
-					(name "K"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 3.81 0 180)
-					(length 2.54)
-					(name "A"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "Diode:PESD5V0S1UL"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "D"
-				(at 0 2.54 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "PESD5V0S1UL"
-				(at 0 -2.54 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" "Diode_SMD:D_SOD-882"
-				(at 0 -5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESD5V0S1UL.pdf"
-				(at 0 5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Unidirectional ESD protection diode, 5V, SOD-882"
-				(at 0 7.62 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "diode"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "D*SOD?882"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "PESD5V0S1UL_0_1"
-				(polyline
-					(pts
-						(xy -1.27 -1.27) (xy -1.27 1.27) (xy -0.762 1.27)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 0) (xy -1.27 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 -1.27) (xy 1.27 1.27) (xy -1.27 0) (xy 1.27 -1.27)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "PESD5V0S1UL_1_1"
-				(pin passive line
-					(at -3.81 0 0)
-					(length 2.54)
-					(name "K"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 3.81 0 180)
-					(length 2.54)
-					(name "A"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Driver_FET:ACPL-P343"
 			(pin_names
 				(hide yes)
@@ -6449,9 +6119,9 @@
 		)
 		(uuid "0bf320d5-ace4-4bc5-aa25-aee17943ff8f")
 	)
-	(text "TVS"
+	(text "ESD Protection"
 		(exclude_from_sim no)
-		(at 52.07 193.04 0)
+		(at 39.116 197.104 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6510,7 +6180,7 @@
 		(uuid "fa4a0cb3-6bd3-45a0-9b92-f861b006ed7e")
 	)
 	(junction
-		(at 354.33 161.29)
+		(at 382.27 92.71)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "01602d7e-7b50-41d8-a5ae-5fac2237eb4c")
@@ -6532,6 +6202,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "04bc8abb-68f1-4de7-b8f3-20aa6baf3905")
+	)
+	(junction
+		(at 312.42 95.25)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "05eb2bdd-cb67-463d-b546-309cea9cc564")
 	)
 	(junction
 		(at 78.74 53.34)
@@ -6558,7 +6234,13 @@
 		(uuid "147f10e7-0861-4f42-aae9-3435742c5424")
 	)
 	(junction
-		(at 358.14 92.71)
+		(at 289.56 163.83)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "166c0c29-e1bd-43b9-ad73-70cf5f41ee12")
+	)
+	(junction
+		(at 328.93 161.29)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "18b3c90d-55d4-4d7c-baa7-5637cd347c36")
@@ -6576,19 +6258,13 @@
 		(uuid "1edfbbb2-ffe6-4ec7-8d59-407fd0e41220")
 	)
 	(junction
-		(at 312.42 95.25)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "2142ea40-d2e2-4969-ab20-c7ae24e5662d")
-	)
-	(junction
 		(at 205.74 152.4)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "21936fe3-c545-41b9-a284-f0791fc8fb26")
 	)
 	(junction
-		(at 384.81 92.71)
+		(at 355.6 161.29)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "233b2331-ca6f-4e3c-a9bf-e2016f2e133c")
@@ -6672,12 +6348,6 @@
 		(uuid "57b89c68-ed3c-4973-ba4f-daf0b740e10f")
 	)
 	(junction
-		(at 289.56 163.83)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "5a849c5e-4181-415e-807f-a580403779c2")
-	)
-	(junction
 		(at 96.52 162.56)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6688,6 +6358,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "5cda83fb-bef3-4583-be3c-284bb2df3e72")
+	)
+	(junction
+		(at 59.69 116.84)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "602fda21-2479-41ce-9b17-79c9e3029f3a")
 	)
 	(junction
 		(at 186.69 166.37)
@@ -6876,7 +6552,7 @@
 		(uuid "a637ea26-ae30-4a1c-b8ca-dc5f2c28f2f9")
 	)
 	(junction
-		(at 368.3 92.71)
+		(at 339.09 161.29)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "ae4a1ddb-1812-4ef1-8c0f-686fe3735ecc")
@@ -7002,19 +6678,19 @@
 		(uuid "e3116e4b-845d-4f63-94ab-46500b7cd20d")
 	)
 	(junction
-		(at 327.66 161.29)
+		(at 355.6 92.71)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e46fc1d8-1d48-4e1c-b6de-bd8caaa95042")
 	)
 	(junction
-		(at 69.85 212.09)
+		(at 49.53 220.98)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e61b2771-dea9-4b18-b611-9b0b310a6594")
 	)
 	(junction
-		(at 337.82 161.29)
+		(at 365.76 92.71)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e9f6407e-9f87-4a63-ad66-2cfe781cb984")
@@ -7165,7 +6841,7 @@
 	)
 	(wire
 		(pts
-			(xy 48.26 201.93) (xy 48.26 203.2)
+			(xy 29.21 224.79) (xy 29.21 226.06)
 		)
 		(stroke
 			(width 0)
@@ -7185,7 +6861,7 @@
 	)
 	(wire
 		(pts
-			(xy 325.12 161.29) (xy 337.82 161.29)
+			(xy 353.06 92.71) (xy 365.76 92.71)
 		)
 		(stroke
 			(width 0)
@@ -7225,7 +6901,7 @@
 	)
 	(wire
 		(pts
-			(xy 358.14 92.71) (xy 358.14 81.28)
+			(xy 328.93 161.29) (xy 328.93 149.86)
 		)
 		(stroke
 			(width 0)
@@ -7335,7 +7011,7 @@
 	)
 	(wire
 		(pts
-			(xy 43.18 203.2) (xy 43.18 207.01)
+			(xy 24.13 226.06) (xy 24.13 229.87)
 		)
 		(stroke
 			(width 0)
@@ -7375,7 +7051,7 @@
 	)
 	(wire
 		(pts
-			(xy 327.66 149.86) (xy 302.26 149.86)
+			(xy 355.6 81.28) (xy 330.2 81.28)
 		)
 		(stroke
 			(width 0)
@@ -7402,6 +7078,16 @@
 			(type default)
 		)
 		(uuid "20b3b77d-9d94-4f0d-a27d-106583b73ddc")
+	)
+	(wire
+		(pts
+			(xy 24.13 250.19) (xy 24.13 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "223d9d8c-5a37-40f5-80da-35af19b97862")
 	)
 	(wire
 		(pts
@@ -7505,16 +7191,6 @@
 	)
 	(wire
 		(pts
-			(xy 323.85 95.25) (xy 332.74 95.25)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "31819757-e94e-445b-8797-795786d2da16")
-	)
-	(wire
-		(pts
 			(xy 99.06 111.76) (xy 102.87 111.76)
 		)
 		(stroke
@@ -7595,7 +7271,7 @@
 	)
 	(wire
 		(pts
-			(xy 302.26 149.86) (xy 302.26 158.75)
+			(xy 330.2 81.28) (xy 330.2 90.17)
 		)
 		(stroke
 			(width 0)
@@ -7625,7 +7301,7 @@
 	)
 	(wire
 		(pts
-			(xy 375.92 166.37) (xy 361.95 166.37)
+			(xy 403.86 97.79) (xy 389.89 97.79)
 		)
 		(stroke
 			(width 0)
@@ -7845,7 +7521,7 @@
 	)
 	(wire
 		(pts
-			(xy 337.82 161.29) (xy 354.33 161.29)
+			(xy 365.76 92.71) (xy 382.27 92.71)
 		)
 		(stroke
 			(width 0)
@@ -7865,7 +7541,7 @@
 	)
 	(wire
 		(pts
-			(xy 327.66 161.29) (xy 327.66 149.86)
+			(xy 355.6 92.71) (xy 355.6 81.28)
 		)
 		(stroke
 			(width 0)
@@ -7895,7 +7571,7 @@
 	)
 	(wire
 		(pts
-			(xy 358.14 81.28) (xy 332.74 81.28)
+			(xy 328.93 149.86) (xy 303.53 149.86)
 		)
 		(stroke
 			(width 0)
@@ -8065,7 +7741,17 @@
 	)
 	(wire
 		(pts
-			(xy 69.85 212.09) (xy 69.85 209.55)
+			(xy 29.21 248.92) (xy 29.21 250.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "835de8c8-8d73-410b-9d6e-3b01d3d5e81b")
+	)
+	(wire
+		(pts
+			(xy 49.53 220.98) (xy 49.53 218.44)
 		)
 		(stroke
 			(width 0)
@@ -8075,7 +7761,7 @@
 	)
 	(wire
 		(pts
-			(xy 312.42 95.25) (xy 323.85 95.25)
+			(xy 312.42 95.25) (xy 330.2 95.25)
 		)
 		(stroke
 			(width 0)
@@ -8095,7 +7781,7 @@
 	)
 	(wire
 		(pts
-			(xy 66.04 212.09) (xy 69.85 212.09)
+			(xy 45.72 220.98) (xy 49.53 220.98)
 		)
 		(stroke
 			(width 0)
@@ -8365,6 +8051,16 @@
 	)
 	(wire
 		(pts
+			(xy 29.21 250.19) (xy 24.13 250.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a5c7090f-10d6-4d5e-b49b-c9bf19620d5e")
+	)
+	(wire
+		(pts
 			(xy 195.58 215.9) (xy 201.93 215.9)
 		)
 		(stroke
@@ -8375,7 +8071,7 @@
 	)
 	(wire
 		(pts
-			(xy 355.6 92.71) (xy 368.3 92.71)
+			(xy 326.39 161.29) (xy 339.09 161.29)
 		)
 		(stroke
 			(width 0)
@@ -8392,6 +8088,16 @@
 			(type default)
 		)
 		(uuid "a7248a2f-88c9-4c59-bb9b-9edf8ebec4dd")
+	)
+	(wire
+		(pts
+			(xy 289.56 163.83) (xy 303.53 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a7c13d43-59a7-46a7-b8ac-906244c1682a")
 	)
 	(wire
 		(pts
@@ -8575,13 +8281,13 @@
 	)
 	(wire
 		(pts
-			(xy 289.56 163.83) (xy 302.26 163.83)
+			(xy 59.69 116.84) (xy 71.12 116.84)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "beb41cd7-e256-4166-9e0d-62c13fb2a4a9")
+		(uuid "be3c731b-1c04-44a6-96e0-57f012fb4382")
 	)
 	(wire
 		(pts
@@ -8625,7 +8331,7 @@
 	)
 	(wire
 		(pts
-			(xy 332.74 81.28) (xy 332.74 90.17)
+			(xy 303.53 149.86) (xy 303.53 158.75)
 		)
 		(stroke
 			(width 0)
@@ -8655,7 +8361,7 @@
 	)
 	(wire
 		(pts
-			(xy 48.26 203.2) (xy 43.18 203.2)
+			(xy 29.21 226.06) (xy 24.13 226.06)
 		)
 		(stroke
 			(width 0)
@@ -8685,7 +8391,7 @@
 	)
 	(wire
 		(pts
-			(xy 354.33 161.29) (xy 365.76 161.29)
+			(xy 382.27 92.71) (xy 393.7 92.71)
 		)
 		(stroke
 			(width 0)
@@ -8805,7 +8511,7 @@
 	)
 	(wire
 		(pts
-			(xy 66.04 168.91) (xy 83.82 168.91)
+			(xy 66.04 171.45) (xy 83.82 171.45)
 		)
 		(stroke
 			(width 0)
@@ -8875,7 +8581,7 @@
 	)
 	(wire
 		(pts
-			(xy 66.04 171.45) (xy 83.82 171.45)
+			(xy 66.04 168.91) (xy 83.82 168.91)
 		)
 		(stroke
 			(width 0)
@@ -8955,7 +8661,7 @@
 	)
 	(wire
 		(pts
-			(xy 406.4 97.79) (xy 392.43 97.79)
+			(xy 377.19 166.37) (xy 363.22 166.37)
 		)
 		(stroke
 			(width 0)
@@ -8995,7 +8701,7 @@
 	)
 	(wire
 		(pts
-			(xy 384.81 92.71) (xy 396.24 92.71)
+			(xy 355.6 161.29) (xy 367.03 161.29)
 		)
 		(stroke
 			(width 0)
@@ -9005,7 +8711,7 @@
 	)
 	(wire
 		(pts
-			(xy 53.34 116.84) (xy 71.12 116.84)
+			(xy 44.45 116.84) (xy 59.69 116.84)
 		)
 		(stroke
 			(width 0)
@@ -9065,7 +8771,7 @@
 	)
 	(wire
 		(pts
-			(xy 69.85 214.63) (xy 69.85 212.09)
+			(xy 49.53 223.52) (xy 49.53 220.98)
 		)
 		(stroke
 			(width 0)
@@ -9145,7 +8851,7 @@
 	)
 	(wire
 		(pts
-			(xy 368.3 92.71) (xy 384.81 92.71)
+			(xy 339.09 161.29) (xy 355.6 161.29)
 		)
 		(stroke
 			(width 0)
@@ -9225,6 +8931,16 @@
 	)
 	(wire
 		(pts
+			(xy 59.69 119.38) (xy 59.69 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f629b715-9e2d-4a2b-ad5c-59512d23b41d")
+	)
+	(wire
+		(pts
 			(xy 173.99 66.04) (xy 173.99 97.79)
 		)
 		(stroke
@@ -9294,7 +9010,7 @@
 		(uuid "00e42591-dd47-4918-8fd3-9a43294ec84d")
 	)
 	(label "IGNITER_PULSE"
-		(at 53.34 116.84 0)
+		(at 44.45 116.84 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -9334,7 +9050,7 @@
 		(uuid "154f1f37-1b28-416e-babd-12716d8b191a")
 	)
 	(label "ADC_I_IGN_PK"
-		(at 365.76 161.29 180)
+		(at 393.7 92.71 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -9344,7 +9060,7 @@
 		(uuid "1f111787-edaf-40c2-871f-4d20a6b3c542")
 	)
 	(label "ADC_V_IGN_PK"
-		(at 396.24 92.71 180)
+		(at 367.03 161.29 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -9364,7 +9080,7 @@
 		(uuid "34167ac4-892e-47cf-a679-3619eb6b249f")
 	)
 	(label "IGNITER_nRST"
-		(at 375.92 166.37 180)
+		(at 403.86 97.79 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -9394,7 +9110,7 @@
 		(uuid "689e7061-d60f-41a8-882f-2bcb0b85a585")
 	)
 	(label "IGNITER_nRST"
-		(at 406.4 97.79 180)
+		(at 377.19 166.37 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -9404,7 +9120,7 @@
 		(uuid "702e0f67-81e0-443a-a2eb-9f1425a2b922")
 	)
 	(label "ADC_V_IGN_PK"
-		(at 83.82 168.91 180)
+		(at 83.82 171.45 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -9414,7 +9130,7 @@
 		(uuid "83b3ef3e-3fc4-4b71-950b-6bf6146d7741")
 	)
 	(label "ADC_I_IGN_PK"
-		(at 83.82 171.45 180)
+		(at 83.82 168.91 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -9444,7 +9160,7 @@
 		(uuid "cd4f9f24-b4d7-49cc-839d-16de6ae17305")
 	)
 	(label "IGNITER_PULSE"
-		(at 48.26 201.93 180)
+		(at 29.21 224.79 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -9452,6 +9168,16 @@
 			(justify right bottom)
 		)
 		(uuid "e093eb95-a520-4881-a8bb-5a355c71f95c")
+	)
+	(label "ADC_NTC_IGN"
+		(at 29.21 248.92 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "e128d091-537e-462a-8053-a100361a3def")
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -9935,7 +9661,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 327.66 165.1 0)
+		(at 355.6 96.52 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9945,7 +9671,7 @@
 		(dnp no)
 		(uuid "0c178b6c-645d-41d1-b279-b55fc2e1361c")
 		(property "Reference" "C35"
-			(at 330.454 163.83 0)
+			(at 358.394 95.25 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9956,7 +9682,7 @@
 			)
 		)
 		(property "Value" "1nF"
-			(at 330.454 166.37 0)
+			(at 358.394 97.79 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9967,7 +9693,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
-			(at 328.6252 168.91 0)
+			(at 356.5652 100.33 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9978,7 +9704,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 327.66 165.1 0)
+			(at 355.6 96.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9989,7 +9715,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 327.66 165.1 0)
+			(at 355.6 96.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11234,6 +10960,87 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R_US")
+		(at 59.69 123.19 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "27b28ceb-e6c1-4b27-b172-f7ae77266c50")
+		(property "Reference" "R14"
+			(at 61.468 122.174 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 61.468 124.714 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+			(at 60.706 123.444 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 59.69 123.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor, US symbol"
+			(at 59.69 123.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "6b5abd03-f3e7-4e8f-ab5d-59be449e26c4")
+		)
+		(pin "1"
+			(uuid "3fb275f9-6d9d-43d7-9113-0757fbe4c8ff")
+		)
+		(instances
+			(project "Igniter Supply Board"
+				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
+					(reference "R14")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:D_Zener")
 		(at 223.52 173.99 270)
 		(unit 1)
@@ -11547,88 +11354,6 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "#PWR012")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Diode:PESD5V0S1UL")
-		(at 69.85 205.74 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "3190371d-e49f-4ee7-bda6-5e7129b2abed")
-		(property "Reference" "D14"
-			(at 72.39 204.4699 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "PESD5V0S1UL"
-			(at 72.39 207.0099 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-882"
-			(at 64.77 205.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESD5V0S1UL.pdf"
-			(at 74.93 205.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unidirectional ESD protection diode, 5V, SOD-882"
-			(at 77.47 205.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "24fc0950-d3cd-464c-a07c-c435bda317dd")
-		)
-		(pin "1"
-			(uuid "fff3683e-de53-4f1c-be3b-3e9dd19f47ec")
-		)
-		(instances
-			(project "Igniter Supply Board"
-				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
-					(reference "D14")
 					(unit 1)
 				)
 			)
@@ -11949,6 +11674,84 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "J2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 24.13 261.62 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "3884993e-41df-4699-867e-b37d79611a8f")
+		(property "Reference" "#PWR056"
+			(at 24.13 267.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 24.13 266.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 24.13 261.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 24.13 261.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 24.13 261.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "7c837356-b4d6-4003-9d18-5b5b06891fb8")
+		)
+		(instances
+			(project "Igniter Supply Board"
+				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
+					(reference "#PWR056")
 					(unit 1)
 				)
 			)
@@ -12348,88 +12151,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Diode:PESD5V0S1UL")
-		(at 69.85 218.44 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "416d98ab-df7c-4061-be3a-e64b2e7ef5dc")
-		(property "Reference" "D15"
-			(at 72.39 217.1699 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "PESD5V0S1UL"
-			(at 72.39 219.7099 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-882"
-			(at 64.77 218.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESD5V0S1UL.pdf"
-			(at 74.93 218.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unidirectional ESD protection diode, 5V, SOD-882"
-			(at 77.47 218.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "c68e5dc9-e7ed-4006-8947-0320fcb370d4")
-		)
-		(pin "1"
-			(uuid "71e0618f-fa80-47e9-8d5f-5c18ed79a4b5")
-		)
-		(instances
-			(project "Igniter Supply Board"
-				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
-					(reference "D15")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "0_PAY_Symbol_Library:ACS37042KLHBLT-030B3")
 		(at 229.87 92.71 0)
 		(unit 1)
@@ -12518,8 +12239,8 @@
 		)
 	)
 	(symbol
-		(lib_id "power:VDD")
-		(at 69.85 222.25 180)
+		(lib_id "Device:D_Zener")
+		(at 49.53 227.33 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -12528,30 +12249,31 @@
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "49157872-9b8a-4dba-95ec-77e7f3a6a3bf")
-		(property "Reference" "#PWR018"
-			(at 69.85 218.44 0)
-			(hide yes)
+		(uuid "4297289c-3dd0-468b-81d8-7b9cc007ae5a")
+		(property "Reference" "D15"
+			(at 52.07 226.0599 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Value" "-5V"
-			(at 69.85 227.33 0)
+		(property "Value" "MMSZ4690"
+			(at 52.07 228.5999 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Footprint" ""
-			(at 69.85 222.25 0)
+		(property "Footprint" "Diode_SMD:D_SOD-123"
+			(at 49.53 227.33 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12562,7 +12284,88 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 69.85 222.25 0)
+			(at 49.53 227.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Zener diode"
+			(at 49.53 227.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "2318fa72-0499-48a5-9a36-1c855498b93f")
+		)
+		(pin "1"
+			(uuid "1fe4a45d-05a9-4956-8c03-f1bf9491e5a0")
+		)
+		(instances
+			(project "Igniter Supply Board"
+				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
+					(reference "D15")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VDD")
+		(at 49.53 231.14 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "49157872-9b8a-4dba-95ec-77e7f3a6a3bf")
+		(property "Reference" "#PWR018"
+			(at 49.53 227.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "-5V"
+			(at 49.53 236.22 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 49.53 231.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 49.53 231.14 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12573,7 +12376,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"VDD\""
-			(at 69.85 222.25 0)
+			(at 49.53 231.14 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12590,6 +12393,88 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "#PWR018")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Zener")
+		(at 49.53 214.63 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4bc60d60-1a73-4466-b238-dc7d39980ba1")
+		(property "Reference" "D14"
+			(at 52.07 213.3599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MMSZ4690"
+			(at 52.07 215.8999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-123"
+			(at 49.53 214.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 49.53 214.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Zener diode"
+			(at 49.53 214.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "d515d450-a37e-41cc-8e14-59951bc66d28")
+		)
+		(pin "1"
+			(uuid "6c15ca9e-f7b8-4224-b0d5-cef485c0605f")
+		)
+		(instances
+			(project "Igniter Supply Board"
+				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
+					(reference "D14")
 					(unit 1)
 				)
 			)
@@ -12918,7 +12803,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 358.14 96.52 0)
+		(at 328.93 165.1 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -12928,7 +12813,7 @@
 		(dnp no)
 		(uuid "54532946-8695-4bbd-93cb-a0d6fb0ecc5d")
 		(property "Reference" "C34"
-			(at 360.934 95.25 0)
+			(at 331.724 163.83 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12939,7 +12824,7 @@
 			)
 		)
 		(property "Value" "1nF"
-			(at 360.934 97.79 0)
+			(at 331.724 166.37 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12950,7 +12835,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
-			(at 359.1052 100.33 0)
+			(at 329.8952 168.91 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12961,7 +12846,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 358.14 96.52 0)
+			(at 328.93 165.1 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12972,7 +12857,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 358.14 96.52 0)
+			(at 328.93 165.1 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13422,7 +13307,7 @@
 	)
 	(symbol
 		(lib_id "power:VDD")
-		(at 69.85 201.93 0)
+		(at 49.53 210.82 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -13433,7 +13318,7 @@
 		(fields_autoplaced yes)
 		(uuid "62ec8e60-3e48-457e-aa26-6de40f2e3c53")
 		(property "Reference" "#PWR051"
-			(at 69.85 205.74 0)
+			(at 49.53 214.63 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13444,7 +13329,7 @@
 			)
 		)
 		(property "Value" "5V"
-			(at 69.85 196.85 0)
+			(at 49.53 205.74 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13454,7 +13339,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 69.85 201.93 0)
+			(at 49.53 210.82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13465,7 +13350,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 69.85 201.93 0)
+			(at 49.53 210.82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13476,7 +13361,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"VDD\""
-			(at 69.85 201.93 0)
+			(at 49.53 210.82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13581,7 +13466,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 43.18 214.63 0)
+		(at 24.13 237.49 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -13592,7 +13477,7 @@
 		(fields_autoplaced yes)
 		(uuid "65b68adf-9284-40e9-8ccc-c0409805d0d8")
 		(property "Reference" "#PWR053"
-			(at 43.18 220.98 0)
+			(at 24.13 243.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13603,7 +13488,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 43.18 219.71 0)
+			(at 24.13 242.57 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13613,7 +13498,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 43.18 214.63 0)
+			(at 24.13 237.49 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13624,7 +13509,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 43.18 214.63 0)
+			(at 24.13 237.49 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13635,7 +13520,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 43.18 214.63 0)
+			(at 24.13 237.49 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13659,7 +13544,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:BSS123")
-		(at 356.87 166.37 0)
+		(at 384.81 97.79 0)
 		(mirror y)
 		(unit 1)
 		(body_style 1)
@@ -13670,7 +13555,7 @@
 		(dnp no)
 		(uuid "66950486-1d18-45fa-bcf1-19f244ac4067")
 		(property "Reference" "Q4"
-			(at 358.14 168.148 0)
+			(at 386.08 99.568 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13681,7 +13566,7 @@
 			)
 		)
 		(property "Value" "BSS123"
-			(at 358.14 170.688 0)
+			(at 386.08 102.108 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13692,7 +13577,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 351.79 168.275 0)
+			(at 379.73 99.695 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13705,7 +13590,7 @@
 			)
 		)
 		(property "Datasheet" "http://www.diodes.com/assets/Datasheets/ds30366.pdf"
-			(at 351.79 170.18 0)
+			(at 379.73 101.6 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13717,7 +13602,7 @@
 			)
 		)
 		(property "Description" "0.17A Id, 100V Vds, N-Channel MOSFET, SOT-23"
-			(at 356.87 166.37 0)
+			(at 384.81 97.79 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13912,7 +13797,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:BSS123")
-		(at 387.35 97.79 0)
+		(at 358.14 166.37 0)
 		(mirror y)
 		(unit 1)
 		(body_style 1)
@@ -13923,7 +13808,7 @@
 		(dnp no)
 		(uuid "6e1e7d89-812a-43b0-8584-57547a9e752d")
 		(property "Reference" "Q2"
-			(at 388.62 99.568 0)
+			(at 359.41 168.148 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13934,7 +13819,7 @@
 			)
 		)
 		(property "Value" "BSS123"
-			(at 388.62 102.108 0)
+			(at 359.41 170.688 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13945,7 +13830,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 382.27 99.695 0)
+			(at 353.06 168.275 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13958,7 +13843,7 @@
 			)
 		)
 		(property "Datasheet" "http://www.diodes.com/assets/Datasheets/ds30366.pdf"
-			(at 382.27 101.6 0)
+			(at 353.06 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13970,7 +13855,7 @@
 			)
 		)
 		(property "Description" "0.17A Id, 100V Vds, N-Channel MOSFET, SOT-23"
-			(at 387.35 97.79 0)
+			(at 358.14 166.37 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14078,7 +13963,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 354.33 171.45 0)
+		(at 382.27 102.87 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -14089,7 +13974,7 @@
 		(fields_autoplaced yes)
 		(uuid "6fe1dc21-56f2-4231-b5fa-ba6bb0121979")
 		(property "Reference" "#PWR049"
-			(at 354.33 177.8 0)
+			(at 382.27 109.22 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14100,7 +13985,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 354.33 176.53 0)
+			(at 382.27 107.95 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14110,7 +13995,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 354.33 171.45 0)
+			(at 382.27 102.87 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14121,7 +14006,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 354.33 171.45 0)
+			(at 382.27 102.87 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14132,7 +14017,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 354.33 171.45 0)
+			(at 382.27 102.87 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14491,7 +14376,7 @@
 	(symbol
 		(lib_name "D_Schottky_1")
 		(lib_id "Device:D_Schottky")
-		(at 321.31 161.29 180)
+		(at 349.25 92.71 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -14501,7 +14386,7 @@
 		(dnp no)
 		(uuid "72f6c83b-31fc-4a06-b15e-ce1337e791b9")
 		(property "Reference" "D9"
-			(at 318.77 155.448 0)
+			(at 346.71 86.868 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14512,7 +14397,7 @@
 			)
 		)
 		(property "Value" "BAT54L"
-			(at 318.77 157.988 0)
+			(at 346.71 89.408 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14523,7 +14408,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-3"
-			(at 321.31 161.29 0)
+			(at 349.25 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14534,7 +14419,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 321.31 161.29 0)
+			(at 349.25 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14545,7 +14430,7 @@
 			)
 		)
 		(property "Description" "Schottky diode"
-			(at 321.31 161.29 0)
+			(at 349.25 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14572,7 +14457,7 @@
 	)
 	(symbol
 		(lib_id "Device:Opamp_Dual")
-		(at 340.36 92.71 0)
+		(at 311.15 161.29 0)
 		(mirror x)
 		(unit 2)
 		(body_style 1)
@@ -14583,7 +14468,7 @@
 		(dnp no)
 		(uuid "75b3df56-b12c-4498-93b9-9c18e2aa5983")
 		(property "Reference" "U4"
-			(at 340.36 83.566 0)
+			(at 311.15 152.146 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14593,7 +14478,7 @@
 			)
 		)
 		(property "Value" "LMP2022"
-			(at 340.36 86.106 0)
+			(at 311.15 154.686 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14603,7 +14488,7 @@
 			)
 		)
 		(property "Footprint" "Package_SO:SOIC-8_5.3x6.2mm_P1.27mm"
-			(at 340.36 92.71 0)
+			(at 311.15 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14614,7 +14499,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 340.36 92.71 0)
+			(at 311.15 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14625,7 +14510,7 @@
 			)
 		)
 		(property "Description" "Dual operational amplifier"
-			(at 340.36 92.71 0)
+			(at 311.15 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14636,7 +14521,7 @@
 			)
 		)
 		(property "Sim.Library" "${KICAD9_SYMBOL_DIR}/Simulation_SPICE.sp"
-			(at 340.36 92.71 0)
+			(at 311.15 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14647,7 +14532,7 @@
 			)
 		)
 		(property "Sim.Name" "kicad_builtin_opamp_dual"
-			(at 340.36 92.71 0)
+			(at 311.15 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14658,7 +14543,7 @@
 			)
 		)
 		(property "Sim.Device" "SUBCKT"
-			(at 340.36 92.71 0)
+			(at 311.15 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14669,7 +14554,7 @@
 			)
 		)
 		(property "Sim.Pins" "1=out1 2=in1- 3=in1+ 4=vee 5=in2+ 6=in2- 7=out2 8=vcc"
-			(at 340.36 92.71 0)
+			(at 311.15 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14713,9 +14598,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:Opamp_Dual")
-		(at 309.88 161.29 0)
-		(mirror x)
+		(lib_id "Device:D_Zener")
+		(at 24.13 210.82 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -14723,29 +14607,32 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "771cd37c-7eb8-48b8-aebe-365d30a101ef")
-		(property "Reference" "U4"
-			(at 309.88 152.146 0)
+		(fields_autoplaced yes)
+		(uuid "766942d6-89b5-4875-b35b-4a4dcb03cade")
+		(property "Reference" "D13"
+			(at 26.67 209.5499 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Value" "LMP2022"
-			(at 309.88 154.686 0)
+		(property "Value" "MMSZ4685"
+			(at 26.67 212.0899 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Footprint" "Package_SO:SOIC-8_5.3x6.2mm_P1.27mm"
-			(at 309.88 161.29 0)
+		(property "Footprint" "Diode_SMD:D_SOD-123"
+			(at 24.13 210.82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14756,7 +14643,87 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 309.88 161.29 0)
+			(at 24.13 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Zener diode"
+			(at 24.13 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "5462e083-264f-40ca-a597-0e9f81e1af86")
+		)
+		(pin "1"
+			(uuid "bbc4fe86-37b9-423d-bbc1-a80563b8942e")
+		)
+		(instances
+			(project "Igniter Supply Board"
+				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
+					(reference "D13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Opamp_Dual")
+		(at 337.82 92.71 0)
+		(mirror x)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "771cd37c-7eb8-48b8-aebe-365d30a101ef")
+		(property "Reference" "U4"
+			(at 337.82 83.566 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LMP2022"
+			(at 337.82 86.106 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_SO:SOIC-8_5.3x6.2mm_P1.27mm"
+			(at 337.82 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 337.82 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14767,7 +14734,7 @@
 			)
 		)
 		(property "Description" "Dual operational amplifier"
-			(at 309.88 161.29 0)
+			(at 337.82 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14778,7 +14745,7 @@
 			)
 		)
 		(property "Sim.Library" "${KICAD9_SYMBOL_DIR}/Simulation_SPICE.sp"
-			(at 309.88 161.29 0)
+			(at 337.82 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14789,7 +14756,7 @@
 			)
 		)
 		(property "Sim.Name" "kicad_builtin_opamp_dual"
-			(at 309.88 161.29 0)
+			(at 337.82 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14800,7 +14767,7 @@
 			)
 		)
 		(property "Sim.Device" "SUBCKT"
-			(at 309.88 161.29 0)
+			(at 337.82 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14811,7 +14778,7 @@
 			)
 		)
 		(property "Sim.Pins" "1=out1 2=in1- 3=in1+ 4=vee 5=in2+ 6=in2- 7=out2 8=vcc"
-			(at 309.88 161.29 0)
+			(at 337.82 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15256,7 +15223,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 327.66 168.91 0)
+		(at 355.6 100.33 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -15267,7 +15234,7 @@
 		(fields_autoplaced yes)
 		(uuid "805cdd96-db69-4117-acc7-4e72529369b1")
 		(property "Reference" "#PWR044"
-			(at 327.66 175.26 0)
+			(at 355.6 106.68 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15278,7 +15245,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 327.66 173.99 0)
+			(at 355.6 105.41 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15288,7 +15255,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 327.66 168.91 0)
+			(at 355.6 100.33 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15299,7 +15266,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 327.66 168.91 0)
+			(at 355.6 100.33 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15310,7 +15277,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 327.66 168.91 0)
+			(at 355.6 100.33 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15504,6 +15471,84 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "TP6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 59.69 127 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "82a8ab3f-938c-4046-80d9-0c938520a93b")
+		(property "Reference" "#PWR08"
+			(at 59.69 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 59.69 132.08 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 59.69 127 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 59.69 127 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 59.69 127 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "75a9cbc2-5dbb-4c6e-afb1-f458c5c71b72")
+		)
+		(instances
+			(project "Igniter Supply Board"
+				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
+					(reference "#PWR08")
 					(unit 1)
 				)
 			)
@@ -16418,7 +16463,7 @@
 	(symbol
 		(lib_name "D_Schottky_1")
 		(lib_id "Device:D_Schottky")
-		(at 351.79 92.71 180)
+		(at 322.58 161.29 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -16428,7 +16473,7 @@
 		(dnp no)
 		(uuid "9857578d-7610-4816-a172-717a4a1d5b9c")
 		(property "Reference" "D10"
-			(at 349.25 86.868 0)
+			(at 320.04 155.448 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16439,7 +16484,7 @@
 			)
 		)
 		(property "Value" "BAT54L"
-			(at 349.25 89.408 0)
+			(at 320.04 157.988 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16450,7 +16495,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-3"
-			(at 351.79 92.71 0)
+			(at 322.58 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16461,7 +16506,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 351.79 92.71 0)
+			(at 322.58 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16472,7 +16517,7 @@
 			)
 		)
 		(property "Description" "Schottky diode"
-			(at 351.79 92.71 0)
+			(at 322.58 161.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16499,7 +16544,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 384.81 102.87 0)
+		(at 355.6 171.45 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -16510,7 +16555,7 @@
 		(fields_autoplaced yes)
 		(uuid "98729032-4688-4fb2-8112-9c28434627ff")
 		(property "Reference" "#PWR045"
-			(at 384.81 109.22 0)
+			(at 355.6 177.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16521,7 +16566,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 384.81 107.95 0)
+			(at 355.6 176.53 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16531,7 +16576,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 384.81 102.87 0)
+			(at 355.6 171.45 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16542,7 +16587,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 384.81 102.87 0)
+			(at 355.6 171.45 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16553,7 +16598,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 384.81 102.87 0)
+			(at 355.6 171.45 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16978,7 +17023,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 368.3 100.33 0)
+		(at 339.09 168.91 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -16989,7 +17034,7 @@
 		(fields_autoplaced yes)
 		(uuid "aa65dd9e-8bb7-4325-9a91-f754f07d7d53")
 		(property "Reference" "#PWR047"
-			(at 368.3 106.68 0)
+			(at 339.09 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17000,7 +17045,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 368.3 105.41 0)
+			(at 339.09 173.99 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17010,7 +17055,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 368.3 100.33 0)
+			(at 339.09 168.91 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17021,7 +17066,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 368.3 100.33 0)
+			(at 339.09 168.91 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17032,7 +17077,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 368.3 100.33 0)
+			(at 339.09 168.91 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17130,88 +17175,6 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "C38")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Diode:PESD3V3U1UL")
-		(at 24.13 210.82 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "ab33b2c0-2ef1-4640-b421-f8413b723829")
-		(property "Reference" "D13"
-			(at 26.67 209.5499 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "PESD3V3U1UL"
-			(at 26.67 212.0899 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-882"
-			(at 19.05 210.82 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESD3V3U1UL.pdf"
-			(at 29.21 210.82 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Ultra low capacitance unidirectional ESD protection diode, 3.3V, SOD-882"
-			(at 31.75 210.82 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "2977515c-791c-48ba-bd06-912d699998e6")
-		)
-		(pin "1"
-			(uuid "11633bb4-23f6-4707-8760-525665c240c5")
-		)
-		(instances
-			(project "Igniter Supply Board"
-				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
-					(reference "D13")
 					(unit 1)
 				)
 			)
@@ -17398,7 +17361,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 337.82 168.91 0)
+		(at 365.76 100.33 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -17409,7 +17372,7 @@
 		(fields_autoplaced yes)
 		(uuid "afd8fadc-a413-416a-958c-d4f01a72ec91")
 		(property "Reference" "#PWR048"
-			(at 337.82 175.26 0)
+			(at 365.76 106.68 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17420,7 +17383,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 337.82 173.99 0)
+			(at 365.76 105.41 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17430,7 +17393,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 337.82 168.91 0)
+			(at 365.76 100.33 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17441,7 +17404,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 337.82 168.91 0)
+			(at 365.76 100.33 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17452,7 +17415,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 337.82 168.91 0)
+			(at 365.76 100.33 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17550,88 +17513,6 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "J1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Diode:PESD3V3U1UL")
-		(at 43.18 210.82 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b1686fb4-d7b8-45aa-a6e2-7e000a575bd3")
-		(property "Reference" "D16"
-			(at 45.72 209.5499 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "PESD3V3U1UL"
-			(at 45.72 212.0899 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-882"
-			(at 38.1 210.82 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESD3V3U1UL.pdf"
-			(at 48.26 210.82 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Ultra low capacitance unidirectional ESD protection diode, 3.3V, SOD-882"
-			(at 50.8 210.82 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "c808bac8-3dd7-44c4-9bc2-6055482a4abe")
-		)
-		(pin "1"
-			(uuid "558143e7-4d8d-4ade-b77a-a07658676a1f")
-		)
-		(instances
-			(project "Igniter Supply Board"
-				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
-					(reference "D16")
 					(unit 1)
 				)
 			)
@@ -17799,7 +17680,7 @@
 	)
 	(symbol
 		(lib_id "Device:D_Zener")
-		(at 368.3 96.52 270)
+		(at 339.09 165.1 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -17810,7 +17691,7 @@
 		(fields_autoplaced yes)
 		(uuid "b89ddd82-a23b-45c3-826c-1f7fefda3641")
 		(property "Reference" "D11"
-			(at 370.84 95.2499 90)
+			(at 341.63 163.8299 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17821,7 +17702,7 @@
 			)
 		)
 		(property "Value" "MMSZ4685"
-			(at 370.84 97.7899 90)
+			(at 341.63 166.3699 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17832,7 +17713,7 @@
 			)
 		)
 		(property "Footprint" "Diode_SMD:D_SOD-123"
-			(at 368.3 96.52 0)
+			(at 339.09 165.1 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17843,7 +17724,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 368.3 96.52 0)
+			(at 339.09 165.1 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17854,7 +17735,7 @@
 			)
 		)
 		(property "Description" "Zener diode"
-			(at 368.3 96.52 0)
+			(at 339.09 165.1 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17881,7 +17762,7 @@
 	)
 	(symbol
 		(lib_id "Device:D_Zener")
-		(at 337.82 165.1 270)
+		(at 365.76 96.52 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -17892,7 +17773,7 @@
 		(fields_autoplaced yes)
 		(uuid "bd66e696-76b8-41b6-a05a-9f8ae798073d")
 		(property "Reference" "D12"
-			(at 340.36 163.8299 90)
+			(at 368.3 95.2499 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17903,7 +17784,7 @@
 			)
 		)
 		(property "Value" "MMSZ4685"
-			(at 340.36 166.3699 90)
+			(at 368.3 97.7899 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17914,7 +17795,7 @@
 			)
 		)
 		(property "Footprint" "Diode_SMD:D_SOD-123"
-			(at 337.82 165.1 0)
+			(at 365.76 96.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17925,7 +17806,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 337.82 165.1 0)
+			(at 365.76 96.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17936,7 +17817,7 @@
 			)
 		)
 		(property "Description" "Zener diode"
-			(at 337.82 165.1 0)
+			(at 365.76 96.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18522,7 +18403,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 66.04 212.09 0)
+		(at 45.72 220.98 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -18533,7 +18414,7 @@
 		(fields_autoplaced yes)
 		(uuid "c77ef9c7-83f5-4785-95a7-d24f9feec4a6")
 		(property "Reference" "#PWR050"
-			(at 66.04 218.44 0)
+			(at 45.72 227.33 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18544,7 +18425,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 66.04 217.17 0)
+			(at 45.72 226.06 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18554,7 +18435,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 66.04 212.09 0)
+			(at 45.72 220.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18565,7 +18446,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 66.04 212.09 0)
+			(at 45.72 220.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18576,7 +18457,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 66.04 212.09 0)
+			(at 45.72 220.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18674,6 +18555,88 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "C4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Zener")
+		(at 24.13 233.68 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "c8d299e1-a660-461e-8ee8-830ce101d671")
+		(property "Reference" "D16"
+			(at 26.67 232.4099 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MMSZ4685"
+			(at 26.67 234.9499 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-123"
+			(at 24.13 233.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 24.13 233.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Zener diode"
+			(at 24.13 233.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "37e145b3-0cdf-45d3-a5a5-118ec7b76701")
+		)
+		(pin "1"
+			(uuid "e8c55128-6888-424a-a9ba-1c033ff0a66d")
+		)
+		(instances
+			(project "Igniter Supply Board"
+				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
+					(reference "D16")
 					(unit 1)
 				)
 			)
@@ -20229,7 +20192,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 358.14 100.33 0)
+		(at 328.93 168.91 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -20240,7 +20203,7 @@
 		(fields_autoplaced yes)
 		(uuid "eb649de9-e860-4547-850a-43c5537e2025")
 		(property "Reference" "#PWR043"
-			(at 358.14 106.68 0)
+			(at 328.93 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20251,7 +20214,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 358.14 105.41 0)
+			(at 328.93 173.99 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -20261,7 +20224,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 358.14 100.33 0)
+			(at 328.93 168.91 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20272,7 +20235,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 358.14 100.33 0)
+			(at 328.93 168.91 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20283,7 +20246,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 358.14 100.33 0)
+			(at 328.93 168.91 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20783,6 +20746,88 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "R4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Zener")
+		(at 24.13 257.81 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ef8becf3-4c21-49f9-bf05-924e0287a788")
+		(property "Reference" "D17"
+			(at 26.67 256.5399 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MMSZ4685"
+			(at 26.67 259.0799 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-123"
+			(at 24.13 257.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 24.13 257.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Zener diode"
+			(at 24.13 257.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "bb959200-3fc4-40a0-9c24-376df901c60e")
+		)
+		(pin "1"
+			(uuid "1df57838-c5a7-4edb-ae3e-215205998bb1")
+		)
+		(instances
+			(project "Igniter Supply Board"
+				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
+					(reference "D17")
 					(unit 1)
 				)
 			)

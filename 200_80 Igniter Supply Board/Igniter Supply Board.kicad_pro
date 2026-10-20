@@ -50,7 +50,7 @@
         "silk_text_thickness": 0.1,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.5
+          "min_clearance": 0.0
         }
       },
       "diff_pair_dimensions": [],
@@ -633,7 +633,7 @@
         "uuid": "0667bf65-916d-41a8-8a49-6f64c5a5f247"
       }
     ],
-    "used_designators": "J5,#PWR55",
+    "used_designators": "R14,J5,D13-18,#PWR8,#PWR55-56",
     "variants": []
   },
   "sheets": [
