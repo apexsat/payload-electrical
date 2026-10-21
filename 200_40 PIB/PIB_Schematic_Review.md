@@ -7,9 +7,9 @@
 | **Scope** | The PIB (200_40) only. The igniter board (200_80) is a boilerplate design and out of scope; only the PIB side of the J5 interface is reviewed. |
 | **Reference docs** | `Payload ICD.pdf` (Rev 2.0, CDR), `PIB Block Diagram.drawio.png`, `200_60 DPT Sensor Board`, `Rogowski_Coil_Characterization.md` (coil measurements and integrator sizing) |
 | **Datasheets used** | In `200_40 PIB/`: ADM1270 (Rev. A; timer, foldback and ISET figures) and Si7489DP (SOA and thermal impedance). In the repo root: LT3065 (Rev. F). Also LMP202x (TI SNOSAY9G, Rev. G), which is no longer in the repo. |
-| **Design state** | branch `pib-split`, `d2c2d1b` (2026-10-20); schematics unchanged in the working copy |
-| **PCB** | Layout in progress. Schematic parity is **not** clean (15 issues, 2026-10-20): Q3–Q5 are still BSS138 on the PCB, and D11/D36/D37 are still NSVR1020 in SOD-323. Run Update PCB from Schematic, then re-place the diodes for SOD-123. DRC is mid-route (unconnected items and shorts expected). Before release: regenerate the fab outputs and the iBOM. |
-| **Tools** | KiCad 10.0.4 (`kicad-cli` ERC, netlist, DRC w/ schematic parity). To re-run: point `KICAD_CONFIG_HOME` at a scratch directory whose `10.0/` holds only the stock `sym-lib-table`/`fp-lib-table` (from `/usr/share/kicad/template/`), so library warnings are real; run `kicad-cli sch erc --severity-all PIB.kicad_sch`; and compare `kicad-cli sch export netlist` output between revisions (`git archive` the old one) to see exactly which parts and nets changed. |
+| **Design state** | branch `pib-split`, `754dc71` (2026-10-20) |
+| **PCB** | Routed. Schematic parity is clean, with 0 unconnected pads (2026-10-20, zones refilled). DRC shows 61 silkscreen warnings only: 58 `silk_overlap`, mostly the B.Silk outlines of the ESD diodes, and 3 `silk_over_copper` at U5, U7 and U9. Before release: clean up the silkscreen, then regenerate the fab outputs and the iBOM. |
+| **Tools** | KiCad 10.0 (`kicad-cli` ERC, netlist, DRC w/ schematic parity). To re-run: point `KICAD_CONFIG_HOME` at a scratch directory whose `10.0/` holds only the stock `sym-lib-table`/`fp-lib-table` (from KiCad's `share/kicad/template/`), so library warnings are real; run `kicad-cli sch erc --severity-all PIB.kicad_sch`; and compare `kicad-cli sch export netlist` output between revisions (`git archive` the old one) to see exactly which parts and nets changed. |
 | **Last updated** | 2026-10-20 |
 
 **Status key:** `OPEN` (needs a design change) · `VERIFY` (needs a datasheet, bench or part check) · `OPTIONAL` (recommended hardening, not required) · `ICD` (schematic is correct; the ICD must change)
@@ -22,6 +22,7 @@
 
 The pin-to-pad check is clean for every footprint. The main risks are:
 - The GSE latching-valve pulse needs bench checks: polarity, and pulse width against the valve spec (C11).
+- The igniter V-peak and I-peak channels are swapped across J5. The fix is a net rename plus firmware (S17).
 
 The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD items need to be brought in line with the schematic (see [ICD Update Actions](#icd-update-actions)).
 
@@ -45,7 +46,7 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 | Category | Items |
 |---|---|
 | Critical | 2 (1 optional, 1 verify) |
-| Significant | 4 |
+| Significant | 5 |
 | Footprint / Part | 7 |
 | Project setup | 2 |
 | ICD / Block diagram | 8 |
@@ -85,7 +86,14 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
   1. **Start-up into load capacitance:** The current limit is also the inrush limit, and the 1 ms timer runs throughout. Starting from 0 V through foldback, the branch can charge only about **≈ 130 µF on `VBAT_DCHG`** (≈ 100 µF at worst-case tolerances) and **21 µF on `VBAT_IGN`** (no load current) before timing out.
      - Confirm the input capacitance of the HV discharge converter on J12. It isn't in the repo; `200_70` holds only the sense board. If the capacitance exceeds that limit, the branch never starts and retries every ~200 ms.
      - **Fix if needed:** raise C30 (each 10 nF adds ≈ 1 ms of on time; re-check Q1 SOA beyond ~3 ms) or soft-start the load.
+     - **`VBAT_IGN`:** U7's ISET is tied to VCAP (3.6 V → 90 mV / R65 100 mΩ = 0.9 A; 0.1 A foldback floor). The current 200_80 test board leaves J3.1/2 (`VBAT_IGN`) unconnected: it runs on ±5 V with external HV on J1. So the 21 µF limit is a requirement for a future flight igniter supply, not a problem today.
+     - **U19:** 3.6 A with C81 = 22 nF (2.2 ms) can charge ≈ 290 µF. Its start-up load is ≈ 14 µF on `VBAT_PROT` plus the LT3065 charging `+12V` at ≤ 300 mA. U5/U7 stay off until enabled and the heaters are gated off, so the margin is ample.
   2. **Firmware fault logic** (also applies to U19's `/BAT_PGOOD` on PA11): PWRGD (≈ 11 V threshold) is also low when the branch is commanded off (ENABLE low or ARM safe) or when BAT is below the 12 V UV. Flag a fault only when the branch is commanded on, BAT is in range, and PWRGD stays low or keeps toggling past a debounce window. PWRGD pulses during retries.
+
+### S17 — Igniter V/I peak channels swapped across J5 — `OPEN`
+- Tracing the igniter board (HEAD) by circuit: U2 (4.53 MΩ divider from J2) is the **voltage** path, so `/ADC_V_IGN_PK` is on igniter J3.10. U3 (ACS37042 Hall) is the **current** path, so `/ADC_I_IGN_PK` is on J3.9. Those labels were swapped at `acfe0a1` and fixed later. The physical J3 pins never moved; only the labels and the LMP2022 halves changed.
+- Through the mirrored cable (n ↔ 14 − n), PIB J5.4 (`/ADC_I_IGN_PK`, PC2) gets **V peak**, and J5.5 (`/ADC_V_IGN_PK`, PB14) gets **I peak**. The PIB names are wrong.
+- **Fix:** both channels have the same front end (PESD3V3U1UL only), so no copper change is needed. Swap the net names end-to-end on the PIB (J5.4/PC2 → `/ADC_V_IGN_PK`, J5.5/PB14 → `/ADC_I_IGN_PK`) and map firmware to match.
 
 ### S14 — Non-ARM 74HC08 inputs float at reset — `OPTIONAL`
 - R88 holds `/ARM/~{SAFE}` low, so all eight gated outputs are low during reset. The other inputs (`IGNITER_EN`, `DISCHARGE_EN`, `IGNITER_PULSE`, `VALVE1_L/H`, `VALVE2_EN`, `VALVE3_L/H`) float while the STM32 pins are high-Z.
@@ -134,7 +142,7 @@ Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, 
 - The pinouts match, but the description and datasheet fields will mislead BOM and assembly.
 
 ### F7 — Flight connector retention — `OPEN`
-- PicoBlade (J2, J4, J5, J9, J10, J11, J13, J15) is friction-lock only, which is a vibration risk. The DPT board already uses latching Pico-Lock. Consider Pico-Lock, CLIK-Mate, or Gecko.
+- PicoBlade (J2, J4, J5, J9, J10, J11, J13, J15) is friction-lock only, which is a vibration risk. The DPT board's J1 (53261-0671) is PicoBlade too, so changing J9/J10 means changing the DPT side as well. Consider Pico-Lock, CLIK-Mate, or Gecko.
 
 ### F8 — Flight population — `OPEN`
 - SW1 (SKRKAHE020 tactile switch) and J8 (debug header): decide flight population. A DNP SW1 on flight units is typical.
@@ -214,13 +222,14 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
   - **Q5** from the 3.3 V GPIO pulls the gates to ≈ tens of mV against R99.
   - **Pinout:** SOT-23, G 1 / S 2 / D 3.
   - **Firmware:** hold reset through power-up (C69 charges in ≈ 10 ms), release just before the shot, then take a baseline. That removes leakage × R98, op-amp bias offset and the ≈ 10–20 mV reset-release step.
+- **Integrator V<sub>REF</sub>:** R96/R97 (10k/10k) divide `+3.3V`, not VDDA, a layout choice. C70 (1 µF) gives a ≈ 32 Hz corner, so digital noise is filtered. The DC difference from VDDA is the FB1 drop (≪ 1 mV), which the pre-shot baseline removes. It still tracks the ADC reference, because both come from the same 3.3 V source.
 - **J7 protection:** D38 (SD12C-01F, bidirectional 12 V standoff) at J7.1 ahead of C69 stays off at the ≈ 5–6 V coil peak. R95 (100k) defines DC with the coil unplugged and costs ≈ 0.15% against the coil's 154 Ω.
 - **PA0/PA1 front ends:** Each channel has 100 Ω (R106 / R102) → BAT54J pair to +3.3V/GND (D43/D44, D39/D40) → 1k (R105 / R104) → pin with 470 pF (C72 / C71). Orientation is correct, and the matched RCs (f<sub>c</sub> ≈ 339 kHz, ≈ 0.47 µs, −0.02 dB / −4° at 24 kHz) keep the V×I timing aligned. Injection in a fault is ≪ 0.1 mA.
 - **GSE pulse circuit:** J1.2 is isolated by R46 (1k) with R45 pull-down. U18 buffers both phases, so no RC cap loads the GSE line. U18 (74LVC2G14) and U9 (74LVC2G17) are Schmitt parts with I<sub>off</sub>. D41/D42 clamp the RC nodes to GND (orientation correct). D47/D48 (BAT54C) diode-OR flight and GSE into U3 INA/INB with R41/R42 pull-downs, so there's no back-power in either direction on valve 3. U9 and U18 are decoupled (C31, C75).
 - **IGNITER to CDH:** U8 (74AHC1G125, OE tied to GND, decoupled by C77) buffers `IGNITER_PULSE_GATED` onto J3.22 through R29.
 - **PIB thermistor:** TH1 10k NTC / R109 10k from VDDA / C76 100 nF on PB1 gives ≈ VDDA/2 at 25 °C, ratiometric with the ADC reference.
-- **J8 / reset:** J8.5 = +3.3V VTref through R108 (1k), which is short-protected. MAX823 ~RESET drives NRST directly (R77 pull-up), so SW1 is always a hardware reset; use a manual connect-under-reset for recovery. JP1 in the WDI line disables only the watchdog.
-- **PIB J5 ↔ igniter J3:** through a standard mirrored PicoBlade cable (pin n ↔ 14 − n), all signals, grounds and ±5 V match pin-for-pin (igniter board at `acfe0a1`).
+- **J8 / reset:** J8.5 = +3.3V VTref through R108 (1k), which is short-protected. MAX823 ~RESET drives NRST directly (R77 pull-up), so SW1 is always a hardware reset; use a manual connect-under-reset for recovery. JP1 in the WDI line disables only the watchdog. J8 ESD: D51–D54 (PESD3V3U1UL) sit on the connector side of R20/R21 (SWD, 100 Ω) and R80/R81 (UART, 22 Ω), oriented K-to-signal.
+- **PIB J5 ↔ igniter J3:** through a standard mirrored PicoBlade cable (pin n ↔ 14 − n), the pulse, reset, NTC, supply-V, grounds and ±5 V match pin-for-pin (igniter board at `bcc34fe`). Exceptions: the V/I peak channels are swapped (S17), and `VBAT_IGN` (J5.12/13) is unconnected on the test board (S7).
 - **J3 ESD:** J3.22–24 are protected by D45/D46/D49 (PESD3V3U1UL) on the connector side of R29/R30/R31.
 - **Symbol libraries:** U1/U2/U3 come from `0_PAY_Symbol_Library`, which is in the project's `sym-lib-table`.
 - **Valve 1 (U2):** U15 drives INA/INB directly, with R39/R40 pull-downs (no GSE path).

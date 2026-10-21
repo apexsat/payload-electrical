@@ -109,7 +109,7 @@ A narrow spike is visible at the trigger, before the main current. It's probably
 
 As built on the Rogowski sheet:
 - J7 (MMCX), protected by D38 (SD12C-01F, bidirectional 12 V TVS), with R95 = 100k as a bleeder (not a termination).
-- C69 4.7 µF X7R (0603, ≥ 10 V) → R79 2.00k → OP27 inverting integrator, with C45 10 nF C0G ∥ R98 1 M, and + input at V<sub>REF</sub> = VDDA/2 (R96/R97 10k/10k, C70 1 µF).
+- C69 4.7 µF X7R (0603, ≥ 10 V) → R79 2.00k → OP27 inverting integrator, with C45 10 nF C0G ∥ R98 1 M, and + input at V<sub>REF</sub> = +3.3V/2 (R96/R97 10k/10k, C70 1 µF).
 - Reset: Q3/Q4 (BSS131, chosen for lower leakage) back-to-back across C45, gate-driven to +5 V by Q5 (BSS131) from `~{PD_RST}`.
 - Output to PA1: R102 100 Ω → BAT54J clamp pair → R104 1k + C71 470 pF, matched to PA0.
 - Peak output = M·I<sub>pk</sub>/((R79 + 154 Ω)·C45) ≈ **1.28 V** around 1.65 V (0.37–2.93 V); ≈ 1.41 V if M is 10% high.
