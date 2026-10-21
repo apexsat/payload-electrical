@@ -8,7 +8,7 @@
 | **Reference docs** | `Payload ICD.pdf` (Rev 2.0, CDR), `PIB Block Diagram.drawio.png`, `200_60 DPT Sensor Board`, `Rogowski_Coil_Characterization.md` (coil measurements and integrator sizing) |
 | **Datasheets used** | In `200_40 PIB/`: ADM1270 (Rev. A; timer, foldback and ISET figures) and Si7489DP (SOA and thermal impedance). In the repo root: LT3065 (Rev. F). Also LMP202x (TI SNOSAY9G, Rev. G), which is no longer in the repo. |
 | **Design state** | branch `pib-split`, `d2c2d1b` (2026-10-20); schematics unchanged in the working copy |
-| **PCB** | Layout in progress. Schematic parity is clean (0 issues, 2026-10-20). After a zone refill, DRC still shows 194 unconnected items and 34 shorts, which is expected mid-route. Before release: give D11/D36 copper for heat (F9), then regenerate the fab outputs and the iBOM. |
+| **PCB** | Layout in progress. Schematic parity is **not** clean (15 issues, 2026-10-20): Q3–Q5 are still BSS138 on the PCB, and D11/D36/D37 are still NSVR1020 in SOD-323. Run Update PCB from Schematic, then re-place the diodes for SOD-123. DRC is mid-route (unconnected items and shorts expected). Before release: regenerate the fab outputs and the iBOM. |
 | **Tools** | KiCad 10.0.4 (`kicad-cli` ERC, netlist, DRC w/ schematic parity). To re-run: point `KICAD_CONFIG_HOME` at a scratch directory whose `10.0/` holds only the stock `sym-lib-table`/`fp-lib-table` (from `/usr/share/kicad/template/`), so library warnings are real; run `kicad-cli sch erc --severity-all PIB.kicad_sch`; and compare `kicad-cli sch export netlist` output between revisions (`git archive` the old one) to see exactly which parts and nets changed. |
 | **Last updated** | 2026-10-20 |
 
@@ -22,7 +22,6 @@
 
 The pin-to-pad check is clean for every footprint. The main risks are:
 - The GSE latching-valve pulse needs bench checks: polarity, and pulse width against the valve spec (C11).
-- D11 (20 V OR-ing Schottky) is under-rated for ~23 V GSE transients, and D36 still needs checking against the latching-valve pulse current (F9).
 
 The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD items need to be brought in line with the schematic (see [ICD Update Actions](#icd-update-actions)).
 
@@ -31,6 +30,7 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 - HV boards (igniter 1 kV, discharge 400 V) scale all signals to 0 to <3.3 V with op amps on ±5 V.
 - GSE OPEN/~CLOSE (J1.2) is a 3.3 V digital logic line.
 - The NC valve (valve 2) is a Lee LHDB1223518H: non-latching, normally closed, rated for continuous 12 V DC (not spike-and-hold), about 600 mW, so about 50 mA (≈ 240 Ω). It is held open continuously during burns and GSE fills.
+- The latching valve (valve 3) is a Lee LHLA1221211H: 12 V DC, face mount, FKM seal, 5.5 mJ per switch, 10–30 ms max response, operating range 4–49 °C, coil max 107 °C. It needs reversed polarity to close (U3 H-bridge). The coil resistance and the required pulse width are still unknown (Q3).
 - Each heater is well under 10 W (TBD).
 - Power architecture: the EPS supplies `VBAT_HOT` with a 4 A OCP. `VBAT_HOT` (from J3, D3 TVS) → U19 upstream eFuse (3.6 A, set to trip before the EPS) → `VBAT_PROT` → heaters, LT3065 `+12V`, and the discharge (U5) and igniter (U7) branch eFuses. The undervoltage cutoffs are staged and intentional: the branches trip at 12.75 V and the upstream at 12.0 V, both before the EPS cutoff, which protects the pack and sheds the thruster first.
 - The CDH connector is the vertical (MS) part.
@@ -44,9 +44,9 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 
 | Category | Items |
 |---|---|
-| Critical | 3 (2 optional, 1 verify) |
+| Critical | 2 (1 optional, 1 verify) |
 | Significant | 4 |
-| Footprint / Part | 8 |
+| Footprint / Part | 7 |
 | Project setup | 2 |
 | ICD / Block diagram | 8 |
 | Open questions | 2 |
@@ -60,12 +60,6 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 - **Risk:** Nominal signals are 0 to <3.3 V. However, the igniter-board op amps run on ±5 V, so a fault, overrange, power-sequencing event or HV arc can push an output to a rail, and the ESD diodes are not continuous clamps.
 - **Hardening:** Use the same scheme as PA0/PA1: series R ≈ 1k plus a BAT54 pair to +3.3V/GND at each input. These are slow channels (peak-detect, NTC, supply), so the delay doesn't matter.
 
-### C9 — No hardware heater over-temperature cutoff — `OPTIONAL`
-- **Where:** Main sheet, Q9/Q11 (low-side heater switches on `VBAT_PROT`).
-- U19 now gives the BAT bus overcurrent protection and MCU-controlled gating (`/BAT_EN`, PA10, pulled off at reset). A heater FET that fails on can therefore be cut by firmware through U19, but that also drops the `+12V` valve rail and depends on firmware noticing the over-temperature.
-- **Option:** add an independent hardware cutoff, either a series thermostat or a comparator on a tank NTC that pulls the heater gates low.
-- **Heater sizing:** Worst case is 2 × 10 W at 12 V = 1.67 A, ≈ 0.83 A on each of J2's shared BAT pins (2, 3) and return pins (1, 4). That's within PicoBlade's ~1 A/contact but tight at the 10 W bound. Confirm once wattage is fixed.
-
 ### C11 — GSE latching-valve pulse circuit: pulse width and polarity checks — `VERIFY`
 - **Where:** Valve Driver sheet (working copy).
   - **Input:** J1.2 `/OPEN/~{CLOSE}` (D5 ESD) → R46 (1k) → R45 (100k to GND) → U18 gate 2 (74LVC2G14) → ~OPEN. Gate 1 re-inverts that to a buffered OPEN.
@@ -73,7 +67,7 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
   - **CLOSE edge:** ~OPEN → C74 (1 µF) → RC node (R107 100k, D42 clamp) → U9 1A → D48 → U3 **INA** (`VALVE3_L`).
 - **Checks:**
   1. **Polarity:** confirm on the bench that INB (`VALVE3_H`) drives the valve open, for both GSE and flight.
-  2. **Pulse width:** t ≈ τ·ln(3.3/V<sub>T−</sub>), with τ = 100 ms and V<sub>T−</sub> the 74LVC2G17's negative-going threshold (datasheet). Check this against the latching valve's required pulse width (Q3), with X7R tolerance. BAT54J leakage at the RC nodes shortens the pulse when hot, which is negligible at room-temperature GSE use.
+  2. **Pulse width:** t ≈ τ·ln(3.3/V<sub>T−</sub>), with τ = 100 ms and V<sub>T−</sub> the 74LVC2G17's negative-going threshold. A Schmitt V<sub>T−</sub> is below V<sub>CC</sub>/2, so even with C −20% the pulse is ≥ 0.8 × 100 ms × ln 2 ≈ **55 ms**. That's above the LHLA1221211H's 10–30 ms max response, so the margin looks adequate. When the Lee datasheet arrives, confirm the minimum pulse width (Q3). The 100 ms pulse spends several times the 5.5 mJ rating per switch, which is trivial at GSE command rates. BAT54J leakage at the RC nodes shortens the pulse when hot, which is negligible at room-temperature GSE use.
   3. **No UVLO gating:** at GSE power-up, U18's ~OPEN output rises with `3.3V_EGSE` and couples through C74, so expect a CLOSE pulse at reduced `+12V`. GSE procedure: send an explicit CLOSE once powered, and space commands ≥ ~2× the pulse width. Overlapping pulses brake the coil, which is safe.
 
 ---
@@ -99,7 +93,7 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 
 ### S15 — `+12V` in LT3065 dropout at low battery — `VERIFY`
 - The LT3065 regulates 12.6 V (R18 20k / R17 1k), so `+12V` ≈ 12.3 V after D11 while BAT ≳ 12.9 V. Below that the regulator is in dropout and `+12V` ≈ BAT − ~0.6 V, about 11.4 V just before U19's 12.0 V undervoltage cutoff (the LT3065 is on `VBAT_PROT`). In GSE mode, `+12V` = `12V_GSE` − V<sub>F</sub>(D36).
-- **Check:** latching-valve operation at about 11.4 V and at cold (Q3). The NC valve is rated 12 V and sees ≈ 12.3 V nominal.
+- **Check:** latching-valve operation at about 11.4 V (Q3). The NC valve is rated 12 V and sees ≈ 12.3 V nominal. Cold is a thermal question: the LHLA1221211H is rated to 4 °C minimum operating.
 
 ### S16 — DPT MCLK timer not configured in firmware — `OPEN` (firmware)
 - `/DPT_MCLK` is driven from PC7, and `firmware.ioc` assigns PC7 to `TIM3_CH2` with TIM3 clocked at 64 MHz (HSE 8 MHz via PLL). The prescaler, period and OC mode are at CubeMX defaults: OC "Frozen" doesn't toggle the pin, and the default period gives about 488 Hz.
@@ -146,12 +140,6 @@ Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, 
 - SW1 (SKRKAHE020 tactile switch) and J8 (debug header): decide flight population. A DNP SW1 on flight units is typical.
 - **JP1 (`WD_ENABLE`) must be bridged for flight.** It is a normally-open solder jumper between `/WDG_IN` (PB2, R76) and MAX823 WDI (U12.4). While open, WDI floats and the watchdog is disabled; MAX823 POR supervision and the SW1 reset still reach NRST. Add it to the assembly notes and the flight build checklist.
 
-### F9 — OR-ing / flyback Schottky ratings (NSVR1020MW2T1G) — `VERIFY`
-- **Parts:** D11, D36, D37 are onsemi NSVR1020MW2T1G: 20 V V<sub>R</sub>, 1 A, V<sub>F</sub> 0.54 V max at 1 A, **200 mW P<sub>D</sub>**, SOD-323, AEC-Q101. The symbol `Datasheet` field is empty.
-- **D11 (LT3065 → `+12V`):** I<sub>MAX</sub> caps the current at 300 mA, giving ≈ 0.12 W. In GSE-only mode its V<sub>R</sub> equals `12V_GSE`. D10 (SMF14A) clamps GSE transients at roughly 23 V, which **exceeds the 20 V V<sub>R</sub>**.
-- **D36 (`12V_GSE` → `+12V`):** Carries the NC valve's ~50 mA continuously during a fill (≈ 15 mW, fine), plus ~100 ms latching-valve pulses at a current that's still unknown (Q3). Check the latching-valve pulse current against the 1 A rating and the pulse-power limit.
-- **D37 (NC valve flyback):** Conducts the ~50 mA coil current briefly at turn-off, well within rating. Valve closing is slow with a plain freewheel diode; add a series zener if closing time matters.
-- **Recommendation:** D11 needs a ≥ 30–40 V part for the GSE transient (e.g. a 1–2 A, 40 V Schottky in SOD-123FL). Re-check D36 once the latching-valve pulse current is known (Q3).
 
 ---
 
@@ -198,7 +186,7 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
 
 | ID | Question | Known so far |
 |---|---|---|
-| Q3 | Latching valve data: part number, coil current, and required pulse width. These set the C11 pulse RC and the D36 pulse rating (F9). | NC valve: LHDB1223518H, 12 V DC continuous, ~600 mW (~50 mA). Library also has LHLA1252x11H (likely the latching valve; confirm). |
+| Q3 | Latching valve datasheet (LHLA1221211H): coil resistance, minimum pulse width, and operation at ~11.4 V. These confirm the C11 pulse and the D36 margin. | Part selected from Lee's catalog: 12 V, 5.5 mJ/switch, 10–30 ms max response. The energy bound gives ≲ 50–230 mA. The symbol library has LHLA1252211H/LHLA1252411H, not the selected part. |
 | Q8 | Flight Rogowski coil (PEM CWTMini50HF/150 coil head): confirm the precise open-circuit M (offset-corrected integral at the trough ÷ CT peak). **After the BNC → MMCX re-termination, re-measure the coil's DC resistance and M through the final cable and connector.** The integrator gain depends on R79 + Z<sub>s</sub>. | **Measured 2026-10-19** (380 µF from 200 V via a shorting stick, CT reference): open-circuit **M ≈ 1.7 nH (±10%)** from ∫V<sub>coil</sub>dt vs CT and from the onset step. **Coil resistance 154 Ω DC.** A 50 Ω load attenuated the signal ≈ 3–4×, resistively. The steps in dI/dt at ≈ 41 and 84 µs come from the shorting-stick arc. The transducer trough read ≈ 10–20% above the CT (rough read); check the CT scaling. Full test record: `Rogowski_Coil_Characterization.md`. |
 
 ---
@@ -214,7 +202,12 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
   - D11/D36 diode-OR into `+12V`. The LT3065 loop (C6, C22, R18) stays on the regulator side.
   - `12V_GSE` (D10, U6) is on the source side of D36, so flight power can't back-feed the EGSE regulator or the EGSE pin.
 - **Q10 gate:** D50 (BAT54C) diode-ORs flight and GSE (GSE anode on `EGSE_OPEN_F`, behind R46), through R110 (100 Ω), giving ≈ 3.1 V from either side; R6 pulls the gate off to ≈ 0 V, never in the 1.35–2.35 V threshold band. Neither side can back-power the other. IRF7832 Fig. 3 shows tens of A typical at about 3 V, so 3.3 V-class drive is adequate for the heater and valve FETs.
-- **D37:** NC-valve flyback diode, oriented correctly.
+- **D37:** NC-valve flyback diode, oriented correctly. Valve closing is slow with a plain freewheel diode; add a series zener only if closing time matters.
+- **OR-ing / flyback Schottkys (D11, D36, D37 = MBR0560, 60 V, 0.5 A, SOD-123):**
+  - **Voltage:** V<sub>R</sub> ≤ `+12V`. The GSE 12 V is regulated and comes over 15–30 cm of harness, so the only credible transient is hot-plug ringing: a few µs, well damped, peaking in the high teens. 60 V covers that, and so does any D10 (SMF14A) clamp level.
+  - **D11:** I<sub>MAX</sub> 300 mA, ≈ 0.14 W.
+  - **D36:** NC valve 50 mA continuous, plus latching pulses. 5.5 mJ per switch over a ≥ 10 ms actuation means ≲ 0.55 W, so ≲ 50 mA at 12 V. Even a 2 ms pulse would be ≈ 230 mA, well under 0.5 A.
+  - The symbol datasheet is MCC's MBR0560, which isn't AEC-Q101. Pick an automotive-grade source if that matters.
 - **Rogowski reset switch (Q3/Q4/Q5 = BSS131):** Infineon specifies I<sub>D(off)</sub> ≤ 10 nA at 240 V, 25 °C (5 µA at 150 °C).
   - **Offset:** × R98 (1 M) that's ≤ 10 mV at 25 °C. Interpolated bounds at 240 V are ~20 mV at 40 °C and ~60 mV at 60 °C. At the real ≈ 1.5 V V<sub>DS</sub> it's far lower, and only one device leaks in the back-to-back pair. The offset is static and removed by the pre-shot baseline.
   - **Gate drive:** off-state V<sub>GS</sub> ≈ −1.65 V. On-state, the gates get ≈ 3.3 V above the V<sub>REF</sub>-side node, vs a 1.8 V max V<sub>th</sub>. Reset settles in ≈ 1 µs (2 × R<sub>DS(on)</sub> · C45).
