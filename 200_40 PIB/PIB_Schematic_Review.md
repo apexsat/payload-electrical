@@ -90,7 +90,7 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 
 ## Footprints & Part Numbers
 
-Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, SOT95P280X145-5N, HARWIN M80, ABM3B, PowerPAK SO-8, SOD-323). MIC4424 pads 1/8 are NC, which is correct. SP0502BAJT on SC-70 is correct.
+Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, SOT95P280X145-5N, HARWIN M80, ABM3B, PowerPAK SO-8, SOD-123). MIC4424 pads 1/8 are NC, which is correct. SP0502BAJT on SC-70 is correct.
 
 ### F1 — No MPNs or capacitor ratings — `OPEN`
 - **MPN / Manufacturer:** no part has them. U1 alone carries vendor-import fields (`MP`, `MF`), named differently from the rest. Add `MPN` and `Manufacturer` project-wide.
