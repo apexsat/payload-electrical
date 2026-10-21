@@ -1484,6 +1484,16 @@
 		)
 		(uuid "68a7db92-d2b1-4884-9a88-1a4a7f6c91e6")
 	)
+	(text "100μF Worst Case Maximum Load Capacitance"
+		(exclude_from_sim no)
+		(at 175.006 62.484 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "e4f9a375-71cb-40b0-b729-79ceb4246d9d")
+	)
 	(junction
 		(at 116.84 58.42)
 		(diameter 0)

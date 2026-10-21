@@ -11651,6 +11651,16 @@
 		)
 		(uuid "905ea68f-5160-4a6c-bbf2-52095403a14b")
 	)
+	(text "235μF Worst Case Capacitance"
+		(exclude_from_sim no)
+		(at 147.574 123.19 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "92f63cae-f550-4e1f-a1b0-3bc6fea398e8")
+	)
 	(text "Igniter Buffer\n"
 		(exclude_from_sim no)
 		(at 95.25 64.77 0)
@@ -16633,7 +16643,7 @@
 		)
 		(uuid "06dd5159-59cf-465a-8c00-8b9c4682018b")
 	)
-	(label "ADC_V_IGN_PK"
+	(label "ADC_I_IGN_PK"
 		(at 298.45 128.27 180)
 		(effects
 			(font
@@ -16812,6 +16822,16 @@
 			(justify right bottom)
 		)
 		(uuid "262d8fb4-76ef-40a2-be7b-a45639aa89b6")
+	)
+	(label "ADC_V_IGN_PK"
+		(at 83.82 184.15 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "274fafd5-3d42-4617-a2c2-0f92a2edddee")
 	)
 	(label "EXT_SPI_SCK"
 		(at 25.4 46.99 0)
@@ -17003,7 +17023,7 @@
 		)
 		(uuid "5080f61e-1d6c-4181-a092-ba317ac7a0eb")
 	)
-	(label "ADC_I_IGN_PK"
+	(label "ADC_V_IGN_PK"
 		(at 222.25 77.47 0)
 		(effects
 			(font
@@ -17053,7 +17073,7 @@
 		)
 		(uuid "5a9b83d9-ccc3-4fd0-a415-87d8bb53d570")
 	)
-	(label "ADC_I_IGN_PK"
+	(label "ADC_V_IGN_PK"
 		(at 59.69 208.28 0)
 		(effects
 			(font
@@ -17102,26 +17122,6 @@
 			(justify left bottom)
 		)
 		(uuid "5fe97404-71a9-4cb8-89d0-300155320d8c")
-	)
-	(label "ADC_I_IGN_PK"
-		(at 83.82 184.15 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "657e828a-e569-4ef7-93bc-dcd1f464e2d5")
-	)
-	(label "ADC_V_IGN_PK"
-		(at 83.82 186.69 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "65b51674-36c5-43d5-a92d-41077ea79e83")
 	)
 	(label "VALVE1_L"
 		(at 298.45 100.33 180)
@@ -17362,6 +17362,16 @@
 			(justify left bottom)
 		)
 		(uuid "7fc7462d-c378-4497-84d0-f6f635a571a1")
+	)
+	(label "ADC_I_IGN_PK"
+		(at 83.82 186.69 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "805f3605-64b0-4488-975d-a159ecae954e")
 	)
 	(label "ARM{slash}~{SAFE}"
 		(at 228.6 250.19 0)
@@ -17743,7 +17753,7 @@
 		)
 		(uuid "d3e6357a-b11a-4a3a-ac83-403e960caae9")
 	)
-	(label "ADC_V_IGN_PK"
+	(label "ADC_I_IGN_PK"
 		(at 59.69 205.74 0)
 		(effects
 			(font

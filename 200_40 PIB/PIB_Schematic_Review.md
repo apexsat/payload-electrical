@@ -22,7 +22,6 @@
 
 The pin-to-pad check is clean for every footprint. The main risks are:
 - The GSE latching-valve pulse needs bench checks: polarity, and pulse width against the valve spec (C11).
-- The igniter V-peak and I-peak channels are swapped across J5. The fix is a net rename plus firmware (S17).
 
 The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD items need to be brought in line with the schematic (see [ICD Update Actions](#icd-update-actions)).
 
@@ -46,7 +45,7 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 | Category | Items |
 |---|---|
 | Critical | 2 (1 optional, 1 verify) |
-| Significant | 5 |
+| Significant | 3 |
 | Footprint / Part | 7 |
 | Project setup | 2 |
 | ICD / Block diagram | 8 |
@@ -74,26 +73,6 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 ---
 
 ## Significant
-
-### S7 — ADM1270 auto-retry: start-up capacitance and PWRGD fault logic — `VERIFY`
-- **As built (intentional):** R51/R64/R116 (0 Ω) tie ~FAULT to ENABLE, so all three eFuses (U5 discharge, U7 igniter, U19 upstream) auto-retry. U19 uses C81 = 22 nF (≈ 2.2 ms on-time, so U5 clears a branch fault first) and C80 = 100 nF. Fault state is read through PWRGD: `/DISCHARGE_PGOOD` on PC13, `/IGNITER_PGOOD` on PC14 and `/BAT_PGOOD` on PA11, each with a 10k pull-up.
-- **Timing (ADM1270 Rev. A):** with TIMER = 10 nF (C30/C35) and TIMER_OFF = 100 nF (C29/C34/C80):
-  - On time = 2.0 V × C<sub>TIMER</sub>/20 µA ≈ **1.0 ms** (0.8–1.25 ms).
-  - Off time = 2.0 V × C<sub>TIMER_OFF</sub>/1 µA ≈ **200 ms** (150–265 ms).
-  - Retry duty ≈ **0.5%** (≤ 0.8%). Initial power-on delay ≈ 10 ms.
-- **Foldback:** the current-limit reference is the lower of V<sub>ISET</sub> and V<sub>FLB</sub>, giving V<sub>SENSE</sub> ≈ 50 mV/V × V<sub>FLB</sub> with a 10 mV floor. U5/U19 use 100k/10k dividers (V<sub>FLB</sub> = V<sub>OUT</sub>/11; full current above ≈ 7–8.6 V out), and U7 uses 33k/10k.
-- **Checks:**
-  1. **Start-up into load capacitance:** The current limit is also the inrush limit, and the 1 ms timer runs throughout. Starting from 0 V through foldback, the branch can charge only about **≈ 130 µF on `VBAT_DCHG`** (≈ 100 µF at worst-case tolerances) and **21 µF on `VBAT_IGN`** (no load current) before timing out.
-     - Confirm the input capacitance of the HV discharge converter on J12. It isn't in the repo; `200_70` holds only the sense board. If the capacitance exceeds that limit, the branch never starts and retries every ~200 ms.
-     - **Fix if needed:** raise C30 (each 10 nF adds ≈ 1 ms of on time; re-check Q1 SOA beyond ~3 ms) or soft-start the load.
-     - **`VBAT_IGN`:** U7's ISET is tied to VCAP (3.6 V → 90 mV / R65 100 mΩ = 0.9 A; 0.1 A foldback floor). The current 200_80 test board leaves J3.1/2 (`VBAT_IGN`) unconnected: it runs on ±5 V with external HV on J1. So the 21 µF limit is a requirement for a future flight igniter supply, not a problem today.
-     - **U19:** 3.6 A with C81 = 22 nF (2.2 ms) can charge ≈ 290 µF. Its start-up load is ≈ 14 µF on `VBAT_PROT` plus the LT3065 charging `+12V` at ≤ 300 mA. U5/U7 stay off until enabled and the heaters are gated off, so the margin is ample.
-  2. **Firmware fault logic** (also applies to U19's `/BAT_PGOOD` on PA11): PWRGD (≈ 11 V threshold) is also low when the branch is commanded off (ENABLE low or ARM safe) or when BAT is below the 12 V UV. Flag a fault only when the branch is commanded on, BAT is in range, and PWRGD stays low or keeps toggling past a debounce window. PWRGD pulses during retries.
-
-### S17 — Igniter V/I peak channels swapped across J5 — `OPEN`
-- Tracing the igniter board (HEAD) by circuit: U2 (4.53 MΩ divider from J2) is the **voltage** path, so `/ADC_V_IGN_PK` is on igniter J3.10. U3 (ACS37042 Hall) is the **current** path, so `/ADC_I_IGN_PK` is on J3.9. Those labels were swapped at `acfe0a1` and fixed later. The physical J3 pins never moved; only the labels and the LMP2022 halves changed.
-- Through the mirrored cable (n ↔ 14 − n), PIB J5.4 (`/ADC_I_IGN_PK`, PC2) gets **V peak**, and J5.5 (`/ADC_V_IGN_PK`, PB14) gets **I peak**. The PIB names are wrong.
-- **Fix:** both channels have the same front end (PESD3V3U1UL only), so no copper change is needed. Swap the net names end-to-end on the PIB (J5.4/PC2 → `/ADC_V_IGN_PK`, J5.5/PB14 → `/ADC_I_IGN_PK`) and map firmware to match.
 
 ### S14 — Non-ARM 74HC08 inputs float at reset — `OPTIONAL`
 - R88 holds `/ARM/~{SAFE}` low, so all eight gated outputs are low during reset. The other inputs (`IGNITER_EN`, `DISCHARGE_EN`, `IGNITER_PULSE`, `VALVE1_L/H`, `VALVE2_EN`, `VALVE3_L/H`) float while the STM32 pins are high-Z.
@@ -229,7 +208,12 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
 - **IGNITER to CDH:** U8 (74AHC1G125, OE tied to GND, decoupled by C77) buffers `IGNITER_PULSE_GATED` onto J3.22 through R29.
 - **PIB thermistor:** TH1 10k NTC / R109 10k from VDDA / C76 100 nF on PB1 gives ≈ VDDA/2 at 25 °C, ratiometric with the ADC reference.
 - **J8 / reset:** J8.5 = +3.3V VTref through R108 (1k), which is short-protected. MAX823 ~RESET drives NRST directly (R77 pull-up), so SW1 is always a hardware reset; use a manual connect-under-reset for recovery. JP1 in the WDI line disables only the watchdog. J8 ESD: D51–D54 (PESD3V3U1UL) sit on the connector side of R20/R21 (SWD, 100 Ω) and R80/R81 (UART, 22 Ω), oriented K-to-signal.
-- **PIB J5 ↔ igniter J3:** through a standard mirrored PicoBlade cable (pin n ↔ 14 − n), the pulse, reset, NTC, supply-V, grounds and ±5 V match pin-for-pin (igniter board at `bcc34fe`). Exceptions: the V/I peak channels are swapped (S17), and `VBAT_IGN` (J5.12/13) is unconnected on the test board (S7).
+- **eFuse auto-retry and start-up capacitance (U5, U7, U19, ADM1270 Rev. A):** ~FAULT is tied to ENABLE through 0 Ω (R51, R64, R116), so all three auto-retry with a 200 ms off time (C29, C34, C80 = 100 nF). U19's 22 nF timer outlasts the branch timers, so a branch fault clears at U5/U7 first. The limits come from ∫dV/I through foldback to 16.8 V; worst case covers the timer current, threshold and ±10% capacitor tolerance. They're recorded as schematic text notes for the later supply design cycle:
+  - **U5 → `VBAT_DCHG`:** 3.2 A, C30 = 10 nF, ≈ 100 µF worst case.
+  - **U7 → `VBAT_IGN`:** 0.5 A (ISET = VCAP → 50 mV / R65 100 mΩ), C35 = 68 nF, ≈ 115 µF worst case (≈ 107 µF with the current-limit tolerance). Q2 dissipates ≤ 6.6 W for ≤ 8.5 ms, well inside its SOA.
+  - **U19 → `VBAT_PROT`:** 3.6 A, C81 = 22 nF, ≈ 290 µF nominal (≈ 235 µF worst case). The start-up load is ≈ 14 µF plus the LT3065.
+  - **Firmware:** PWRGD (`/DISCHARGE_PGOOD` PC13, `/IGNITER_PGOOD` PC14, `/BAT_PGOOD` PA11; ≈ 11 V threshold) is also low when the branch is commanded off, when ARM is safe, or when BAT is below the 12 V UV, and it pulses during retries. Flag a fault only when the branch is commanded on, BAT is in range, and PWRGD stays low or keeps toggling past a debounce window.
+- **PIB J5 ↔ igniter J3:** through a standard mirrored PicoBlade cable (pin n ↔ 14 − n), the pulse, reset, NTC, supply-V, grounds and ±5 V match pin-for-pin (igniter board at `bcc34fe`). After the J5 rename, J5.4/PC2 = `/ADC_V_IGN_PK` and J5.5/PB14 = `/ADC_I_IGN_PK`, matching the igniter's U2 voltage path (J3.10) and U3 Hall current path (J3.9). `VBAT_IGN` (J5.12/13) is unconnected on the test board.
 - **J3 ESD:** J3.22–24 are protected by D45/D46/D49 (PESD3V3U1UL) on the connector side of R29/R30/R31.
 - **Symbol libraries:** U1/U2/U3 come from `0_PAY_Symbol_Library`, which is in the project's `sym-lib-table`.
 - **Valve 1 (U2):** U15 drives INA/INB directly, with R39/R40 pull-downs (no GSE path).

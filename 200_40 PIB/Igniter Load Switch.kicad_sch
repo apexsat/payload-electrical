@@ -1474,6 +1474,16 @@
 		)
 		(uuid "7883f368-adf8-4c11-9420-31f67d25eb3d")
 	)
+	(text "115μF Worst Case Maximum Load Capacitance"
+		(exclude_from_sim no)
+		(at 209.804 62.992 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "916c1941-3b7c-4f80-8ffa-69ae8daa3b6c")
+	)
 	(text "500mA OCP"
 		(exclude_from_sim no)
 		(at 120.65 46.228 0)
@@ -3463,7 +3473,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10nF"
+		(property "Value" "68nF"
 			(at 160.02 93.98 0)
 			(show_name no)
 			(do_not_autoplace no)
