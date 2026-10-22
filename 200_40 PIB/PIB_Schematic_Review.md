@@ -5,10 +5,10 @@
 | **Board** | 200_40 Payload Interface Board (APEx PMPD thruster, 6U CubeSat) |
 | **Reviewed files** | `PIB.kicad_sch`, `Rogowski.kicad_sch`, `Valve Driver.kicad_sch`, `DPT Mux.kicad_sch`, `PIB.kicad_pcb` (parity only), `firmware/firmware.ioc` (pin/clock config) |
 | **Scope** | The PIB (200_40) only. The igniter board (200_80) is a boilerplate design and out of scope; only the PIB side of the J5 interface is reviewed. |
-| **Reference docs** | `Payload ICD.pdf` (Rev 2.0, CDR), `PIB Block Diagram.drawio.png`, `200_60 DPT Sensor Board`, `Rogowski_Coil_Characterization.md` (coil measurements and integrator sizing) |
+| **Reference docs** | `Payload ICD.pdf` (Rev 2.1, 10/22/2026, working copy), `PIB Block Diagram.drawio.png`, `200_60 DPT Sensor Board`, `Rogowski_Coil_Characterization.md` (coil measurements and integrator sizing) |
 | **Datasheets used** | In `200_40 PIB/`: ADM1270 (Rev. A; timer, foldback and ISET figures) and Si7489DP (SOA and thermal impedance). In the repo root: LT3065 (Rev. F). Also LMP202x (TI SNOSAY9G, Rev. G) and STM32G431 (DS12589 Rev 6; ADC clock, R<sub>AIN</sub> and injection limits), which are not in the repo. |
-| **Design state** | branch `pib-split`, `c5420f0` plus working-copy changes (igniter ADC clamps: R129–R131 1k, D17, D55–D59; GSE logic UVLO: U6 ADP7142AUJZ-3.3, R43/R44) (2026-10-21) |
-| **PCB** | Routed, 0 unconnected pads. **Schematic parity is not clean (11 issues, 2026-10-21):** U6 is still the SOT-223 LM1117 footprint, and R43/R44 are missing. Run Update PCB from Schematic and place U6 (TSOT-23-5), R43 and R44. DRC shows 61 silkscreen warnings only: 58 `silk_overlap`, mostly the B.Silk outlines of the ESD diodes, and 3 `silk_over_copper` at U5, U7 and U9. Before release: clean up the silkscreen, then regenerate the fab outputs and the iBOM. |
+| **Design state** | branch `pib-split`, `2fd37c5` plus working-copy PCB routing of U6/R43/R44 (2026-10-21) |
+| **PCB** | Routed. Schematic parity is clean, with 0 unconnected pads (2026-10-21, zones refilled). DRC shows 61 silkscreen warnings only: 58 `silk_overlap`, mostly the B.Silk outlines of the ESD diodes, and 3 `silk_over_copper` at U5, U7 and U9. Before release: clean up the silkscreen, then regenerate the fab outputs and the iBOM. |
 | **Tools** | KiCad 10.0 (`kicad-cli` ERC, netlist, DRC w/ schematic parity). To re-run: point `KICAD_CONFIG_HOME` at a scratch directory whose `10.0/` holds only the stock `sym-lib-table`/`fp-lib-table` (from KiCad's `share/kicad/template/`), so library warnings are real; run `kicad-cli sch erc --severity-all PIB.kicad_sch`; and compare `kicad-cli sch export netlist` output between revisions (`git archive` the old one) to see exactly which parts and nets changed. |
 | **Last updated** | 2026-10-21 |
 
@@ -21,7 +21,7 @@
 ## Summary
 
 The pin-to-pad check is clean for every footprint. The main risks are:
-- The GSE latching-valve pulse needs a pulse-width check against the valve spec, and a bench check of the new UVLO-gated power-up CLOSE pulse (C11).
+- No critical items are open. Bench and datasheet confirmations are tracked under Open Questions (Q3, Q9).
 
 The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD items need to be brought in line with the schematic (see [ICD Update Actions](#icd-update-actions)).
 
@@ -41,40 +41,22 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 - **BOM policy:** every resistor whose value sets a threshold, gain, current limit or timing uses **0.1% tolerance**. That includes UV/OV, ISET, FB_PG and FLB dividers, regulator feedback (R17/R18, R75), IMAX (R2), the Rogowski network and V<sub>REF</sub> divider, NTC bias and pulse-timing resistors. Generic pull-ups, pull-downs and series/gate resistors (e.g. 10k/100k pull-downs, 100 Ω series) can stay at standard tolerance. Current-sense resistors are 1%.
 - Discharge branch load (`VBAT_DCHG`, J12): 20 W average, flat, as 0.8 s on / 0.2 s idle per second. That's ≈ 25 W while drawing: 1.5 A at 16.8 V, up to 2.1 A at the 12 V cutoff.
 - Rogowski sensor: the flight unit flies only the PEM CWTMini50HF/150 coil head, with the PIB integrating. The complete CWT transducer (0.2 mV/A, ±6 V at 30 kA) is ground calibration equipment.
-- Discharge current is a damped ring: 16.26 kA peak, about 24 kHz, about 65 µs long, bidirectional.
+- Discharge current is a damped, bidirectional ring. An early scope shot (over a year old) showed ≈ 16 kA peak, ≈ 24 kHz and ≈ 65 µs. The thruster is experimental, so treat these as indicative only, not design inputs.
 
 | Category | Items |
 |---|---|
-| Critical | 1 (verify) |
-| Significant | 3 |
+| Critical | 0 |
+| Significant | 1 |
 | Footprint / Part | 7 |
 | Project setup | 2 |
-| ICD / Block diagram | 8 |
-| Open questions | 2 |
+| ICD / Block diagram | 1 |
+| Open questions | 3 |
 
 ---
 
 ## Critical (safety or function)
 
-### C11 — GSE latching-valve pulse circuit: pulse width and power-up pulse — `VERIFY`
-- **Where:** Valve Driver sheet (working copy).
-  - **Input:** J1.2 `/OPEN/~{CLOSE}` (D5 ESD) → R46 (1k) → R45 (100k to GND) → U18 gate 2 (74LVC2G14) → ~OPEN. Gate 1 re-inverts that to a buffered OPEN.
-  - **OPEN edge:** OPEN → C73 (1 µF) → RC node (R47 100k, D41 clamp) → U9 2A (74LVC2G17) → D47 (BAT54C) → U3 **INB**, shared with flight `VALVE3_H`.
-  - **CLOSE edge:** ~OPEN → C74 (1 µF) → RC node (R107 100k, D42 clamp) → U9 1A → D48 → U3 **INA** (`VALVE3_L`).
-- **Checks:**
-  1. **Pulse width:** t ≈ τ·ln(3.3/V<sub>T−</sub>), with τ = 100 ms and V<sub>T−</sub> the 74LVC2G17's negative-going threshold. A Schmitt V<sub>T−</sub> is below V<sub>CC</sub>/2, so even with C −20% the pulse is ≥ 0.8 × 100 ms × ln 2 ≈ **55 ms**. That's above the LHLA1221211H's 10–30 ms max response, so the margin looks adequate. When the Lee datasheet arrives, confirm the minimum pulse width (Q3). The 100 ms pulse spends several times the 5.5 mJ rating per switch, which is trivial at GSE command rates. BAT54J leakage at the RC nodes shortens the pulse when hot, which is negligible at room-temperature GSE use.
-  2. **Power-up pulse (UVLO-gated, working copy 2026-10-21):** the circuit fires a pulse at GSE power-up. U18 and U9 run on `3.3V_EGSE`, so as that rail rises, the U18 output that's high follows it and couples through its capacitor. With J1.2 low (R45 makes a high-Z GSE line read low), ~OPEN rises and fires a **CLOSE** pulse. With J1.2 already high, it fires an OPEN pulse. The power-up pulse always matches the commanded state.
-     - **UVLO:** U6 is now an **ADP7142AUJZ-3.3** (fixed 3.3 V, 40 V input, TSOT-23-5, SENSE tied to VOUT; C2 10 µF in, C3 10 µF out) with EN driven from `12V_GSE` by **R44 12.1k / R43 1.5k** (ratio 9.07, ≈ 0.9 mA). It replaces the LM1117, which brought the logic up at `12V_GSE` ≈ 4.5 V and so could spend the pulse while the coil supply was still ramping (the MIC4424 has no UVLO).
-     - **Thresholds** (ADP7142 precision EN: rising 1.15 / 1.22 / 1.30 V, falling 1.06 / 1.12 / 1.18 V min / typ / max):
-       - Turn-on: **10.43 / 11.06 / 11.79 V** on `12V_GSE`. It always starts from a 12.0 V GSE supply (≈ 1.7% margin at the worst-case part). The power-up pulse starts with `+12V` ≥ ≈ 10.0 V after D36 and rises to full during the pulse, matching the 10 V bench test.
-       - Turn-off: 9.61 / 10.15 / 10.70 V. This doesn't limit actuation. Pulses come only from edges: the power-up edge at turn-on, or GSE commands while `12V_GSE` is regulated near 12 V. On power-down, the collapsing rail produces negative edges that D41/D42 clamp, so no pulse fires.
-       - Once enabled, the output comes up in the internal soft-start time regardless of the `12V_GSE` ramp rate, so C74 sees a sharp edge and the pulse is full width.
-     - **Limit:** the EN window is about ±6%, so with a 12 V GSE supply the guaranteed turn-on floor can't go much above ≈ 10.4 V without risking a part that never starts. For a higher floor, raise the GSE supply or use a ±1% supervisor.
-     - **Open:**
-       - Set R43/R44 to 0.1% (F1). Rate C2 for 25 V or more (F2).
-       - Update the PCB from the schematic: U6 is still the SOT-223 LM1117 footprint there, and R43/R44 aren't placed.
-       - Bench check: scope `+12V` and U3 INA at GSE power-up and confirm one CLOSE pulse at ≥ 10 V. Confirm whether the 10 V valve test was at the coil or at the MIC4424 supply. If it was at the coil, the bridge's switch drop (latching coil current is unknown, Q3) raises the floor needed at `12V_GSE`.
-     - **Procedure (keep):** send an explicit CLOSE once powered, and space commands ≥ ~2× the pulse width (≈ 200 ms). Overlapping pulses brake the coil, which is safe.
+_None open._
 
 ---
 
@@ -83,32 +65,6 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 ### S14 — Non-ARM 74HC08 inputs float at reset — `OPTIONAL`
 - R88 holds `/ARM/~{SAFE}` low, so all eight gated outputs are low during reset. The other inputs (`IGNITER_EN`, `DISCHARGE_EN`, `IGNITER_PULSE`, `VALVE1_L/H`, `VALVE2_EN`, `VALVE3_L/H`) float while the STM32 pins are high-Z.
 - That's safe, but floating HC inputs can draw extra supply current or oscillate. Add 100k pull-downs if layout space allows.
-
-### S16 — DPT MCLK timer not configured in firmware — `OPEN` (firmware)
-- `/DPT_MCLK` is driven from PC7, and `firmware.ioc` assigns PC7 to `TIM3_CH2` with TIM3 clocked at 64 MHz (HSE 8 MHz via PLL). The prescaler, period and OC mode are at CubeMX defaults: OC "Frozen" doesn't toggle the pin, and the default period gives about 488 Hz.
-- **Fix:** Either set OC mode to Toggle with ARR = 976 (32.75 kHz), or use PWM mode 1 with ARR = 1952 and CCR = 976 (32.77 kHz). Both are within the MS5540C's 30–35 kHz range.
-
-### S17 — ADC clock over spec; sample times not set for the clamped igniter channels — `OPEN` (firmware)
-- **ADC clock:** `firmware.ioc` sets the ADC12 clock to 64 MHz. The STM32G431 maximum (DS12589 Rev 6, ADC characteristics) is **60 MHz** with one ADC running and **52 MHz** with all ADCs running, single-ended, V<sub>DDA</sub> ≥ 2.7 V. PA0/PA1 are meant to use ADC1/ADC2 simultaneous dual mode, so 52 MHz applies. **Fix:** synchronous clock HCLK/2 (CKMODE = 10, 32 MHz) or an asynchronous prescaler of ÷2. Re-check the PA0/PA1 throughput at the new clock.
-- **Igniter-channel sample time:** the clamped igniter inputs (see Verified OK, *Igniter ADC front ends*) have a 1k series resistor (R129–R131) ahead of the pin and no capacitor at the pin. The ADC sample capacitor charges through R<sub>AIN</sub> = 1k plus the igniter op amp's output impedance and any series R on the igniter board. The ioc currently uses the default 2.5 cycles (100 Ω max). DS12589 Table 61 (maximum R<sub>AIN</sub> for 12-bit; specified at f<sub>ADC</sub> = 60 MHz, so a slower clock only adds margin):
-
-  | Sample time (cycles) | Fast channels (IN1–IN5) | Slow channels |
-  |---|---|---|
-  | 2.5 | 100 Ω | n/a |
-  | 6.5 | 330 Ω | 100 Ω |
-  | 12.5 | 680 Ω | 470 Ω |
-  | 24.5 | 1.5k | 1.2k |
-  | **47.5** | **2.2k** | **1.8k** |
-  | 92.5 | 4.7k | 3.9k |
-
-  | Pin | Channel | Type | Minimum | Recommended |
-  |---|---|---|---|---|
-  | PA3 `ADC_V_IGN_SUPPLY_C` | ADC1_IN4 | fast | 24.5 cycles (1.5k ≥ 1k + 500 Ω margin) | 47.5 |
-  | PB14 `ADC_I_IGN_PK_C` | ADC1_IN5 | fast | 24.5 cycles | 47.5 |
-  | PC2 `ADC_V_IGN_PK_C` | ADC1_IN8 | **slow** | 24.5 cycles leaves only 200 Ω for the igniter-side source | **47.5** |
-
-- **Requirement:** set **≥ 47.5 cycles** on PC2, PA3 and PB14, which tolerates up to 800 Ω of igniter-side source impedance on the slow channel. At 32 MHz, 47.5 + 12.5 cycles is ≈ 1.9 µs per conversion, which doesn't matter for peak-detect and supply readings. Use a longer time (92.5 cycles) if the igniter board's outputs turn out to have their own series resistors.
-- **Other analog channels:** the NTC inputs (PB0, PB1, PB11, PB12, PC3) each have 100 nF at the pin (C20, C76, C19, C61, C44). That capacitor supplies the sampling charge (≈ 5 pF / 100 nF, ≈ 0.2 LSB kickback), so they aren't sample-time critical as long as they're read at ≪ 1 kHz (divider τ ≈ 0.5–1 ms). A long sample time is still a cheap default. Choose the PA0/PA1 discharge sample time as part of the dual-mode capture design.
 
 ---
 
@@ -173,26 +129,13 @@ Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, 
 
 | ID | Item | ICD / Block Diagram | Schematic | Status |
 |---|---|---|---|---|
-| D1 | CDH connector PN | G125-MH12605M4P | G125-MS12605M2P (vertical, correct) | `ICD` — update to the MS PN; also confirm the "M2P" vs "M4P" suffix against the CDH harness and mating part |
-| D2 | EGSE pinout | 12V_1, 12V_2 on pins 1/2, GND on 14/15; "both pairs of 12V" to open | J1: 1 = 12V_GSE, 2 = OPEN/~CLOSE (3.3 V logic), 3/4 = GND (4-pin part) | `ICD` |
-| D3 | 5 V rail | "TBD" | Required: −5 V supply, LG16, HV boards, integrator | `ICD` |
-| D4 | P/T sensors | 3 (frit, tank refrigerant, tank propellant) | 2 DPT channels (tank, frit) | `ICD` — list 2, noting a possible future third |
-| D5 | Igniter channels | Integral V, integral I, total pulse energy | J5: peak V, peak I, supply V | `ICD` — trim to as-built channels |
-| D6 | GSE architecture | Separate H-bridge + 12 V NMOS, diode-OR'd, "completely separated" | Shares flight drivers. `+12V` diode-OR'd from LT3065 and `12V_GSE` (D11/D36). The Q10 gate is diode-OR'd (D50, BAT54C) between GSE and flight, so either can open valve 2 and neither can force it closed. The latching valve gets an RC-timed pulse (~100 ms) on each GSE OPEN/CLOSE edge, diode-OR'd with flight (D47/D48), so either side can drive a MIC4424 input high. Conflicting commands put both inputs high, which brakes the coil | `ICD` |
-| D9 | BAT OCP / MCU-healthy gating | Claimed | Upstream eFuse U19 on all BAT loads, enabled by the MCU (`/BAT_EN`), with OV 18 V and staged UV | `ICD` — describe as built |
-| D10 | PIB thermistors | 2 | 1 (TH1 on PB1) | `ICD` — change to 1 |
+| D13 | Block diagram (`PIB Block Diagram.drawio.png`) | Unchanged since before the review. It shows BAT_HOT feeding the 12 V regulator, both ADM1270s and the heater switches directly; a "Valve GSE Bypass" with its own H-bridge and 12 V NMOS; and only the 2 tank thermistors | An upstream ADM1270 (U19) sits between BAT_HOT and `VBAT_PROT`, which feeds the LT3065, U5, U7 and the heater switches Q9/Q11. The GSE path is EGSE-only logic (ADP7142 UVLO, Schmitt edge-pulse U18/U9) diode-OR'd into the shared U3 and Q10, with `GSE_12V` diode-OR'd into `12V_INT` (D36/D11). The PIB, igniter-board and discharge-board NTCs are also read, for 10 external ADC inputs in total | `ICD` — update the drawing: add U19/`VBAT_PROT`, redraw the GSE bypass as logic into the shared drivers, add the 3 extra thermistors |
 
 ### ICD Update Actions
 
 Checklist of ICD edits the review has generated. Tick these off as the ICD is revised.
 
-- [ ] **GSE section and Table 3 (D2, D6):** OPEN/~CLOSE is a 3.3 V digital logic line on J1.2; J1.1 = 12V_GSE; J1.3/4 = GND. Remove the "both pairs of 12V" wording and the 14/15 pin numbers. Describe the as-built scheme: shared valve drivers, `+12V` diode-OR'd from LT3065 and `12V_GSE`, the NC valve diode-OR'd between flight and GSE (either opens it, neither forces it closed), and the latching valve pulsed (~100 ms) on each GSE OPEN/CLOSE edge (C11). Replace "diode OR'd … completely separated".
-- [ ] **Electrical connectors (D1):** G125-MS12605M2P (vertical), not MH12605M4P.
-- [ ] **Sensor channels (D4, D5):** 2 P/T sensors (tank, frit; third optional/future). Igniter channels trimmed to peak V, peak I, supply V (plus whatever is derived in firmware).
-- [ ] **Power interfaces (D3):** 5 V is required, not TBD (−5 V converter, LG16 flow sensor, HV board op amps, integrator).
-- [ ] **BAT protection paragraph (D9):** describe the as-built protection: an upstream ADM1270 eFuse (U19) on the whole BAT bus, enabled by the MCU and reporting `BAT_PGOOD`, with OV 18 V and UV 12.0 V. Per-branch ADM1270s on the discharge and igniter supplies, with UV 12.75 V for staged shedding. State that launch inhibits are provided by EPS under UNP NS requirements.
-- [ ] **Data interfaces:** IGNITER (J3.22) is a buffered copy (U8) of the gated igniter pulse.
-- [ ] **Thermistors (D10):** 1 PIB thermistor, not 2.
+- [ ] **Block diagram (D13):** add the U19 upstream eFuse and `VBAT_PROT`, redraw the GSE bypass as EGSE logic diode-OR'd into the shared drivers, and add the PIB, igniter and discharge thermistors. The ICD text itself is complete as of Rev 2.1.
 
 ---
 
@@ -200,8 +143,9 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
 
 | ID | Question | Known so far |
 |---|---|---|
-| Q3 | Latching valve datasheet (LHLA1221211H): coil resistance and minimum pulse width. These confirm the C11 pulse and the D36 margin. (Low-voltage operation is settled: both valves bench-tested working at 10 V, 2026-10-21.) | Part selected from Lee's catalog: 12 V, 5.5 mJ/switch, 10–30 ms max response. The energy bound gives ≲ 50–230 mA. The symbol library has LHLA1252211H/LHLA1252411H, not the selected part. |
+| Q3 | Latching valve datasheet (LHLA1221211H): coil resistance and minimum pulse width. These confirm the GSE pulse (63–205 ms) and the D36 margin. (Low-voltage operation is settled: both valves bench-tested working at 10 V, 2026-10-21.) | Part selected from Lee's catalog: 12 V, 5.5 mJ/switch, 10–30 ms max response. The energy bound gives ≲ 50–230 mA. The symbol library has LHLA1252211H/LHLA1252411H, not the selected part. |
 | Q8 | Flight Rogowski coil (PEM CWTMini50HF/150 coil head): confirm the precise open-circuit M (offset-corrected integral at the trough ÷ CT peak). **After the BNC → MMCX re-termination, re-measure the coil's DC resistance and M through the final cable and connector.** The integrator gain depends on R79 + Z<sub>s</sub>. | **Measured 2026-10-19** (380 µF from 200 V via a shorting stick, CT reference): open-circuit **M ≈ 1.7 nH (±10%)** from ∫V<sub>coil</sub>dt vs CT and from the onset step. **Coil resistance 154 Ω DC.** A 50 Ω load attenuated the signal ≈ 3–4×, resistively. The steps in dI/dt at ≈ 41 and 84 µs come from the shorting-stick arc. The transducer trough read ≈ 10–20% above the CT (rough read); check the CT scaling. Full test record: `Rogowski_Coil_Characterization.md`. |
+| Q9 | GSE latching-valve pulse bring-up check (not design-blocking). Scope `+12V` and U3 INA at GSE power-up, and confirm a single CLOSE pulse with `+12V` ≥ 10 V. Check that OPEN/CLOSE commands from J1.2 each give one pulse of the expected polarity (INB opens). Confirm whether the 10 V valve test was measured at the coil or at the MIC4424 supply. If it was at the coil, the bridge drop raises the floor needed at `12V_GSE` (coil current, Q3). | The design analysis is complete (Verified OK, *GSE latching-valve pulse*). The pulse is 63–205 ms. The UVLO turns on at 10.43–11.81 V on `12V_GSE` with 0.1% R43/R44. Both valves were bench-tested working at 10 V on 2026-10-21. |
 
 ---
 
@@ -247,6 +191,51 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
 - **IGNITER to CDH:** U8 (74AHC1G125, OE tied to GND, decoupled by C77) buffers `IGNITER_PULSE_GATED` onto J3.22 through R29.
 - **PIB thermistor:** TH1 10k NTC / R109 10k from VDDA / C76 100 nF on PB1 gives ≈ VDDA/2 at 25 °C, ratiometric with the ADC reference.
 - **J8 / reset:** J8.5 = +3.3V VTref through R108 (1k), which is short-protected. MAX823 ~RESET drives NRST directly (R77 pull-up), so SW1 is always a hardware reset; use a manual connect-under-reset for recovery. JP1 in the WDI line disables only the watchdog. J8 ESD: D51–D54 (PESD3V3U1UL) sit on the connector side of R20/R21 (SWD, 100 Ω) and R80/R81 (UART, 22 Ω), oriented K-to-signal.
+- **ICD Rev 2.1 (working copy, 10/22/2026):** closes D1, D2, D4, D5, D6, D9, D10 and D12. The ICD now has: CDH connector G125-MS12605M2P; EGSE pinout 1 = 12V, 2 = OPEN/CLOSE, 3/4 = GND; 2 P/T sensors; igniter peak V, peak I and supply V; 5 thermistors plus MCU temperature; the Table 3 protection setpoints with auto-retry; the EPS launch-inhibit statement; and the GSE rules (12–13 V supply, UVLO 9.6 V / 11.8 V, 63–205 ms pulses, transitions > 205 ms apart, state-matching power-up pulse, no OPEN/CLOSE high before power, line low ≥ 205 ms before removing 12 V). 205 ms is the worst-case pulse over C ±20% and the 74LVC2G17 V<sub>T−</sub> range at −40 to 85 °C, so it's an adequate bound for room-temperature GSE use.
+- **ICD power-interface update (`Payload ICD.pdf`, working copy 2026-10-21; closes D3 and D11):**
+  - The 5 V use (gate drive plus op amps with the internal −5 V) and the heaters on BAT are now stated.
+  - Every Table 3 setpoint was checked against the dividers and ADM1270 Rev. A (UV/OV threshold 0.985/1.0/1.015 V, UV hysteresis 55/60/65 mV, OV hysteresis 25/30/35 mV):
+
+    | Bus | UV / OV divider | UV off / on (min/typ/max) | OV off / on | Current limit |
+    |---|---|---|---|---|
+    | Main (U19) | R111 33k / R112 1k / R113 2k: UV ÷12, OV ÷18 | 11.82/12.00/12.18 V; 12.48/12.72/12.96 V | 17.73/18.00/18.27 V; 17.10/17.46/17.82 V | 36 mV / R38 10 mΩ = 3.6 A |
+    | Discharge, igniter (U5, U7) | R50 158k / R49 3.92k / R48 9.53k: UV ÷12.75, OV ÷17.99 | 12.56/12.75/12.94 V; 13.26/13.51/13.77 V | 17.72/17.99/18.26 V; 17.09/17.45/17.81 V | 3.2 A (R35 10 mΩ); 0.5 A (50 mV / R65 100 mΩ) |
+
+  - The listed current-limit spreads (≈ ±10%) are reasonable for the ADM1270 sense accuracy at 36/32/50 mV plus 1% sense resistors. Main max 3.95 A stays under the EPS 4 A OCP. Divider tolerance isn't included; it's negligible with the 0.1% parts in F1.
+- **ADC configuration (`firmware.ioc`, 2026-10-21):**
+  - **Clock:** synchronous HCLK/2 = 32 MHz, under the 52 MHz limit with both ADCs running (DS12589 Table 60).
+  - **Burst:** ADC1 (master, IN1/PA0) and ADC2 (slave, IN2/PA1) in dual regular simultaneous mode. Continuous, 2.5 cycles, 12-bit → **2.133 MSPS** per channel with V and I sampled together. DMA access mode 12/10-bit, so each V/I pair packs into one word (ADC1 in [15:0], ADC2 in [31:16]). DMA1_Channel1: Normal, Word/Word, Very High, IRQ on, DMAMUX sync off. `MX_DMA_Init` runs before `MX_ADC1_Init`. Capture length = N passed to `HAL_ADCEx_MultiModeStart_DMA`; set it from current thruster data. An exact 2.000 MSPS timer trigger doesn't fit at 32 MHz (needs t<sub>CONV</sub> + t<sub>LATR</sub> = 539 ns).
+  - **Slow channels:** ADC1 injected group, 1 rank, software start. Firmware re-points rank 1 for each read, and only between bursts, since sample time can't change mid-conversion. At 32 MHz:
+
+    | Pin | ADC1 channel | Net | Source at pin | Sample time | t<sub>S</sub> |
+    |---|---|---|---|---|---|
+    | PA3 | IN4 (fast) | `ADC_V_IGN_SUPPLY_C` | R129 1k series, BAT54J clamps, no pin cap | `ADC_SAMPLETIME_92CYCLES_5` | 2.9 µs |
+    | PB14 | IN5 (fast) | `ADC_I_IGN_PK_C` | R131 1k series, BAT54J clamps, no pin cap | `ADC_SAMPLETIME_92CYCLES_5` | 2.9 µs |
+    | PC2 | IN8 (slow) | `ADC_V_IGN_PK_C` | R130 1k series, BAT54J clamps, no pin cap | `ADC_SAMPLETIME_92CYCLES_5` | 2.9 µs |
+    | PC3 | IN9 | `ADC_NTC_IGN` | R78 10k bias, C44 100 nF | `ADC_SAMPLETIME_92CYCLES_5` | 2.9 µs |
+    | PB12 | IN11 | `ADC_NTC_DCHG` | R87 10k bias, C61 100 nF | `ADC_SAMPLETIME_92CYCLES_5` | 2.9 µs |
+    | PB1 | IN12 | `ADC_NTC_PIB` | R109 10k / TH1, C76 100 nF | `ADC_SAMPLETIME_92CYCLES_5` | 2.9 µs |
+    | PB11 | IN14 | `ADC_TANK_NTC_1` | R4 22k bias, C19 100 nF | `ADC_SAMPLETIME_92CYCLES_5` | 2.9 µs |
+    | PB0 | IN15 | `ADC_TANK_NTC_2` | R3 22k bias, C20 100 nF | `ADC_SAMPLETIME_92CYCLES_5` | 2.9 µs |
+    | — | TEMPSENSOR_ADC1 | internal | t<sub>S_temp</sub> ≥ 5 µs (DS12589 Table 75) | `ADC_SAMPLETIME_247CYCLES_5` | 7.7 µs |
+    | — | VREFINT | internal | t<sub>S_vrefint</sub> ≥ 4 µs (DS12589 Table 20) | `ADC_SAMPLETIME_247CYCLES_5` | 7.7 µs |
+
+    - **Basis:** the 1k igniter channels need ≥ 47.5 cycles (DS12589 Table 61: R<sub>AIN</sub> ≤ 1.8k on slow channels). 92.5 cycles (3.9k slow / 4.7k fast) also covers series resistance on the igniter board. The NTC channels' 100 nF supplies the sampling charge, so 92.5 is a uniform default rather than a requirement there. Read V<sub>REFINT</sub> before and after each burst.
+    - A full 10-channel pass takes ≈ 8 × 3.3 µs + 2 × 8.1 µs ≈ 43 µs. Optional: injected oversampling ×16 / shift 4 for less noise.
+  - **Firmware:** calibrate both ADCs at start-up. After generation, confirm `hadc1.Init.ClockPrescaler` and `hadc2.Init.ClockPrescaler` are both `ADC_CLOCK_SYNC_PCLK_DIV2`; the ioc stores it only under ADC2.
+- **DPT MCLK (TIM3_CH2 on PC7):** `firmware.ioc` sets OC mode Toggle with ARR (`PeriodNoDither`) = 976 and the default PSC = 0 and CCR = 0, on a 64 MHz timer clock (APB1 ×1). The pin toggles once per 977 counts, so f = 64 MHz / (2 × 977) = **32.75 kHz**, inside the MS5540C's 30–35 kHz range (0.05% from 32.768 kHz). **Firmware:** CubeMX only configures the timer. Call `HAL_TIM_OC_Start(&htim3, TIM_CHANNEL_2)` after `MX_TIM3_Init()`, before the first DPT read. If APB1 is ever divided, the timer clock stays at 2 × PCLK1, so re-check the frequency after any clock change.
+- **GSE latching-valve pulse and UVLO (Valve Driver sheet):**
+  - **Path:** J1.2 → R46 1k / R45 100k → U18 (74LVC2G14) makes OPEN and ~OPEN. OPEN → C73 1 µF / R47 100k → U9 2A (74LVC2G17) → D47 → U3 INB (`VALVE3_H`, opens). ~OPEN → C74 / R107 → U9 1A → D48 → U3 INA (`VALVE3_L`, closes). D41/D42 clamp negative edges. Each output is diode-OR'd with flight, with R41/R42 pull-downs.
+  - **Pulse width:** τ·ln(3.3/V<sub>T−</sub>) ≈ **63–205 ms**, about 100 ms typical (V<sub>T−</sub> 0.60–1.50 V at 3 V for NXP; TI ≥ 0.8 V; C ±20%). That covers the LHLA1221211H's 10–30 ms response; its minimum pulse width is still to be confirmed (Q3).
+  - **UVLO:** U6 ADP7142AUJZ-3.3 (VIN 1, GND 2, EN 3, SENSE 4 = VOUT 5) with EN from `12V_GSE` via R44 12.1k / R43 1.5k (÷9.07). EN thresholds: rising 1.15 / 1.22 / 1.30 V, falling 1.06 / 1.12 / 1.18 V. So the logic turns on at **10.43 / 11.06 / 11.79 V** (≈ 11.81 V worst case with 0.1% resistors, ≈ 12.0 V with 1%) and off at 9.61 / 10.15 / 10.70 V. R43/R44 must be 0.1% (F1).
+  - **Power-up pulse:** as `3.3V_EGSE` comes up, a pulse fires that matches the J1.2 state (low or floating → CLOSE). It starts with `+12V` ≥ ≈ 10.0 V. A collapsing rail only makes negative edges, so no pulse fires on a normal power-down.
+  - **Power removal can't make an OPEN pulse:** a pulse needs a rising edge on OPEN or ~OPEN. When `12V_GSE` is removed with J1.2 steady, OPEN is either already low and stays low, or it's high and falls with `3.3V_EGSE`. A falling edge drives the RC node negative, and D41/D42 clamp it. Below ≈ 1.65 V the LVC outputs are undefined, but U9's output can't exceed the collapsing rail, and after D47 that's well under the MIC4424's 2.4 V V<sub>IH</sub>, so no glitch can reach the driver. In GSE-only mode, `+12V` collapses too. In flight-powered mode, R41/R42 hold the MIC4424 inputs low. The only power-down pulse is the CLOSE that fires when J1.2 falls while `3.3V_EGSE` is still up (procedure below).
+  - **Fast power cycling:** after removal, C73/C74 recover through R47/R107 (τ = 100 ms), and C3 may hold `3.3V_EGSE` up for a while under the µA logic load. Re-applying power within about 0.5–1 s can give a shorter or missing power-up pulse, so the explicit CLOSE after power-up still applies. If `12V_GSE` dips below the UVLO turn-off (≈ 10.15 V) and recovers while J1.2 is high, the restart fires an OPEN pulse that matches the commanded state.
+  - **GSE procedure:**
+    - Set the GSE supply to ≥ 12.2 V at J1.
+    - Send an explicit CLOSE once powered.
+    - Space OPEN/CLOSE commands ≥ 250 ms. Overlapping pulses brake the coil, which is safe.
+    - Before unplugging J1, command the final state and switch the GSE supply off. If J1.2 falls while `3.3V_EGSE` is still up (≈ 20 ms on C2), a CLOSE pulse fires. In GSE-only mode it's energy-limited (≈ 2 mJ on the `+12V` capacitors), but with the PIB flight-powered it may close the valve. The GSE controller must hold J1.2 until its 12 V has collapsed.
 - **eFuse auto-retry and start-up capacitance (U5, U7, U19, ADM1270 Rev. A):** ~FAULT is tied to ENABLE through 0 Ω (R51, R64, R116), so all three auto-retry with a 200 ms off time (C29, C34, C80 = 100 nF). U19's 22 nF timer outlasts the branch timers, so a branch fault clears at U5/U7 first. The limits come from ∫dV/I through foldback to 16.8 V; worst case covers the timer current, threshold and ±10% capacitor tolerance. They're recorded as schematic text notes for the later supply design cycle:
   - **U5 → `VBAT_DCHG`:** 3.2 A, C30 = 10 nF, ≈ 100 µF worst case.
   - **U7 → `VBAT_IGN`:** 0.5 A (ISET = VCAP → 50 mV / R65 100 mΩ), C35 = 68 nF, ≈ 115 µF worst case (≈ 107 µF with the current-limit tolerance). Q2 dissipates ≤ 6.6 W for ≤ 8.5 ms, well inside its SOA.
