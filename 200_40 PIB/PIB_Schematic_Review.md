@@ -154,8 +154,8 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
 
   | Channel | ESD | Series R | Clamp (+3.3V / GND) | Clamped net → pin |
   |---|---|---|---|---|
-  | `ADC_V_IGN_PK` (J5.4) | D24 | R130 1k | D56 / D57 | `ADC_V_IGN_PK_C` → PC2 (ADC1_IN8, slow) |
-  | `ADC_I_IGN_PK` (J5.5) | D25 | R131 1k | D58 / D59 | `ADC_I_IGN_PK_C` → PB14 (ADC1_IN5, fast) |
+  | `ADC_I_IGN_PK` (J5.4) | D24 | R130 1k | D56 / D57 | `ADC_I_IGN_PK_C` → PC2 (ADC1_IN8, slow) |
+  | `ADC_V_IGN_PK` (J5.5) | D25 | R131 1k | D58 / D59 | `ADC_V_IGN_PK_C` → PB14 (ADC1_IN5, fast) |
   | `ADC_V_IGN_SUPPLY` (J5.6) | D26 | R129 1k | D55 / D17 | `ADC_V_IGN_SUPPLY_C` → PA3 (ADC1_IN4, fast) |
 
   - **Fault case:** an igniter op amp stuck at −5 V pushes ≈ 4.5 mA through the GND-side BAT54J (V<sub>F</sub> ≈ 0.3–0.4 V), so the pin stays near the −0.3 V absolute max and well within the −5 mA injection limit. At +5 V, ≈ 1.3 mA flows into +3.3V, which is negligible.
@@ -184,8 +184,8 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
     | Pin | ADC1 channel | Net | Source at pin | Sample time | t<sub>S</sub> |
     |---|---|---|---|---|---|
     | PA3 | IN4 (fast) | `ADC_V_IGN_SUPPLY_C` | R129 1k series, BAT54J clamps, no pin cap | `ADC_SAMPLETIME_92CYCLES_5` | 2.9 µs |
-    | PB14 | IN5 (fast) | `ADC_I_IGN_PK_C` | R131 1k series, BAT54J clamps, no pin cap | `ADC_SAMPLETIME_92CYCLES_5` | 2.9 µs |
-    | PC2 | IN8 (slow) | `ADC_V_IGN_PK_C` | R130 1k series, BAT54J clamps, no pin cap | `ADC_SAMPLETIME_92CYCLES_5` | 2.9 µs |
+    | PB14 | IN5 (fast) | `ADC_V_IGN_PK_C` | R131 1k series, BAT54J clamps, no pin cap | `ADC_SAMPLETIME_92CYCLES_5` | 2.9 µs |
+    | PC2 | IN8 (slow) | `ADC_I_IGN_PK_C` | R130 1k series, BAT54J clamps, no pin cap | `ADC_SAMPLETIME_92CYCLES_5` | 2.9 µs |
     | PC3 | IN9 | `ADC_NTC_IGN` | R78 10k bias, C44 100 nF | `ADC_SAMPLETIME_92CYCLES_5` | 2.9 µs |
     | PB12 | IN11 | `ADC_NTC_DCHG` | R87 10k bias, C61 100 nF | `ADC_SAMPLETIME_92CYCLES_5` | 2.9 µs |
     | PB1 | IN12 | `ADC_NTC_PIB` | R109 10k / TH1, C76 100 nF | `ADC_SAMPLETIME_92CYCLES_5` | 2.9 µs |
@@ -225,7 +225,7 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
   - **U7 → `VBAT_IGN`:** 0.5 A (ISET = VCAP → 50 mV / R65 100 mΩ), C35 = 68 nF, ≈ 115 µF worst case (≈ 107 µF with the current-limit tolerance). Q2 dissipates ≤ 6.6 W for ≤ 8.5 ms, well inside its SOA.
   - **U19 → `VBAT_PROT`:** 3.6 A, C81 = 22 nF, ≈ 290 µF nominal (≈ 235 µF worst case). The start-up load is ≈ 14 µF plus the LT3065.
   - **Firmware:** PWRGD (`/DISCHARGE_PGOOD` PC13, `/IGNITER_PGOOD` PC14, `/BAT_PGOOD` PA11; ≈ 11 V threshold) is also low when the branch is commanded off, when ARM is safe, or when BAT is below the 12 V UV, and it pulses during retries. Flag a fault only when the branch is commanded on, BAT is in range, and PWRGD stays low or keeps toggling past a debounce window.
-- **PIB J5 ↔ igniter J3:** through a standard mirrored PicoBlade cable (pin n ↔ 14 − n), the pulse, reset, NTC, supply-V, grounds and ±5 V match pin-for-pin (igniter board at `bcc34fe`). After the J5 rename, J5.4/PC2 = `/ADC_V_IGN_PK` and J5.5/PB14 = `/ADC_I_IGN_PK`, matching the igniter's U2 voltage path (J3.10) and U3 Hall current path (J3.9). `VBAT_IGN` (J5.12/13) is unconnected on the test board.
+- **PIB J5 ↔ igniter J3:** through a standard mirrored PicoBlade cable (pin n ↔ 14 − n), the pulse, reset, NTC, supply-V, grounds and ±5 V match pin-for-pin (igniter board at `85303e3`). J5.4/PC2 = `/ADC_I_IGN_PK` ↔ J3.10 (U4B, Hall current path) and J5.5/PB14 = `/ADC_V_IGN_PK` ↔ J3.9 (U4A, U2 voltage path). Net names match on both boards. `VBAT_IGN` (J5.12/13) and J12 (M80) are unconnected on the test board.
 - **J3 ESD:** J3.22–24 are protected by D45/D46/D49 (PESD3V3U1UL) on the connector side of R29/R30/R31.
 - **Symbol libraries:** U1/U2/U3 come from `0_PAY_Symbol_Library`, which is in the project's `sym-lib-table`.
 - **Valve 1 (U2):** U15 drives INA/INB directly, with R39/R40 pull-downs (no GSE path).
