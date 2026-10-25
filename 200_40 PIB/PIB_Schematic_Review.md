@@ -47,7 +47,7 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 |---|---|
 | Critical | 0 |
 | Significant | 1 |
-| Footprint / Part | 7 |
+| Footprint / Part | 3 |
 | Project setup | 2 |
 | ICD / Block diagram | 1 |
 | Open questions | 3 |
@@ -72,35 +72,10 @@ _None open._
 
 Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, SOT95P280X145-5N, HARWIN M80, ABM3B, PowerPAK SO-8, SOD-123). MIC4424 pads 1/8 are NC, which is correct. SP0502BAJT on SC-70 is correct.
 
-### F1 — No MPNs or capacitor ratings — `OPEN`
-- **MPN / Manufacturer:** no part has them. U1 alone carries vendor-import fields (`MP`, `MF`), named differently from the rest. Add `MPN` and `Manufacturer` project-wide.
-- **Capacitors:** none has a voltage or dielectric rating (see F2).
-- **Tolerance (partly done):** `0.1%, 25ppm/C` is now set on the NTC biases (R3, R4, R78, R87, R109) and on every eFuse UV/OV, FB_PG and FLB divider. Per the BOM policy, these still need it:
-  - ISET dividers: R122/R123 (U5), R124/R125 (U19)
-  - LT3065: R17/R18 (feedback), R2 (IMAX)
-  - LT8580 feedback: R75
-  - Rogowski: R79, R98, and the V<sub>REF</sub> divider R96/R97
-  - Pulse timing: R47, R107
-  - GSE UVLO divider: R43, R44
-  - Current-sense: R35, R38, R65 at 1%
-
-### F2 — BAT-rail capacitor voltage rating — `OPEN`
-- C79 (`VBAT_HOT`), C1, C28, C33, C62, C82 (`VBAT_PROT`) and C66, C67 see up to the SMF18A clamp (~29 V), so they need 50 V parts.
-- C2 (10 µF 0805, `12V_GSE`, D10 SMF14A clamp) needs 25 V or more, and 35–50 V to cover the full clamp.
-- The 10 µF 0805 capacitors, especially C4 (the coupling capacitor in the −5 V converter, ~10 V across it), lose most of their capacitance under DC bias. Use 25 V+ X7R, and 1206 where needed.
-
-### F3 — Sense-resistor rating and accuracy (R38, R35) — `OPEN`
-- **R38** (upstream, 10 mΩ, 0805) carries the whole bus: up to ≈ 3–4 A, so ≈ 0.09–0.16 W, at or above a standard 0805's 1/8 W. Use a ≥ 0.25–0.5 W current-sense part.
-- **R35** (discharge, 10 mΩ, 0805) dissipates ≈ 44 mW at 2.1 A, which is fine.
-- At 10 mΩ, 1 mΩ of solder and trace resistance shifts each current limit by ≈ 10%. Use low-TCR current-sense parts with Kelvin footprints, routing SENSE+/SENSE− from the pads.
-
-### F4 — FB1 footprint/value — `OPEN`
-- FB1 uses `R_0603` and its value is "120". Specify a ferrite part number (impedance at 100 MHz, DCR, current) and use an inductor/ferrite footprint.
-
-### F5 — Symbol/value mismatches — `OPEN`
-- Q9/Q10/Q11: symbol `IRF7403`, value IRF7832. The Datasheet field still links the IRF7403.
-- U14/U15: symbol `74LS08` (DIP footprint filter), value 74HC08PW. The Datasheet field still links the SN74LS08.
-- The pinouts match, but the description and datasheet fields will mislead BOM and assembly.
+### F5 — Symbol, value and datasheet mismatches — `OPEN`
+- **Symbol ≠ part:** Q9–Q11 use the `IRF7403` symbol for an IRF7832. U14/U15 use `74LS08` (DIP filter) for a 74HC08PW. Q1/Q2/Q6 use the `Si7489DP` symbol for an SQJ457EP, and Q3–Q5 use `BSS131` for a BSS123N. D17/D39–D44/D55–D59 use `BAT54J` for a BAT54WS. The pinouts all match.
+- **Stale datasheet links:** Q1/Q2/Q6 → si7489dp.pdf, Q3–Q5 → BSS131, the BAT54WS parts → Nexperia BAT54J, D3/D10/D13/D14 → Vishay SMF (the parts are Littelfuse), D11/D36/D37 → MCC MBR0560 (the part is Slkor), D38 → Littelfuse SD-C (the part is Semtech SD12C), Q9–Q11 → IRF7403, U14/U15 → SN74LS08.
+- **Fix:** update the `Datasheet` field to each MPN's datasheet, or swap in matching symbols. Optional cleanup: delete the `KLC_S3.3`/`KLC_S4.1` fields (318 parts) so they don't appear in BOM exports.
 
 ### F7 — Flight connector retention — `OPEN`
 - PicoBlade (J2, J4, J5, J9, J10, J11, J13, J15) is friction-lock only, which is a vibration risk. The DPT board's J1 (53261-0671) is PicoBlade too, so changing J9/J10 means changing the DPT side as well. Consider Pico-Lock, CLIK-Mate, or Gecko.
@@ -108,7 +83,6 @@ Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, 
 ### F8 — Flight population — `OPEN`
 - SW1 (SKRKAHE020 tactile switch) and J8 (debug header): decide flight population. A DNP SW1 on flight units is typical.
 - **JP1 (`WD_ENABLE`) must be bridged for flight.** It is a normally-open solder jumper between `/WDG_IN` (PB2, R76) and MAX823 WDI (U12.4). While open, WDI floats and the watchdog is disabled; MAX823 POR supervision and the SW1 reset still reach NRST. Add it to the assembly notes and the flight build checklist.
-
 
 ---
 
@@ -173,7 +147,7 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
   - **Pinout:** SOT-23, G 1 / S 2 / D 3.
   - **Firmware:** hold reset through power-up (C69 charges in ≈ 10 ms), release just before the shot, then take a baseline. That removes leakage × R98, op-amp bias offset and the ≈ 10–20 mV reset-release step.
 - **Integrator V<sub>REF</sub>:** R96/R97 (10k/10k) divide `+3.3V`, not VDDA, a layout choice. C70 (1 µF) gives a ≈ 32 Hz corner, so digital noise is filtered. The DC difference from VDDA is the FB1 drop (≪ 1 mV), which the pre-shot baseline removes. It still tracks the ADC reference, because both come from the same 3.3 V source.
-- **J7 protection:** D38 (SD12C-01F, bidirectional 12 V standoff) at J7.1 ahead of C69 stays off at the ≈ 5–6 V coil peak. R95 (100k) defines DC with the coil unplugged and costs ≈ 0.15% against the coil's 154 Ω.
+- **J7 protection:** D38 is a Semtech SD12C.TCT (DigiKey SD12C.TCTCT-ND), bidirectional with a 12 V standoff, SOD-323. Pad 1 is on GND, pad 2 on the coil node at J7.1 ahead of C69 stays off at the ≈ 5–6 V coil peak. R95 (100k) defines DC with the coil unplugged and costs ≈ 0.15% against the coil's 154 Ω.
 - **PA0/PA1 front ends:** Each channel has 100 Ω (R106 / R102) → BAT54J pair to +3.3V/GND (D43/D44, D39/D40) → 1k (R105 / R104) → pin with 470 pF (C72 / C71). Orientation is correct, and the matched RCs (f<sub>c</sub> ≈ 339 kHz, ≈ 0.47 µs, −0.02 dB / −4° at 24 kHz) keep the V×I timing aligned. Injection in a fault is ≪ 0.1 mA.
 - **Valve supply at low battery:** the LT3065 regulates 12.6 V (R18 20k / R17 1k), so `+12V` ≈ 12.3 V after D11 while BAT ≳ 12.9 V. Below that it's in dropout, and `+12V` ≈ BAT − 0.6 V, about 11.4 V just before U19's 12.0 V UV cutoff. In GSE mode, `+12V` = `12V_GSE` − V<sub>F</sub>(D36). **Both valves were bench-tested working at 10 V (2026-10-21)**, below that worst case. Cold is a separate thermal limit: the LHLA1221211H is rated to 4 °C minimum operating.
 - **Igniter ADC front ends (J5):** the three op-amp-driven channels each have J5 ESD diode → 1k series R → BAT54J pair to +3.3V/GND → MCU pin. Diode orientation is correct (K to +3.3V / K to the node):
@@ -236,6 +210,16 @@ Checklist of ICD edits the review has generated. Tick these off as the ICD is re
     - Send an explicit CLOSE once powered.
     - Space OPEN/CLOSE commands ≥ 250 ms. Overlapping pulses brake the coil, which is safe.
     - Before unplugging J1, command the final state and switch the GSE supply off. If J1.2 falls while `3.3V_EGSE` is still up (≈ 20 ms on C2), a CLOSE pulse fires. In GSE-only mode it's energy-limited (≈ 2 mJ on the `+12V` capacitors), but with the PIB flight-powered it may close the valve. The GSE controller must hold J1.2 until its 12 V has collapsed.
+- **BOM / MPN check (2026-10-24):** every part has an MPN (`MP`) and a DigiKey PN, and each package matches its footprint and pinout. The DigiKey PNs pin down the generic MPNs: BAT54C/BAT54WS → Diotec (SOT-23 / SOD-323F), MBR0560 → Slkor (5399-), SMF14A/SMF18A → Littelfuse SMF (SOD-123FL). KiCad `D_SMF` (DO-219AB pads 1.3 × 1.4 mm on 2.9 mm centres) covers the SOD-123FL land pattern. All threshold, timing and divider resistors are 0.1% (Yageo RT, KOA RN73, Panasonic ERA, TE RP73); current-sense parts are 1%. Capacitor ratings:
+  - 1 µF on `VBAT_*`: 35 V (GMK107AB7105KAHT).
+  - C2 `12V_GSE`: 25 V.
+  - C6 (12.6 V) and C4 (≈ 10 V) keep ≈ 3–5 µF under bias, adequate.
+  - C73/C74 (1 µF 6.3 V 0402) lose some capacitance at 3.3 V, within the ±20% assumed for the 63–205 ms GSE pulse.
+- **C1 voltage rating (designer decision, 2026-10-24):** C1 (10 µF `VBAT_PROT`) stays 25 V X7R 0805, since no 35 V X7R 10 µF 0805 was found. Steady state is 16.8 V (67% of rating, ≈ 3 µF effective under bias). The ≈ 29 V SMF18A clamp transients that reach `VBAT_PROT` before U19's OV turns Q6 off are an accepted risk.
+- **Availability substitutions (2026-10-24):**
+  - **Q1/Q2/Q6 = Vishay SQJ457EP-T1_GE3** (replaces Si7489DP): P-ch −60 V, V<sub>GS</sub> ±20 V, 25 mΩ at −10 V, V<sub>GS(th)</sub> −1.5 to −2.5 V, Q<sub>g</sub> 65 nC, AEC-Q101. PowerPAK SO-8L mounts on the PowerPAK SO-8 single land (Vishay AN913); same S 1–3 / G 4 / D tab. −60 V covers the 29 V VBAT_HOT clamp on Q6 at 2× margin. Single-pulse Z<sub>thJA</sub> ≈ 1.4 °C/W at 10 ms keeps the start-up and fault pulses (≈ 31–32 W for ≲ 1–2.2 ms at U5/U19, 6.6 W for 8.5 ms at U7) well inside T<sub>J</sub>max, comparable to the Si7489DP.
+  - **Q3–Q5 = Infineon BSS123NH6327XTSA1** (replaces BSS131): I<sub>DSS</sub> ≤ 10 nA at 100 V, 25 °C (≤ 5 µA at 150 °C), the same guarantee as the BSS131. V<sub>GS(th)</sub> 0.8/1.4/1.8 V; C<sub>iss</sub> 15.7 pF and C<sub>rss</sub> 2.1 pF (less reset charge injection); R<sub>DS(on)</sub> 2.7/10 Ω at 4.5 V (faster reset). SOT-23 G1/S2/D3, AEC-Q101. Generic BSS123/BSS138/2N7002 (≤ 1 µA I<sub>DSS</sub>) are not equivalent.
+- **Sense resistors (R35, R38, R65):** R35/R38 are Ohmite MCS1320R010FER (10 mΩ 1% 0805, 0.75 W; R38 ≈ 0.13 W at 3.6 A). R65 is a Bourns CRL0603 100 mΩ 1%. SENSE+/SENSE− are Kelvin-routed from the pads (designer-confirmed, 2026-10-24).
 - **eFuse auto-retry and start-up capacitance (U5, U7, U19, ADM1270 Rev. A):** ~FAULT is tied to ENABLE through 0 Ω (R51, R64, R116), so all three auto-retry with a 200 ms off time (C29, C34, C80 = 100 nF). U19's 22 nF timer outlasts the branch timers, so a branch fault clears at U5/U7 first. The limits come from ∫dV/I through foldback to 16.8 V; worst case covers the timer current, threshold and ±10% capacitor tolerance. They're recorded as schematic text notes for the later supply design cycle:
   - **U5 → `VBAT_DCHG`:** 3.2 A, C30 = 10 nF, ≈ 100 µF worst case.
   - **U7 → `VBAT_IGN`:** 0.5 A (ISET = VCAP → 50 mV / R65 100 mΩ), C35 = 68 nF, ≈ 115 µF worst case (≈ 107 µF with the current-limit tolerance). Q2 dissipates ≤ 6.6 W for ≤ 8.5 ms, well inside its SOA.
