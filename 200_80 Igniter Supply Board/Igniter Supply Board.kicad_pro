@@ -39,9 +39,9 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 0.8,
-          "height": 1.27,
-          "width": 2.54
+          "drill": 2.7,
+          "height": 4.7,
+          "width": 4.7
         },
         "silk_line_width": 0.1,
         "silk_text_italic": false,
@@ -633,13 +633,17 @@
         "uuid": "0667bf65-916d-41a8-8a49-6f64c5a5f247"
       }
     ],
-    "used_designators": "R14,J5,D13-18,#PWR8,#PWR55-56",
+    "used_designators": "#PWR88,#PWR92,#PWR104-107,J6,J12,TH2",
     "variants": []
   },
   "sheets": [
     [
       "0667bf65-916d-41a8-8a49-6f64c5a5f247",
       "Igniter Supply Board"
+    ],
+    [
+      "273ee1b0-9086-4acc-845c-b41ea2be318e",
+      "Discharge"
     ]
   ],
   "text_variables": {},
