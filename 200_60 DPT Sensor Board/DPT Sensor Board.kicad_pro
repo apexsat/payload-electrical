@@ -528,7 +528,7 @@
       "netlist": "",
       "plot": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "DPT Sensor Board.step",
       "vrml": ""
     },
     "page_layout_descr_file": ""
