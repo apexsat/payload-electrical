@@ -6466,12 +6466,6 @@
 		(uuid "fa4a0cb3-6bd3-45a0-9b92-f861b006ed7e")
 	)
 	(junction
-		(at 381 139.7)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "0221b28f-1925-4f27-b28c-becdc61dd38b")
-	)
-	(junction
 		(at 217.17 241.3)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6652,12 +6646,6 @@
 		(uuid "57b89c68-ed3c-4973-ba4f-daf0b740e10f")
 	)
 	(junction
-		(at 340.36 95.25)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "58620d2d-e9eb-4fb4-8146-e6739630d171")
-	)
-	(junction
 		(at 96.52 162.56)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6746,12 +6734,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "7461cce9-7b75-485a-942b-5d7a80691d52")
-	)
-	(junction
-		(at 312.42 163.83)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "78a9bd6f-52de-413a-a778-208370f92369")
 	)
 	(junction
 		(at 261.62 142.24)
@@ -6944,12 +6926,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "bfb6a1e2-d447-47b7-bb4c-87778c132524")
-	)
-	(junction
-		(at 381 40.64)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "c476939e-7757-4685-b1b0-e8dab4689e94")
 	)
 	(junction
 		(at 238.76 78.74)
@@ -7173,7 +7149,7 @@
 	)
 	(wire
 		(pts
-			(xy 328.93 95.25) (xy 340.36 95.25)
+			(xy 328.93 95.25) (xy 341.63 95.25)
 		)
 		(stroke
 			(width 0)
@@ -7303,7 +7279,7 @@
 	)
 	(wire
 		(pts
-			(xy 381 40.64) (xy 391.16 40.64)
+			(xy 374.65 40.64) (xy 391.16 40.64)
 		)
 		(stroke
 			(width 0)
@@ -7563,16 +7539,6 @@
 	)
 	(wire
 		(pts
-			(xy 381 40.64) (xy 374.65 40.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2c250311-e959-4a17-ac44-724d79f0fb0a")
-	)
-	(wire
-		(pts
 			(xy 124.46 63.5) (xy 123.19 63.5)
 		)
 		(stroke
@@ -7803,16 +7769,6 @@
 	)
 	(wire
 		(pts
-			(xy 312.42 165.1) (xy 312.42 163.83)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "41fda7e7-5833-49eb-9170-2e59da5fd6c1")
-	)
-	(wire
-		(pts
 			(xy 261.62 147.32) (xy 273.05 147.32)
 		)
 		(stroke
@@ -8023,7 +7979,7 @@
 	)
 	(wire
 		(pts
-			(xy 300.99 163.83) (xy 312.42 163.83)
+			(xy 300.99 163.83) (xy 321.31 163.83)
 		)
 		(stroke
 			(width 0)
@@ -8613,16 +8569,6 @@
 	)
 	(wire
 		(pts
-			(xy 340.36 95.25) (xy 341.63 95.25)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9f175246-608a-4760-8943-373f97e939a4")
-	)
-	(wire
-		(pts
 			(xy 261.62 161.29) (xy 269.24 161.29)
 		)
 		(stroke
@@ -8653,7 +8599,7 @@
 	)
 	(wire
 		(pts
-			(xy 374.65 139.7) (xy 381 139.7)
+			(xy 374.65 139.7) (xy 391.16 139.7)
 		)
 		(stroke
 			(width 0)
@@ -8680,16 +8626,6 @@
 			(type default)
 		)
 		(uuid "a32b3dfc-c588-48cb-8183-166988b24265")
-	)
-	(wire
-		(pts
-			(xy 321.31 163.83) (xy 312.42 163.83)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a4146dc3-f0b2-43c1-81ff-f0508348b0a6")
 	)
 	(wire
 		(pts
@@ -9423,16 +9359,6 @@
 	)
 	(wire
 		(pts
-			(xy 381 140.97) (xy 381 139.7)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "dfe5e767-a979-4d83-9cb6-c062ed6efe8b")
-	)
-	(wire
-		(pts
 			(xy 251.46 92.71) (xy 266.7 92.71)
 		)
 		(stroke
@@ -9660,16 +9586,6 @@
 			(type default)
 		)
 		(uuid "f17e57e7-ce16-4923-aae4-806f9bfc37e7")
-	)
-	(wire
-		(pts
-			(xy 381 139.7) (xy 391.16 139.7)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f1c39e15-3529-434e-94ec-e0a85a5e5d66")
 	)
 	(wire
 		(pts
@@ -10224,6 +10140,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "BSS123NCT-ND"
+			(at 96.52 257.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "f256c2ce-4a34-4b59-aba0-24b3b4e08d21")
 		)
@@ -10292,6 +10219,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 156.21 227.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
 			(at 156.21 227.33 0)
 			(hide yes)
 			(show_name no)
@@ -10461,6 +10399,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "P20019CT-ND"
+			(at 279.4 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "71357a36-2481-4b5e-aec9-ec58890000b0")
 		)
@@ -10532,6 +10481,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 124.46 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
 			(at 124.46 106.68 0)
 			(hide yes)
 			(show_name no)
@@ -10623,6 +10583,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "399-C0603C104K5RACTUCT-ND"
+			(at 100.33 227.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "8cb4652e-f63d-4c33-87ff-40d98356829d")
 		)
@@ -10694,6 +10665,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 350.52 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
 			(at 350.52 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -10853,6 +10835,17 @@
 			)
 		)
 		(property "Description" "Resistor, US symbol"
+			(at 287.02 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "RNCF0603BTE1K00"
 			(at 287.02 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -11178,6 +11171,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "399-C0603C104K5RACTUCT-ND"
+			(at 237.49 231.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "f2ef7075-29eb-4d71-b7ac-0b760951dfd7")
 		)
@@ -11249,6 +11253,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 156.21 237.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
 			(at 156.21 237.49 0)
 			(hide yes)
 			(show_name no)
@@ -11600,7 +11615,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "C4AQSLU4100A11J"
+		(property "Digikey PN" "399-C4AQSLU4100A11J-ND"
 			(at 173.99 129.54 0)
 			(hide yes)
 			(show_name no)
@@ -11683,6 +11698,17 @@
 			)
 		)
 		(property "Description" "Resistor, US symbol"
+			(at 314.96 99.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "541-3318-1-ND"
 			(at 314.96 99.06 0)
 			(hide yes)
 			(show_name no)
@@ -11966,6 +11992,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "BSS123NCT-ND"
+			(at 134.62 257.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "d9f5d19a-020c-4d29-834b-1509ddbf064a")
 		)
@@ -12034,6 +12071,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 121.92 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C104K5RACTUCT-ND"
 			(at 121.92 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -12549,6 +12597,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "RNCF0603BTE10K0CT-ND"
+			(at 59.69 123.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "6b5abd03-f3e7-4e8f-ab5d-59be449e26c4")
 		)
@@ -12622,6 +12681,17 @@
 		)
 		(property "Description" "Zener diode"
 			(at 236.22 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "MMSZ4685-TPMSCT-ND"
+			(at 236.22 173.99 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12746,7 +12816,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1nF"
+		(property "Value" "3.3nF"
 			(at 295.275 116.459 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12781,6 +12851,17 @@
 		)
 		(property "Description" "Unpolarized capacitor"
 			(at 297.18 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C332K5RACTUCT-ND"
+			(at 297.18 110.49 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12963,166 +13044,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 312.42 172.72 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "32a09a82-3f5f-4050-8d06-7a948eecc137")
-		(property "Reference" "#PWR029"
-			(at 312.42 179.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 312.42 177.8 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 312.42 172.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 312.42 172.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 312.42 172.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "b3f0d6b3-9225-467f-9ec6-7dd0b9108bd6")
-		)
-		(instances
-			(project "Igniter Supply Board"
-				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
-					(reference "#PWR029")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D_Zener")
-		(at 340.36 99.06 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "35388f71-092a-421f-996d-48fac75d0386")
-		(property "Reference" "D8"
-			(at 342.9 97.7899 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "MMSZ4685"
-			(at 342.9 100.3299 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-123"
-			(at 340.36 99.06 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 340.36 99.06 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Zener diode"
-			(at 340.36 99.06 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "822d4a26-b4bc-4bea-8ba7-54173e2a29db")
-		)
-		(pin "1"
-			(uuid "8fcdf3e7-ab2a-453e-b004-cdef2ed32bbd")
-		)
-		(instances
-			(project "Igniter Supply Board"
-				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
-					(reference "D8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Connector:Conn_Coaxial")
 		(at 220.98 66.04 0)
 		(unit 1)
@@ -13188,7 +13109,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "112659"
+		(property "Digikey PN" "115-112659-ND"
 			(at 220.98 66.04 0)
 			(hide yes)
 			(show_name no)
@@ -13426,6 +13347,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 242.57 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C104K5RACTUCT-ND"
 			(at 242.57 82.55 0)
 			(hide yes)
 			(show_name no)
@@ -13851,6 +13783,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "MMSZ4690-TPMSCT-ND"
+			(at 49.53 227.33 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "2318fa72-0499-48a5-9a36-1c855498b93f")
 		)
@@ -14011,6 +13954,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "MMSZ4690-TPMSCT-ND"
+			(at 49.53 214.63 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "d515d450-a37e-41cc-8e14-59951bc66d28")
 		)
@@ -14092,6 +14046,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "1276-3387-1-ND"
+			(at 69.85 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "6c45502b-c8a1-4c40-98e1-8b7c6419b6ef")
 		)
@@ -14163,6 +14128,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 309.88 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
 			(at 309.88 50.8 0)
 			(hide yes)
 			(show_name no)
@@ -14332,6 +14308,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+			(at 283.21 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "7d3a727b-0549-4f99-9ffb-1f384759f87f")
 		)
@@ -14413,6 +14400,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "732-12152-1-ND"
+			(at 261.62 171.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "df2038be-8eea-42eb-bb98-93c1eab95c43")
 		)
@@ -14484,6 +14482,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 350.52 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
 			(at 350.52 165.1 0)
 			(hide yes)
 			(show_name no)
@@ -14841,6 +14850,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "541-3318-1-ND"
+			(at 212.09 172.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "78770361-5134-4dd0-bcc4-e4ac0af6d439")
 		)
@@ -14922,6 +14942,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+			(at 317.5 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "92ac1a83-eb51-414e-9ba9-347db87852ec")
 		)
@@ -14993,6 +15024,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 144.78 237.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C104K5RACTUCT-ND"
 			(at 144.78 237.49 0)
 			(hide yes)
 			(show_name no)
@@ -15085,7 +15127,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "BAT54LT1G"
+		(property "Digikey PN" "BAT54LT1GOSCT-ND"
 			(at 224.79 173.99 90)
 			(hide yes)
 			(show_name no)
@@ -15255,6 +15297,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "738-RNCF0603BTE2K50CT-ND"
+			(at 297.18 105.41 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "5bc9023e-b316-41cb-ad59-374dd64e61fb")
 		)
@@ -15414,6 +15467,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "13-CC0603JRNPO9BN501CT-ND"
+			(at 287.02 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "90657c79-83ac-4821-8a2a-1196ad472c61")
 		)
@@ -15485,6 +15549,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 191.77 143.51 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "1608-1546-1-ND"
 			(at 191.77 143.51 0)
 			(hide yes)
 			(show_name no)
@@ -15648,6 +15723,17 @@
 			)
 		)
 		(property "Description" "0.17A Id, 100V Vds, N-Channel MOSFET, SOT-23"
+			(at 363.22 72.39 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "BSS123NCT-ND"
 			(at 363.22 72.39 0)
 			(hide yes)
 			(show_name no)
@@ -15901,6 +15987,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "BSS123NCT-ND"
+			(at 326.39 217.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "91ee78b7-56e3-455a-9b59-43aa4a4a58d3")
 		)
@@ -15989,6 +16086,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "BSS123NCT-ND"
+			(at 363.22 166.37 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "e6e6ba47-eb71-499d-971b-16636c34f8f2")
 		)
@@ -16063,6 +16171,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 212.09 180.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "13-CC0603JRNPO9BN501CT-ND"
 			(at 212.09 180.34 0)
 			(hide yes)
 			(show_name no)
@@ -16499,6 +16618,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "36-5015CT-ND"
+			(at 251.46 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "31096584-bc67-4840-9d80-e4865a61dd15")
 		)
@@ -16656,7 +16786,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "BAT54LT1G"
+		(property "Digikey PN" "BAT54LT1GOSCT-ND"
 			(at 342.9 67.31 0)
 			(hide yes)
 			(show_name no)
@@ -16749,6 +16879,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "MMSZ4685-TPMSCT-ND"
+			(at 24.13 210.82 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "5462e083-264f-40ca-a597-0e9f81e1af86")
 		)
@@ -16830,6 +16971,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "RC2010FK-074M53L"
+			(at 256.54 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "47422900-a8f6-4246-b244-d95af972f947")
 		)
@@ -16866,7 +17018,7 @@
 				)
 			)
 		)
-		(property "Value" "TSX9291"
+		(property "Value" "OPA994IDBVR"
 			(at 335.28 155.194 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16909,7 +17061,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "TSX9291IYLT"
+		(property "Digikey PN" "296-OPA994IDBVRCT-ND"
 			(at 332.74 161.29 0)
 			(hide yes)
 			(show_name no)
@@ -17166,6 +17318,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "399-C0603C104K5RACTUCT-ND"
+			(at 144.78 227.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "f46b9478-64c6-42a0-8fc4-08831f0b3b8c")
 		)
@@ -17203,7 +17366,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "370R"
+		(property "Value" "360R"
 			(at 71.628 93.98 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17237,6 +17400,17 @@
 			)
 		)
 		(property "Description" "Resistor, US symbol"
+			(at 78.74 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "RCS0603360RFKEA"
 			(at 78.74 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -17319,6 +17493,17 @@
 			)
 		)
 		(property "Description" "test point (alternative shape)"
+			(at 124.46 111.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "36-5015CT-ND"
 			(at 124.46 111.76 0)
 			(hide yes)
 			(show_name no)
@@ -17586,6 +17771,17 @@
 		)
 		(property "Description" "test point (alternative shape)"
 			(at 124.46 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "36-5015CT-ND"
+			(at 124.46 96.52 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17908,6 +18104,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "NCU18XH103F60RB"
+			(at 142.24 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "7514e79b-454c-48f6-9205-1264cb59a156")
 		)
@@ -17979,6 +18186,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 134.62 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C104K5RACTUCT-ND"
 			(at 134.62 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -18070,6 +18288,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "732-12152-1-ND"
+			(at 201.93 147.32 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "6ab9d55c-da91-4091-9178-2e8b68f30217")
 		)
@@ -18141,6 +18370,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 96.52 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "1276-3387-1-ND"
 			(at 96.52 157.48 0)
 			(hide yes)
 			(show_name no)
@@ -18233,6 +18473,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "RT0603BRD07165KL"
+			(at 102.87 67.31 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "1d85502e-ddd2-44f6-9e50-65d16e75237d")
 		)
@@ -18304,6 +18555,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 96.52 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C104K5RACTUCT-ND"
 			(at 96.52 264.16 0)
 			(hide yes)
 			(show_name no)
@@ -18386,6 +18648,17 @@
 			)
 		)
 		(property "Description" "Generic connectable mounting pin connector, single row, 01x13, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 60.96 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "WM14352CT-ND"
 			(at 60.96 163.83 0)
 			(hide yes)
 			(show_name no)
@@ -18513,6 +18786,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+			(at 199.39 227.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "b598e645-7dc9-4dda-9940-b6435e0b3805")
 		)
@@ -18584,6 +18868,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 96.52 167.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "1276-3387-1-ND"
 			(at 96.52 167.64 0)
 			(hide yes)
 			(show_name no)
@@ -18754,7 +19049,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "BAT54LT1G"
+		(property "Digikey PN" "BAT54LT1GOSCT-ND"
 			(at 344.17 161.29 0)
 			(hide yes)
 			(show_name no)
@@ -19003,6 +19298,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "BSS123NCT-ND"
+			(at 109.22 257.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "3fbe6666-2b71-46b8-bbfa-4adf67260db9")
 		)
@@ -19071,6 +19377,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 111.76 227.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
 			(at 111.76 227.33 0)
 			(hide yes)
 			(show_name no)
@@ -19240,6 +19557,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "RNCF0603BTE10K0CT-ND"
+			(at 328.93 203.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "bed6b083-93c5-4b8f-aafa-1bd317bbc76c")
 		)
@@ -19323,6 +19651,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "SZBZX84C18LT3GOSCT-ND"
+			(at 153.67 106.68 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "3"
 			(uuid "fb151a2d-cbae-48b8-b0db-390a21c846f1")
 		)
@@ -19333,84 +19672,6 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "D2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 381 148.59 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "aa65dd9e-8bb7-4325-9a91-f754f07d7d53")
-		(property "Reference" "#PWR047"
-			(at 381 154.94 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 381 153.67 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 381 148.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 381 148.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 381 148.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "2d390a56-5ed7-44d5-86b0-697b427f7653")
-		)
-		(instances
-			(project "Igniter Supply Board"
-				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
-					(reference "#PWR047")
 					(unit 1)
 				)
 			)
@@ -19473,6 +19734,17 @@
 		)
 		(property "Description" "Unpolarized capacitor"
 			(at 270.51 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C272K5RACTUCT-ND"
+			(at 270.51 96.52 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19554,6 +19826,17 @@
 		)
 		(property "Description" "Unpolarized capacitor"
 			(at 276.86 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "732-12152-1-ND"
+			(at 276.86 142.24 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19688,84 +19971,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 381 48.26 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "afd8fadc-a413-416a-958c-d4f01a72ec91")
-		(property "Reference" "#PWR048"
-			(at 381 54.61 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 381 53.34 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 381 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 381 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 381 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "bd0b56e2-ed5f-4f2e-b71f-827ea9532b80")
-		)
-		(instances
-			(project "Igniter Supply Board"
-				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
-					(reference "#PWR048")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Connector:Conn_Coaxial")
 		(at 196.85 124.46 0)
 		(unit 1)
@@ -19831,7 +20036,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "112659"
+		(property "Digikey PN" "115-112659-ND"
 			(at 196.85 124.46 0)
 			(hide yes)
 			(show_name no)
@@ -19852,88 +20057,6 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "J1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D_Zener")
-		(at 312.42 168.91 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b2f83d73-ee94-4506-a519-4ede87ba4df3")
-		(property "Reference" "D6"
-			(at 314.96 167.6399 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "MMSZ4685"
-			(at 314.96 170.1799 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-123"
-			(at 312.42 168.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 312.42 168.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Zener diode"
-			(at 312.42 168.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "d2b4bfa5-1930-49df-83fe-6de322e1b7c9")
-		)
-		(pin "1"
-			(uuid "a8ddbaae-3696-483f-ac81-5384d89934a0")
-		)
-		(instances
-			(project "Igniter Supply Board"
-				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
-					(reference "D6")
 					(unit 1)
 				)
 			)
@@ -19996,6 +20119,17 @@
 			)
 		)
 		(property "Description" "Mounting Hole with connection"
+			(at 121.92 257.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "BSS123NCT-ND"
 			(at 121.92 257.81 0)
 			(hide yes)
 			(show_name no)
@@ -20117,7 +20251,7 @@
 				)
 			)
 		)
-		(property "Value" "TSX9291"
+		(property "Value" "OPA994IDBVR"
 			(at 334.01 61.214 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20160,7 +20294,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "TSX9291IYLT"
+		(property "Digikey PN" "296-OPA994IDBVRCT-ND"
 			(at 331.47 67.31 0)
 			(hide yes)
 			(show_name no)
@@ -20190,170 +20324,6 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "U11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D_Zener")
-		(at 381 144.78 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b89ddd82-a23b-45c3-826c-1f7fefda3641")
-		(property "Reference" "D11"
-			(at 383.54 143.5099 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "MMSZ4685"
-			(at 383.54 146.0499 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-123"
-			(at 381 144.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 381 144.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Zener diode"
-			(at 381 144.78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "79717be8-74ca-47d7-9256-01cbae1642f7")
-		)
-		(pin "1"
-			(uuid "cb74e157-22d0-4518-852b-ed1084de6c01")
-		)
-		(instances
-			(project "Igniter Supply Board"
-				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
-					(reference "D11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D_Zener")
-		(at 381 44.45 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "bd66e696-76b8-41b6-a05a-9f8ae798073d")
-		(property "Reference" "D12"
-			(at 383.54 43.1799 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "MMSZ4685"
-			(at 383.54 45.7199 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-123"
-			(at 381 44.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 381 44.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Zener diode"
-			(at 381 44.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "c45eb0ea-dd65-43ca-9604-5d12c658cad3")
-		)
-		(pin "1"
-			(uuid "af6304b9-9fac-4b3a-b10e-7818d9331904")
-		)
-		(instances
-			(project "Igniter Supply Board"
-				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
-					(reference "D12")
 					(unit 1)
 				)
 			)
@@ -20416,6 +20386,17 @@
 			)
 		)
 		(property "Description" "test point (alternative shape)"
+			(at 153.67 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "36-5015CT-ND"
 			(at 153.67 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -20494,6 +20475,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 187.96 227.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C104K5RACTUCT-ND"
 			(at 187.96 227.33 0)
 			(hide yes)
 			(show_name no)
@@ -20741,6 +20733,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+			(at 111.76 237.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "148b5a7c-0249-4a27-935a-f5f5acf29bb4")
 		)
@@ -20812,6 +20815,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 187.96 237.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C104K5RACTUCT-ND"
 			(at 187.96 237.49 0)
 			(hide yes)
 			(show_name no)
@@ -20903,6 +20917,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "399-C0603C104K5RACTUCT-ND"
+			(at 109.22 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "aca39281-ea39-47c3-8045-e9ea9f21dcb6")
 		)
@@ -20975,6 +21000,17 @@
 		)
 		(property "Description" "Resistor, US symbol"
 			(at 270.51 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "RNCF0603BTE1K00"
+			(at 270.51 92.71 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21143,6 +21179,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "399-C0603C104K5RACTUCT-ND"
+			(at 113.03 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "3eb2eeff-f14b-450f-b8c1-a9ae0988c638")
 		)
@@ -21216,6 +21263,17 @@
 		)
 		(property "Description" "Zener diode"
 			(at 24.13 233.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "MMSZ4685-TPMSCT-ND"
+			(at 24.13 233.68 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21463,6 +21521,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "541-3318-1-ND"
+			(at 287.02 167.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "515ed535-302e-43f2-af06-f8d14b6f6411")
 		)
@@ -21612,6 +21681,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 186.69 176.53 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "732-12152-1-ND"
 			(at 186.69 176.53 0)
 			(hide yes)
 			(show_name no)
@@ -21781,6 +21861,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+			(at 199.39 237.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "21161cbd-1f8f-4712-bc50-5fcd362a9647")
 		)
@@ -21852,6 +21943,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 248.92 231.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
 			(at 248.92 231.14 0)
 			(hide yes)
 			(show_name no)
@@ -22099,6 +22201,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "399-C0603C104K5RACTUCT-ND"
+			(at 298.45 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "f4b2ddde-7ab1-4ade-beb5-e42743495b73")
 		)
@@ -22244,7 +22357,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2.5nF"
+		(property "Value" "8.2nF"
 			(at 279.146 109.22 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22278,6 +22391,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 281.94 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C822K5RACTUCT-ND"
 			(at 281.94 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -22704,6 +22828,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "RT1206BRD0710KL"
+			(at 276.86 152.4 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "69260133-d24c-48cf-99eb-244c4f1e7327")
 		)
@@ -22866,6 +23001,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "BSS123NCT-ND"
+			(at 76.2 116.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "c6d3b0a5-f69b-4dc2-9586-547100a32b38")
 		)
@@ -22951,7 +23097,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "BAT54LT1G"
+		(property "Digikey PN" "BAT54LT1GOSCT-ND"
 			(at 328.93 99.06 90)
 			(hide yes)
 			(show_name no)
@@ -23043,6 +23189,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "399-C0603C104K5RACTUCT-ND"
+			(at 100.33 237.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "283b3bc2-ff37-49f0-8a43-3c7288e0b38a")
 		)
@@ -23114,6 +23271,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 314.96 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "13-CC0603JRNPO9BN501CT-ND"
 			(at 314.96 106.68 0)
 			(hide yes)
 			(show_name no)
@@ -23206,7 +23374,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "BAT54LT1G"
+		(property "Digikey PN" "BAT54LT1GOSCT-ND"
 			(at 300.99 168.91 90)
 			(hide yes)
 			(show_name no)
@@ -23454,6 +23622,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "1608-1546-1-ND"
+			(at 266.7 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "f7cc0765-edf8-41b4-9421-829ecf6d53bf")
 		)
@@ -23613,6 +23792,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "399-C0603C104K5RACTUCT-ND"
+			(at 306.07 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "b08722be-fdd5-46f9-bdfc-c605e44fb3dc")
 		)
@@ -23684,6 +23874,17 @@
 		)
 		(property "Description" "Resistor, US symbol"
 			(at 139.7 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "541-2779-1-ND"
+			(at 139.7 101.6 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -23852,6 +24053,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "1276-3387-1-ND"
+			(at 102.87 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "7c141f75-74b0-4514-b47b-8d6d2815b013")
 		)
@@ -23934,7 +24146,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "BAT54LT1G"
+		(property "Digikey PN" "BAT54LT1GOSCT-ND"
 			(at 124.46 83.82 90)
 			(hide yes)
 			(show_name no)
@@ -24026,6 +24238,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "RC2010FK-074M53L"
+			(at 181.61 143.51 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "0e8bf2e7-d15f-49f5-895d-06b49fcfa47a")
 		)
@@ -24099,6 +24322,17 @@
 		)
 		(property "Description" "Zener diode"
 			(at 24.13 257.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "MMSZ4685-TPMSCT-ND"
+			(at 24.13 257.81 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -24267,6 +24501,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "RT1206BRD0710KL"
+			(at 201.93 157.48 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "5e036f1a-c794-4886-9c42-86eaf169c347")
 		)
@@ -24349,7 +24594,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "G2R1000MT33J-TR"
+		(property "Digikey PN" "1913-G2R1000MT33J-TRCT-ND"
 			(at 171.45 102.87 90)
 			(hide yes)
 			(show_name no)
@@ -24388,84 +24633,6 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "Q1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 340.36 102.87 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f1edfbb0-27f9-4f6a-affb-094c9c936314")
-		(property "Reference" "#PWR041"
-			(at 340.36 109.22 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 340.36 107.95 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 340.36 102.87 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 340.36 102.87 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 340.36 102.87 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "8c9a7250-09cc-420d-9407-dd7a475f166f")
-		)
-		(instances
-			(project "Igniter Supply Board"
-				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
-					(reference "#PWR041")
 					(unit 1)
 				)
 			)
@@ -24792,6 +24959,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 254 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
 			(at 254 82.55 0)
 			(hide yes)
 			(show_name no)
