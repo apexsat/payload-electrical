@@ -695,7 +695,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Comparator:TLV3501AID"
+		(symbol "Amplifier_Operational:AD8603"
 			(pin_names
 				(offset 0.127)
 			)
@@ -705,7 +705,7 @@
 			(in_pos_files yes)
 			(duplicate_pin_numbers_are_jumpers no)
 			(property "Reference" "U"
-				(at 3.81 -5.08 0)
+				(at 0 5.08 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
@@ -715,8 +715,8 @@
 					(justify left)
 				)
 			)
-			(property "Value" "TLV3501AID"
-				(at 3.81 -7.62 0)
+			(property "Value" "AD8603"
+				(at 0 -5.08 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
@@ -726,29 +726,7 @@
 					(justify left)
 				)
 			)
-			(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
-				(at 0 -9.525 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tlv3501.pdf"
-				(at 0 -11.43 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "High-Speed Comparator, 4.5-ns, Rail-to-Rail, Push-Pull CMOS Output, SOIC-8"
+			(property "Footprint" "Package_TO_SOT_SMD:TSOT-23-5"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -759,7 +737,18 @@
 					)
 				)
 			)
-			(property "ki_keywords" "single comparator high speed cmos"
+			(property "Datasheet" "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8603_8607_8609.pdf"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Precision Micropower, Low Noise CMOS, Rail-to-Rail Input/Output Operational Amplifier, TSOT-23-5"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -770,7 +759,7 @@
 					)
 				)
 			)
-			(property "ki_fp_filters" "SOIC*3.9x4.9mm?P1.27mm*"
+			(property "ki_keywords" "single opamp"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -781,7 +770,18 @@
 					)
 				)
 			)
-			(symbol "TLV3501AID_1_1"
+			(property "ki_fp_filters" "TSOT*23*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "AD8603_0_1"
 				(polyline
 					(pts
 						(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
@@ -794,29 +794,10 @@
 						(type background)
 					)
 				)
-				(pin no_connect line
-					(at -5.08 5.08 180)
-					(length 0)
-					(hide yes)
-					(name "NC"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -7.62 -2.54 0)
-					(length 2.54)
-					(name "-"
+				(pin power_in line
+					(at -2.54 -7.62 90)
+					(length 3.81)
+					(name "V-"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -824,6 +805,44 @@
 						)
 					)
 					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -2.54 7.62 270)
+					(length 3.81)
+					(name "V+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "AD8603_1_1"
+				(pin output line
+					(at 7.62 0 180)
+					(length 2.54)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -849,10 +868,10 @@
 						)
 					)
 				)
-				(pin power_in line
-					(at -2.54 -7.62 90)
-					(length 3.81)
-					(name "V-"
+				(pin input line
+					(at -7.62 -2.54 0)
+					(length 2.54)
+					(name "-"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -860,79 +879,6 @@
 						)
 					)
 					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at -5.08 -5.08 180)
-					(length 0)
-					(hide yes)
-					(name "NC"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 7.62 0 180)
-					(length 2.54)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at -2.54 7.62 270)
-					(length 3.81)
-					(name "V+"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "7"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at 0 -7.62 90)
-					(length 5.08)
-					(name "SHDN"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "8"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -6499,6 +6445,16 @@
 		)
 		(uuid "9fea5d4e-2522-4c1d-b71c-2c0e685d1238")
 	)
+	(text "Need to update the peak detector circuits"
+		(exclude_from_sim no)
+		(at 347.472 124.46 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "ade39024-09b7-4ef9-a21c-c411ff913350")
+	)
 	(text "Scales to 0-3.3"
 		(exclude_from_sim no)
 		(at 286.766 71.12 0)
@@ -6510,7 +6466,7 @@
 		(uuid "fa4a0cb3-6bd3-45a0-9b92-f861b006ed7e")
 	)
 	(junction
-		(at 388.62 139.7)
+		(at 381 139.7)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "0221b28f-1925-4f27-b28c-becdc61dd38b")
@@ -6534,7 +6490,7 @@
 		(uuid "04bc8abb-68f1-4de7-b8f3-20aa6baf3905")
 	)
 	(junction
-		(at 382.27 139.7)
+		(at 374.65 139.7)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "0544d2ac-f1cc-4cca-ba1d-98383128c88a")
@@ -6570,7 +6526,7 @@
 		(uuid "147f10e7-0861-4f42-aae9-3435742c5424")
 	)
 	(junction
-		(at 358.14 161.29)
+		(at 350.52 161.29)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "18b3c90d-55d4-4d7c-baa7-5637cd347c36")
@@ -6648,7 +6604,7 @@
 		(uuid "407c1847-7412-4c8e-af33-d8f58d7b6a07")
 	)
 	(junction
-		(at 382.27 40.64)
+		(at 374.65 40.64)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "43774948-57b0-4c11-bf22-a68f6942ec71")
@@ -6672,7 +6628,7 @@
 		(uuid "492116cf-4610-46e9-87c5-e3e8f46b8cd8")
 	)
 	(junction
-		(at 358.14 55.88)
+		(at 350.52 55.88)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "49462f2a-9675-4980-9261-50f8fef39dcf")
@@ -6688,18 +6644,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "4d40d154-bb34-4181-8ec4-e1997ee34dc1")
-	)
-	(junction
-		(at 300.99 163.83)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "548ebc88-4b8c-41e5-a848-fcdcc0bdb038")
-	)
-	(junction
-		(at 312.42 163.83)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "560b5d59-5571-4c6e-bdef-baf1c66f93b3")
 	)
 	(junction
 		(at 251.46 92.71)
@@ -6804,6 +6748,12 @@
 		(uuid "7461cce9-7b75-485a-942b-5d7a80691d52")
 	)
 	(junction
+		(at 312.42 163.83)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "78a9bd6f-52de-413a-a778-208370f92369")
+	)
+	(junction
 		(at 261.62 142.24)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6856,6 +6806,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8c7c51f1-a7bd-448a-856c-dca382e16d36")
+	)
+	(junction
+		(at 300.99 163.83)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8d8c9d2b-970e-414f-b1c1-c539185fe389")
 	)
 	(junction
 		(at 153.67 101.6)
@@ -6942,7 +6898,7 @@
 		(uuid "ae676f42-28f8-46d8-926a-a944b70f3cad")
 	)
 	(junction
-		(at 358.14 149.86)
+		(at 350.52 149.86)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "af296000-9032-428f-ab21-5e46c14078f5")
@@ -6990,7 +6946,7 @@
 		(uuid "bfb6a1e2-d447-47b7-bb4c-87778c132524")
 	)
 	(junction
-		(at 388.62 40.64)
+		(at 381 40.64)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c476939e-7757-4685-b1b0-e8dab4689e94")
@@ -7068,12 +7024,6 @@
 		(uuid "dc8764ab-6207-4b88-bca9-1d1a05259643")
 	)
 	(junction
-		(at 328.93 74.93)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "dfcf8457-1bfb-4d51-a035-8f9d5a9d761f")
-	)
-	(junction
 		(at 134.62 111.76)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -7092,7 +7042,7 @@
 		(uuid "e61b2771-dea9-4b18-b611-9b0b310a6594")
 	)
 	(junction
-		(at 358.14 67.31)
+		(at 350.52 67.31)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e71fcd23-0488-4f37-a779-11959afe0ff3")
@@ -7173,7 +7123,7 @@
 	)
 	(wire
 		(pts
-			(xy 346.71 67.31) (xy 347.98 67.31)
+			(xy 346.71 67.31) (xy 350.52 67.31)
 		)
 		(stroke
 			(width 0)
@@ -7203,13 +7153,23 @@
 	)
 	(wire
 		(pts
-			(xy 365.76 43.18) (xy 364.49 43.18)
+			(xy 358.14 43.18) (xy 356.87 43.18)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "027b4dae-a87f-431e-8407-165ff911567f")
+	)
+	(wire
+		(pts
+			(xy 323.85 163.83) (xy 323.85 149.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "04091dd7-e8ab-4a2d-8a98-57033d80974c")
 	)
 	(wire
 		(pts
@@ -7283,7 +7243,7 @@
 	)
 	(wire
 		(pts
-			(xy 364.49 46.99) (xy 382.27 46.99)
+			(xy 356.87 46.99) (xy 374.65 46.99)
 		)
 		(stroke
 			(width 0)
@@ -7333,7 +7293,7 @@
 	)
 	(wire
 		(pts
-			(xy 358.14 161.29) (xy 358.14 149.86)
+			(xy 350.52 161.29) (xy 350.52 149.86)
 		)
 		(stroke
 			(width 0)
@@ -7343,7 +7303,7 @@
 	)
 	(wire
 		(pts
-			(xy 388.62 40.64) (xy 398.78 40.64)
+			(xy 381 40.64) (xy 391.16 40.64)
 		)
 		(stroke
 			(width 0)
@@ -7463,7 +7423,7 @@
 	)
 	(wire
 		(pts
-			(xy 382.27 40.64) (xy 381 40.64)
+			(xy 374.65 40.64) (xy 373.38 40.64)
 		)
 		(stroke
 			(width 0)
@@ -7483,7 +7443,7 @@
 	)
 	(wire
 		(pts
-			(xy 382.27 146.05) (xy 382.27 139.7)
+			(xy 374.65 146.05) (xy 374.65 139.7)
 		)
 		(stroke
 			(width 0)
@@ -7553,16 +7513,6 @@
 	)
 	(wire
 		(pts
-			(xy 355.6 67.31) (xy 358.14 67.31)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "26f1a858-4248-46b5-a270-834c775dc883")
-	)
-	(wire
-		(pts
 			(xy 173.99 107.95) (xy 173.99 124.46)
 		)
 		(stroke
@@ -7613,7 +7563,7 @@
 	)
 	(wire
 		(pts
-			(xy 388.62 40.64) (xy 382.27 40.64)
+			(xy 381 40.64) (xy 374.65 40.64)
 		)
 		(stroke
 			(width 0)
@@ -7683,7 +7633,7 @@
 	)
 	(wire
 		(pts
-			(xy 312.42 83.82) (xy 312.42 69.85)
+			(xy 312.42 64.77) (xy 312.42 83.82)
 		)
 		(stroke
 			(width 0)
@@ -7693,7 +7643,7 @@
 	)
 	(wire
 		(pts
-			(xy 317.5 55.88) (xy 358.14 55.88)
+			(xy 317.5 55.88) (xy 350.52 55.88)
 		)
 		(stroke
 			(width 0)
@@ -7803,16 +7753,6 @@
 	)
 	(wire
 		(pts
-			(xy 312.42 69.85) (xy 323.85 69.85)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3d646ae2-c6f5-4172-b498-42fee59c9ef3")
-	)
-	(wire
-		(pts
 			(xy 187.96 220.98) (xy 199.39 220.98)
 		)
 		(stroke
@@ -7820,16 +7760,6 @@
 			(type default)
 		)
 		(uuid "3dd46311-61d2-4bdc-8815-d1e68155832f")
-	)
-	(wire
-		(pts
-			(xy 317.5 55.88) (xy 317.5 64.77)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3e79b7df-b729-43e9-a74c-e3f81f7ccd6c")
 	)
 	(wire
 		(pts
@@ -7863,7 +7793,7 @@
 	)
 	(wire
 		(pts
-			(xy 389.89 72.39) (xy 375.92 72.39)
+			(xy 382.27 72.39) (xy 368.3 72.39)
 		)
 		(stroke
 			(width 0)
@@ -7923,7 +7853,7 @@
 	)
 	(wire
 		(pts
-			(xy 358.14 67.31) (xy 368.3 67.31)
+			(xy 350.52 67.31) (xy 360.68 67.31)
 		)
 		(stroke
 			(width 0)
@@ -7933,7 +7863,7 @@
 	)
 	(wire
 		(pts
-			(xy 358.14 137.16) (xy 365.76 137.16)
+			(xy 350.52 137.16) (xy 358.14 137.16)
 		)
 		(stroke
 			(width 0)
@@ -8013,7 +7943,7 @@
 	)
 	(wire
 		(pts
-			(xy 358.14 161.29) (xy 368.3 161.29)
+			(xy 350.52 161.29) (xy 360.68 161.29)
 		)
 		(stroke
 			(width 0)
@@ -8023,7 +7953,7 @@
 	)
 	(wire
 		(pts
-			(xy 358.14 149.86) (xy 358.14 137.16)
+			(xy 350.52 149.86) (xy 350.52 137.16)
 		)
 		(stroke
 			(width 0)
@@ -8083,7 +8013,7 @@
 	)
 	(wire
 		(pts
-			(xy 365.76 142.24) (xy 364.49 142.24)
+			(xy 358.14 142.24) (xy 356.87 142.24)
 		)
 		(stroke
 			(width 0)
@@ -8173,7 +8103,7 @@
 	)
 	(wire
 		(pts
-			(xy 358.14 67.31) (xy 358.14 55.88)
+			(xy 350.52 67.31) (xy 350.52 55.88)
 		)
 		(stroke
 			(width 0)
@@ -8200,16 +8130,6 @@
 			(type default)
 		)
 		(uuid "6a85d7be-0f9e-426a-8e6e-191be7618f75")
-	)
-	(wire
-		(pts
-			(xy 358.14 149.86) (xy 325.12 149.86)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6be37c96-8087-49f0-8697-cb7fa88abce0")
 	)
 	(wire
 		(pts
@@ -8253,7 +8173,7 @@
 	)
 	(wire
 		(pts
-			(xy 358.14 55.88) (xy 358.14 38.1)
+			(xy 350.52 55.88) (xy 350.52 38.1)
 		)
 		(stroke
 			(width 0)
@@ -8483,6 +8403,16 @@
 	)
 	(wire
 		(pts
+			(xy 321.31 158.75) (xy 321.31 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "87b55649-9307-4acc-b6c1-36fe30e458fc")
+	)
+	(wire
+		(pts
 			(xy 186.69 152.4) (xy 198.12 152.4)
 		)
 		(stroke
@@ -8493,7 +8423,7 @@
 	)
 	(wire
 		(pts
-			(xy 382.27 139.7) (xy 381 139.7)
+			(xy 374.65 139.7) (xy 373.38 139.7)
 		)
 		(stroke
 			(width 0)
@@ -8540,6 +8470,16 @@
 			(type default)
 		)
 		(uuid "90201863-e80d-4084-9b91-7230c41d23c8")
+	)
+	(wire
+		(pts
+			(xy 325.12 158.75) (xy 321.31 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "90824fa3-3e83-470d-9d41-fc587ad93c1b")
 	)
 	(wire
 		(pts
@@ -8703,7 +8643,17 @@
 	)
 	(wire
 		(pts
-			(xy 382.27 139.7) (xy 388.62 139.7)
+			(xy 325.12 163.83) (xy 323.85 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a0659087-5295-4912-8f25-65c5a1f627b9")
+	)
+	(wire
+		(pts
+			(xy 374.65 139.7) (xy 381 139.7)
 		)
 		(stroke
 			(width 0)
@@ -8733,6 +8683,16 @@
 	)
 	(wire
 		(pts
+			(xy 321.31 163.83) (xy 312.42 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a4146dc3-f0b2-43c1-81ff-f0508348b0a6")
+	)
+	(wire
+		(pts
 			(xy 279.4 92.71) (xy 289.56 92.71)
 		)
 		(stroke
@@ -8743,7 +8703,7 @@
 	)
 	(wire
 		(pts
-			(xy 382.27 46.99) (xy 382.27 40.64)
+			(xy 374.65 46.99) (xy 374.65 40.64)
 		)
 		(stroke
 			(width 0)
@@ -8780,6 +8740,16 @@
 			(type default)
 		)
 		(uuid "a7248a2f-88c9-4c59-bb9b-9edf8ebec4dd")
+	)
+	(wire
+		(pts
+			(xy 317.5 69.85) (xy 323.85 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a82b30ea-1316-41aa-a919-ebd9573135d0")
 	)
 	(wire
 		(pts
@@ -8823,16 +8793,6 @@
 	)
 	(wire
 		(pts
-			(xy 312.42 163.83) (xy 325.12 163.83)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "aca56b10-f2d7-4163-8712-078f72786810")
-	)
-	(wire
-		(pts
 			(xy 317.5 135.89) (xy 317.5 142.24)
 		)
 		(stroke
@@ -8873,7 +8833,7 @@
 	)
 	(wire
 		(pts
-			(xy 347.98 161.29) (xy 349.25 161.29)
+			(xy 347.98 161.29) (xy 350.52 161.29)
 		)
 		(stroke
 			(width 0)
@@ -9033,6 +8993,16 @@
 	)
 	(wire
 		(pts
+			(xy 312.42 64.77) (xy 323.85 64.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c2cc6518-7548-4d84-bb5e-04b8bf68dd58")
+	)
+	(wire
+		(pts
 			(xy 341.63 83.82) (xy 341.63 95.25)
 		)
 		(stroke
@@ -9063,7 +9033,7 @@
 	)
 	(wire
 		(pts
-			(xy 364.49 142.24) (xy 364.49 146.05)
+			(xy 356.87 142.24) (xy 356.87 146.05)
 		)
 		(stroke
 			(width 0)
@@ -9080,16 +9050,6 @@
 			(type default)
 		)
 		(uuid "c5bb1081-f5bf-4698-8a90-b3c28039327b")
-	)
-	(wire
-		(pts
-			(xy 325.12 149.86) (xy 325.12 158.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c5fd5758-624d-479a-8ca9-be1c63846f0a")
 	)
 	(wire
 		(pts
@@ -9133,7 +9093,7 @@
 	)
 	(wire
 		(pts
-			(xy 358.14 38.1) (xy 365.76 38.1)
+			(xy 350.52 38.1) (xy 358.14 38.1)
 		)
 		(stroke
 			(width 0)
@@ -9143,7 +9103,7 @@
 	)
 	(wire
 		(pts
-			(xy 364.49 146.05) (xy 382.27 146.05)
+			(xy 356.87 146.05) (xy 374.65 146.05)
 		)
 		(stroke
 			(width 0)
@@ -9173,16 +9133,6 @@
 	)
 	(wire
 		(pts
-			(xy 317.5 64.77) (xy 323.85 64.77)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cecf7f55-c72c-4eef-8f20-a382ae5d5da7")
-	)
-	(wire
-		(pts
 			(xy 306.07 217.17) (xy 321.31 217.17)
 		)
 		(stroke
@@ -9190,16 +9140,6 @@
 			(type default)
 		)
 		(uuid "cf5021ac-2eb7-4f24-9541-cbee79c1f2c2")
-	)
-	(wire
-		(pts
-			(xy 328.93 74.93) (xy 331.47 74.93)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cfba5858-b659-4ebe-a09b-09ea0f6c52d9")
 	)
 	(wire
 		(pts
@@ -9473,7 +9413,7 @@
 	)
 	(wire
 		(pts
-			(xy 389.89 166.37) (xy 375.92 166.37)
+			(xy 382.27 166.37) (xy 368.3 166.37)
 		)
 		(stroke
 			(width 0)
@@ -9483,7 +9423,7 @@
 	)
 	(wire
 		(pts
-			(xy 388.62 140.97) (xy 388.62 139.7)
+			(xy 381 140.97) (xy 381 139.7)
 		)
 		(stroke
 			(width 0)
@@ -9623,16 +9563,6 @@
 	)
 	(wire
 		(pts
-			(xy 358.14 161.29) (xy 356.87 161.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ebda30d8-0a75-4408-9cef-b4e0b12d1632")
-	)
-	(wire
-		(pts
 			(xy 66.04 153.67) (xy 71.12 153.67)
 		)
 		(stroke
@@ -9713,7 +9643,7 @@
 	)
 	(wire
 		(pts
-			(xy 364.49 43.18) (xy 364.49 46.99)
+			(xy 356.87 43.18) (xy 356.87 46.99)
 		)
 		(stroke
 			(width 0)
@@ -9733,7 +9663,7 @@
 	)
 	(wire
 		(pts
-			(xy 388.62 139.7) (xy 398.78 139.7)
+			(xy 381 139.7) (xy 391.16 139.7)
 		)
 		(stroke
 			(width 0)
@@ -9750,6 +9680,16 @@
 			(type default)
 		)
 		(uuid "f33457f7-8f13-4c73-87cf-e6c48a06c372")
+	)
+	(wire
+		(pts
+			(xy 323.85 149.86) (xy 350.52 149.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f38f2473-493a-4f9f-97a2-014fb9d02817")
 	)
 	(wire
 		(pts
@@ -9810,6 +9750,16 @@
 			(type default)
 		)
 		(uuid "f779cbe2-85ea-4560-a67f-a3c18abe0421")
+	)
+	(wire
+		(pts
+			(xy 317.5 55.88) (xy 317.5 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f8afc331-bbbf-4d7c-93ba-66a012659f60")
 	)
 	(wire
 		(pts
@@ -9922,7 +9872,7 @@
 		(uuid "154f1f37-1b28-416e-babd-12716d8b191a")
 	)
 	(label "ADC_I_IGN_PK"
-		(at 398.78 40.64 180)
+		(at 391.16 40.64 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -9942,7 +9892,7 @@
 		(uuid "34167ac4-892e-47cf-a679-3619eb6b249f")
 	)
 	(label "IGNITER_nRST"
-		(at 389.89 72.39 180)
+		(at 382.27 72.39 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -9972,7 +9922,7 @@
 		(uuid "689e7061-d60f-41a8-882f-2bcb0b85a585")
 	)
 	(label "IGNITER_nRST"
-		(at 389.89 166.37 180)
+		(at 382.27 166.37 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -10042,7 +9992,7 @@
 		(uuid "e128d091-537e-462a-8053-a100361a3def")
 	)
 	(label "ADC_V_IGN_PK"
-		(at 398.78 139.7 180)
+		(at 391.16 139.7 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -10690,7 +10640,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 358.14 71.12 0)
+		(at 350.52 71.12 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -10700,7 +10650,7 @@
 		(dnp no)
 		(uuid "0c178b6c-645d-41d1-b279-b55fc2e1361c")
 		(property "Reference" "C35"
-			(at 360.934 69.85 0)
+			(at 353.314 69.85 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10711,7 +10661,7 @@
 			)
 		)
 		(property "Value" "1nF"
-			(at 360.934 72.39 0)
+			(at 353.314 72.39 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10722,7 +10672,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
-			(at 359.1052 74.93 0)
+			(at 351.4852 74.93 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10733,7 +10683,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 358.14 71.12 0)
+			(at 350.52 71.12 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10744,7 +10694,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 358.14 71.12 0)
+			(at 350.52 71.12 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11545,6 +11495,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "750319697"
+			(at 113.03 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "5"
 			(uuid "c5842d18-4418-461d-9236-06b16c6e6bce")
 		)
@@ -11629,6 +11590,17 @@
 			)
 		)
 		(property "Description" "Polarized capacitor, US symbol"
+			(at 173.99 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "C4AQSLU4100A11J"
 			(at 173.99 129.54 0)
 			(hide yes)
 			(show_name no)
@@ -11742,7 +11714,7 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
@@ -11850,7 +11822,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SO:SOIC-8_5.3x6.2mm_P1.27mm"
+		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
 			(at 275.59 168.91 0)
 			(hide yes)
 			(show_name no)
@@ -11861,7 +11833,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.analog.com/media/en/technical-documentation/data-sheets/op37.pdf"
 			(at 275.59 168.91 0)
 			(hide yes)
 			(show_name no)
@@ -11873,6 +11845,17 @@
 			)
 		)
 		(property "Description" ""
+			(at 275.59 168.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "OP37GSZ"
 			(at 275.59 168.91 0)
 			(hide yes)
 			(show_name no)
@@ -12099,7 +12082,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "LMP2022MM"
+		(property "Value" "LMP2022MA"
 			(at 262.89 232.4099 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12110,7 +12093,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_SO:SOIC-8_5.3x6.2mm_P1.27mm"
+		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
 			(at 264.16 231.14 0)
 			(hide yes)
 			(show_name no)
@@ -12133,6 +12116,17 @@
 			)
 		)
 		(property "Description" "Low-Power, Dual Operational Amplifiers, SOIC-8/VSSOP-8"
+			(at 264.16 231.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "LMP2022MA/NOPB"
 			(at 264.16 231.14 0)
 			(hide yes)
 			(show_name no)
@@ -13194,6 +13188,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "112659"
+			(at 220.98 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "fc72ddaf-2b3f-4e15-b381-ef60f911c1c8")
 		)
@@ -13681,103 +13686,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Comparator:TLV3501AID")
-		(at 332.74 161.29 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "424325f0-00d1-4a81-a5b4-2eda464dcb09")
-		(property "Reference" "U9"
-			(at 332.74 151.384 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "MAX997ESA"
-			(at 332.74 153.924 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
-			(at 332.74 170.815 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tlv3501.pdf"
-			(at 332.74 172.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "High-Speed Comparator, 4.5-ns, Rail-to-Rail, Push-Pull CMOS Output, SOIC-8"
-			(at 332.74 161.29 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5cff2b13-ba95-4028-a8e5-a382560753ac")
-		)
-		(pin "8"
-			(uuid "07729de2-f018-4244-b8f6-db81bd3c8312")
-		)
-		(pin "4"
-			(uuid "8e31c780-2d74-4580-9f6b-c73caaed15f4")
-		)
-		(pin "6"
-			(uuid "51fc3191-533f-4fec-9b78-636cc810257b")
-		)
-		(pin "7"
-			(uuid "8be444ef-b24f-4110-b1af-325ed9155d2e")
-		)
-		(pin "2"
-			(uuid "519b0bea-dbae-4dc9-b1e3-bfa1dec7c956")
-		)
-		(pin "3"
-			(uuid "d115a3d9-8f8a-4dc9-8f1f-abe4987dcd33")
-		)
-		(pin "5"
-			(uuid "1952cc4b-d879-4cf0-b8f3-35ec37a6f4e4")
-		)
-		(instances
-			(project "Igniter Supply Board"
-				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
-					(reference "U9")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "0_PAY_Symbol_Library:ACS37042KLHBLT-030B3")
 		(at 229.87 92.71 0)
 		(unit 1)
@@ -13831,6 +13739,17 @@
 			)
 		)
 		(property "Description" ""
+			(at 229.87 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "ACS37042KLHBLT-010B5"
 			(at 229.87 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -14511,7 +14430,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 358.14 165.1 0)
+		(at 350.52 165.1 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -14521,7 +14440,7 @@
 		(dnp no)
 		(uuid "54532946-8695-4bbd-93cb-a0d6fb0ecc5d")
 		(property "Reference" "C34"
-			(at 360.934 163.83 0)
+			(at 353.314 163.83 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14532,7 +14451,7 @@
 			)
 		)
 		(property "Value" "1nF"
-			(at 360.934 166.37 0)
+			(at 353.314 166.37 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14543,7 +14462,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
-			(at 359.1052 168.91 0)
+			(at 351.4852 168.91 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14554,7 +14473,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 358.14 165.1 0)
+			(at 350.52 165.1 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14565,7 +14484,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 358.14 165.1 0)
+			(at 350.52 165.1 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14778,7 +14697,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SO:SOIC-8_5.3x6.2mm_P1.27mm"
+		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
 			(at 217.17 220.98 0)
 			(hide yes)
 			(show_name no)
@@ -14789,7 +14708,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.analog.com/media/en/technical-documentation/data-sheets/op37.pdf"
 			(at 217.17 220.98 0)
 			(hide yes)
 			(show_name no)
@@ -14801,6 +14720,17 @@
 			)
 		)
 		(property "Description" ""
+			(at 217.17 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "OP37GSZ"
 			(at 217.17 220.98 0)
 			(hide yes)
 			(show_name no)
@@ -15146,6 +15076,17 @@
 		)
 		(property "Description" "Schottky diode"
 			(at 224.79 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "BAT54LT1G"
+			(at 224.79 173.99 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15649,7 +15590,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:BSS123")
-		(at 370.84 72.39 0)
+		(at 363.22 72.39 0)
 		(mirror y)
 		(unit 1)
 		(body_style 1)
@@ -15660,7 +15601,7 @@
 		(dnp no)
 		(uuid "66950486-1d18-45fa-bcf1-19f244ac4067")
 		(property "Reference" "Q4"
-			(at 372.11 74.168 0)
+			(at 364.49 74.168 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15671,7 +15612,7 @@
 			)
 		)
 		(property "Value" "BSS123"
-			(at 372.11 76.708 0)
+			(at 364.49 76.708 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15682,7 +15623,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 365.76 74.295 0)
+			(at 358.14 74.295 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15695,7 +15636,7 @@
 			)
 		)
 		(property "Datasheet" "http://www.diodes.com/assets/Datasheets/ds30366.pdf"
-			(at 365.76 76.2 0)
+			(at 358.14 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15707,7 +15648,7 @@
 			)
 		)
 		(property "Description" "0.17A Id, 100V Vds, N-Channel MOSFET, SOT-23"
-			(at 370.84 72.39 0)
+			(at 363.22 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15980,7 +15921,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:BSS123")
-		(at 370.84 166.37 0)
+		(at 363.22 166.37 0)
 		(mirror y)
 		(unit 1)
 		(body_style 1)
@@ -15991,7 +15932,7 @@
 		(dnp no)
 		(uuid "6e1e7d89-812a-43b0-8584-57547a9e752d")
 		(property "Reference" "Q2"
-			(at 372.11 168.148 0)
+			(at 364.49 168.148 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16002,7 +15943,7 @@
 			)
 		)
 		(property "Value" "BSS123"
-			(at 372.11 170.688 0)
+			(at 364.49 170.688 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16013,7 +15954,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 365.76 168.275 0)
+			(at 358.14 168.275 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16026,7 +15967,7 @@
 			)
 		)
 		(property "Datasheet" "http://www.diodes.com/assets/Datasheets/ds30366.pdf"
-			(at 365.76 170.18 0)
+			(at 358.14 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16038,7 +15979,7 @@
 			)
 		)
 		(property "Description" "0.17A Id, 100V Vds, N-Channel MOSFET, SOT-23"
-			(at 370.84 166.37 0)
+			(at 363.22 166.37 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16227,7 +16168,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 368.3 77.47 0)
+		(at 360.68 77.47 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -16238,7 +16179,7 @@
 		(fields_autoplaced yes)
 		(uuid "6fe1dc21-56f2-4231-b5fa-ba6bb0121979")
 		(property "Reference" "#PWR049"
-			(at 368.3 83.82 0)
+			(at 360.68 83.82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16249,7 +16190,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 368.3 82.55 0)
+			(at 360.68 82.55 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16259,7 +16200,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 368.3 77.47 0)
+			(at 360.68 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16270,7 +16211,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 368.3 77.47 0)
+			(at 360.68 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16281,7 +16222,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 368.3 77.47 0)
+			(at 360.68 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16335,7 +16276,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SO:SOIC-8_5.3x6.2mm_P1.27mm"
+		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
 			(at 172.72 220.98 0)
 			(hide yes)
 			(show_name no)
@@ -16346,7 +16287,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.analog.com/media/en/technical-documentation/data-sheets/op37.pdf"
 			(at 172.72 220.98 0)
 			(hide yes)
 			(show_name no)
@@ -16358,6 +16299,17 @@
 			)
 		)
 		(property "Description" ""
+			(at 172.72 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "OP37GSZ"
 			(at 172.72 220.98 0)
 			(hide yes)
 			(show_name no)
@@ -16704,6 +16656,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "BAT54LT1G"
+			(at 342.9 67.31 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "90c19a18-367f-4f0f-97cf-5e557b4225ee")
 		)
@@ -16877,6 +16840,105 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "R6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Amplifier_Operational:AD8603")
+		(at 332.74 161.29 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "7c4d8d8b-2c47-4096-81b5-4178f8173297")
+		(property "Reference" "U12"
+			(at 335.28 152.654 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TSX9291"
+			(at 335.28 155.194 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:TSOT-23-5"
+			(at 332.74 161.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 332.74 156.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 332.74 161.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "TSX9291IYLT"
+			(at 332.74 161.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "4"
+			(uuid "8e238311-1a5f-4e5b-b698-110a408311e6")
+		)
+		(pin "3"
+			(uuid "bbc88bfa-cc79-4e62-808f-9d26a1acf883")
+		)
+		(pin "1"
+			(uuid "2740e491-6189-470d-8575-94017bd7f257")
+		)
+		(pin "5"
+			(uuid "3a23bb83-795b-4f88-8d3d-7682f67be651")
+		)
+		(pin "2"
+			(uuid "4dbe4201-763f-4d34-844f-15770399c98a")
+		)
+		(instances
+			(project "Igniter Supply Board"
+				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
+					(reference "U12")
 					(unit 1)
 				)
 			)
@@ -17281,7 +17343,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 358.14 74.93 0)
+		(at 350.52 74.93 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -17292,7 +17354,7 @@
 		(fields_autoplaced yes)
 		(uuid "805cdd96-db69-4117-acc7-4e72529369b1")
 		(property "Reference" "#PWR044"
-			(at 358.14 81.28 0)
+			(at 350.52 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17303,7 +17365,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 358.14 80.01 0)
+			(at 350.52 80.01 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17313,7 +17375,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 358.14 74.93 0)
+			(at 350.52 74.93 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17324,7 +17386,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 358.14 74.93 0)
+			(at 350.52 74.93 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17335,7 +17397,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 358.14 74.93 0)
+			(at 350.52 74.93 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17389,7 +17451,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SO:SOIC-8_5.3x6.2mm_P1.27mm"
+		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
 			(at 295.91 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -17400,7 +17462,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.analog.com/media/en/technical-documentation/data-sheets/op37.pdf"
 			(at 295.91 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -17412,6 +17474,17 @@
 			)
 		)
 		(property "Description" ""
+			(at 295.91 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "OP37GSZ"
 			(at 295.91 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -18681,6 +18754,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "BAT54LT1G"
+			(at 344.17 161.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "8077cd2c-aa29-4f72-906c-1a673157de42")
 		)
@@ -18698,7 +18782,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 368.3 171.45 0)
+		(at 360.68 171.45 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -18709,7 +18793,7 @@
 		(fields_autoplaced yes)
 		(uuid "98729032-4688-4fb2-8112-9c28434627ff")
 		(property "Reference" "#PWR045"
-			(at 368.3 177.8 0)
+			(at 360.68 177.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18720,7 +18804,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 368.3 176.53 0)
+			(at 360.68 176.53 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18730,7 +18814,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 368.3 171.45 0)
+			(at 360.68 171.45 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18741,7 +18825,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 368.3 171.45 0)
+			(at 360.68 171.45 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18752,7 +18836,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 368.3 171.45 0)
+			(at 360.68 171.45 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18769,86 +18853,6 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "#PWR045")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_US")
-		(at 351.79 67.31 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "9a0c3337-28f1-43f4-816b-0966b58bfb39")
-		(property "Reference" "R18"
-			(at 351.79 60.96 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "100R"
-			(at 351.79 63.5 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
-			(at 352.044 66.294 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 351.79 67.31 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, US symbol"
-			(at 351.79 67.31 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "c2f9ab4b-161c-4648-91ff-228be2cfadfc")
-		)
-		(pin "1"
-			(uuid "b9475559-58d7-4a9e-bbf8-0726d6d7b838")
-		)
-		(instances
-			(project "Igniter Supply Board"
-				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
-					(reference "R18")
 					(unit 1)
 				)
 			)
@@ -19336,7 +19340,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 388.62 148.59 0)
+		(at 381 148.59 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -19347,7 +19351,7 @@
 		(fields_autoplaced yes)
 		(uuid "aa65dd9e-8bb7-4325-9a91-f754f07d7d53")
 		(property "Reference" "#PWR047"
-			(at 388.62 154.94 0)
+			(at 381 154.94 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19358,7 +19362,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 388.62 153.67 0)
+			(at 381 153.67 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -19368,7 +19372,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 388.62 148.59 0)
+			(at 381 148.59 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19379,7 +19383,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 388.62 148.59 0)
+			(at 381 148.59 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19390,7 +19394,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 388.62 148.59 0)
+			(at 381 148.59 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19606,7 +19610,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SO:SOIC-8_5.3x6.2mm_P1.27mm"
+		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
 			(at 200.66 173.99 0)
 			(hide yes)
 			(show_name no)
@@ -19617,7 +19621,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.analog.com/media/en/technical-documentation/data-sheets/op37.pdf"
 			(at 200.66 173.99 0)
 			(hide yes)
 			(show_name no)
@@ -19629,6 +19633,17 @@
 			)
 		)
 		(property "Description" ""
+			(at 200.66 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "OP37GSZ"
 			(at 200.66 173.99 0)
 			(hide yes)
 			(show_name no)
@@ -19674,7 +19689,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 388.62 48.26 0)
+		(at 381 48.26 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -19685,7 +19700,7 @@
 		(fields_autoplaced yes)
 		(uuid "afd8fadc-a413-416a-958c-d4f01a72ec91")
 		(property "Reference" "#PWR048"
-			(at 388.62 54.61 0)
+			(at 381 54.61 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19696,7 +19711,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 388.62 53.34 0)
+			(at 381 53.34 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -19706,7 +19721,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 388.62 48.26 0)
+			(at 381 48.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19717,7 +19732,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 388.62 48.26 0)
+			(at 381 48.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19728,7 +19743,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 388.62 48.26 0)
+			(at 381 48.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19806,6 +19821,17 @@
 			)
 		)
 		(property "Description" "coaxial connector (BNC, SMA, SMB, SMC, Cinch/RCA, LEMO, ...)"
+			(at 196.85 124.46 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "112659"
 			(at 196.85 124.46 0)
 			(hide yes)
 			(show_name no)
@@ -20071,8 +20097,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:D_Zener")
-		(at 388.62 144.78 270)
+		(lib_id "Amplifier_Operational:AD8603")
+		(at 331.47 67.31 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -20080,32 +20106,29 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b89ddd82-a23b-45c3-826c-1f7fefda3641")
-		(property "Reference" "D11"
-			(at 391.16 143.5099 90)
+		(uuid "b84b3649-3aed-4cbc-acb1-1125fa282e38")
+		(property "Reference" "U11"
+			(at 334.01 58.674 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Value" "MMSZ4685"
-			(at 391.16 146.0499 90)
+		(property "Value" "TSX9291"
+			(at 334.01 61.214 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SOD-123"
-			(at 388.62 144.78 0)
+		(property "Footprint" "Package_TO_SOT_SMD:TSOT-23-5"
+			(at 331.47 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20116,7 +20139,109 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 388.62 144.78 0)
+			(at 331.47 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 331.47 67.31 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "TSX9291IYLT"
+			(at 331.47 67.31 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "4"
+			(uuid "30e0cc08-989f-4189-9878-c103164fa13f")
+		)
+		(pin "3"
+			(uuid "636da26c-21bc-411f-97cb-83eca56976a0")
+		)
+		(pin "1"
+			(uuid "7fbc2061-eeed-4cc4-b2ad-8e2d1153fe2c")
+		)
+		(pin "5"
+			(uuid "00ba2c81-c06d-4fca-b3d5-23a4fdec62b6")
+		)
+		(pin "2"
+			(uuid "79aa2fd2-d71d-471a-9594-394e52119fd5")
+		)
+		(instances
+			(project "Igniter Supply Board"
+				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
+					(reference "U11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Zener")
+		(at 381 144.78 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b89ddd82-a23b-45c3-826c-1f7fefda3641")
+		(property "Reference" "D11"
+			(at 383.54 143.5099 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MMSZ4685"
+			(at 383.54 146.0499 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-123"
+			(at 381 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 381 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20127,7 +20252,7 @@
 			)
 		)
 		(property "Description" "Zener diode"
-			(at 388.62 144.78 0)
+			(at 381 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20154,7 +20279,7 @@
 	)
 	(symbol
 		(lib_id "Device:D_Zener")
-		(at 388.62 44.45 270)
+		(at 381 44.45 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -20165,7 +20290,7 @@
 		(fields_autoplaced yes)
 		(uuid "bd66e696-76b8-41b6-a05a-9f8ae798073d")
 		(property "Reference" "D12"
-			(at 391.16 43.1799 90)
+			(at 383.54 43.1799 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -20176,7 +20301,7 @@
 			)
 		)
 		(property "Value" "MMSZ4685"
-			(at 391.16 45.7199 90)
+			(at 383.54 45.7199 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -20187,7 +20312,7 @@
 			)
 		)
 		(property "Footprint" "Diode_SMD:D_SOD-123"
-			(at 388.62 44.45 0)
+			(at 381 44.45 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20198,7 +20323,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 388.62 44.45 0)
+			(at 381 44.45 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20209,7 +20334,7 @@
 			)
 		)
 		(property "Description" "Zener diode"
-			(at 388.62 44.45 0)
+			(at 381 44.45 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20389,86 +20514,6 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "C18")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_US")
-		(at 353.06 161.29 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "c0470351-71ff-4f00-b054-7a4ca6c950ae")
-		(property "Reference" "R19"
-			(at 353.06 154.94 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "100R"
-			(at 353.06 157.48 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
-			(at 353.314 160.274 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 353.06 161.29 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, US symbol"
-			(at 353.06 161.29 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "9ed5dbed-9488-4f3c-9b9e-34279e77ad95")
-		)
-		(pin "1"
-			(uuid "588779a1-8c88-4c07-8cfc-e6708ed1d519")
-		)
-		(instances
-			(project "Igniter Supply Board"
-				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
-					(reference "R19")
 					(unit 1)
 				)
 			)
@@ -22101,7 +22146,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SO:SOIC-8_5.3x6.2mm_P1.27mm"
+		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
 			(at 88.9 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -22113,7 +22158,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://docs.broadcom.com/docs/AV02-2928EN"
+		(property "Datasheet" ""
 			(at 86.614 104.013 0)
 			(hide yes)
 			(show_name no)
@@ -22126,6 +22171,17 @@
 			)
 		)
 		(property "Description" "Gate Drive Optocoupler, Output Current 4.0/4.0A, Propagation Delay 200ns, SSO-6"
+			(at 88.9 104.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "SI8261BAC-C-ISR"
 			(at 88.9 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -22436,7 +22492,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:TSOT-23-5"
+		(property "Footprint" "Package_TO_SOT_SMD:TSOT-23-5_HandSoldering"
 			(at 105.41 77.47 0)
 			(hide yes)
 			(show_name no)
@@ -22459,6 +22515,17 @@
 			)
 		)
 		(property "Description" "100VIN Micropower Isolated Flyback Converter with 150V/450mA Switch, TSOT-23-5"
+			(at 88.9 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "LT8301ES5#TRMPBF"
 			(at 88.9 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -22884,6 +22951,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "BAT54LT1G"
+			(at 328.93 99.06 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "949d0619-e560-4d9a-ad45-eca941f4fc94")
 		)
@@ -23119,6 +23197,17 @@
 		)
 		(property "Description" "Schottky diode"
 			(at 300.99 168.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "BAT54LT1G"
+			(at 300.99 168.91 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -23382,7 +23471,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 358.14 168.91 0)
+		(at 350.52 168.91 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -23393,7 +23482,7 @@
 		(fields_autoplaced yes)
 		(uuid "eb649de9-e860-4547-850a-43c5537e2025")
 		(property "Reference" "#PWR043"
-			(at 358.14 175.26 0)
+			(at 350.52 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -23404,7 +23493,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 358.14 173.99 0)
+			(at 350.52 173.99 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -23414,7 +23503,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 358.14 168.91 0)
+			(at 350.52 168.91 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -23425,7 +23514,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 358.14 168.91 0)
+			(at 350.52 168.91 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -23436,7 +23525,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 358.14 168.91 0)
+			(at 350.52 168.91 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -23836,6 +23925,17 @@
 		)
 		(property "Description" "Schottky diode"
 			(at 124.46 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "BAT54LT1G"
+			(at 124.46 83.82 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -24249,6 +24349,17 @@
 				)
 			)
 		)
+		(property "Digikey PN" "G2R1000MT33J-TR"
+			(at 171.45 102.87 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "6"
 			(uuid "fa050416-e8f7-4d8a-a959-2d63234b4b67")
 		)
@@ -24518,7 +24629,7 @@
 	)
 	(symbol
 		(lib_id "0_PAY_Symbol_Library:LMP2022")
-		(at 373.38 40.64 0)
+		(at 365.76 40.64 0)
 		(unit 2)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -24529,7 +24640,7 @@
 		(fields_autoplaced yes)
 		(uuid "fa34be81-d39b-410a-a87d-884520f5e3bc")
 		(property "Reference" "U4"
-			(at 373.38 30.48 0)
+			(at 365.76 30.48 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -24538,8 +24649,8 @@
 				)
 			)
 		)
-		(property "Value" "LMP2022MM"
-			(at 373.38 33.02 0)
+		(property "Value" "LMP2022MA"
+			(at 365.76 33.02 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -24548,8 +24659,8 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SO:SOIC-8_5.3x6.2mm_P1.27mm"
-			(at 373.38 40.64 0)
+		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
+			(at 365.76 40.64 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -24560,7 +24671,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/lmp2021.pdf"
-			(at 373.38 40.64 0)
+			(at 365.76 40.64 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -24571,7 +24682,18 @@
 			)
 		)
 		(property "Description" "Low-Power, Dual Operational Amplifiers, SOIC-8/VSSOP-8"
-			(at 373.38 40.64 0)
+			(at 365.76 40.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "LMP2022MA/NOPB"
+			(at 365.76 40.64 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -24775,7 +24897,7 @@
 	)
 	(symbol
 		(lib_id "0_PAY_Symbol_Library:LMP2022")
-		(at 373.38 139.7 0)
+		(at 365.76 139.7 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -24786,7 +24908,7 @@
 		(fields_autoplaced yes)
 		(uuid "fd73b984-85f3-4057-9937-b51b6fc24852")
 		(property "Reference" "U4"
-			(at 373.38 129.54 0)
+			(at 365.76 129.54 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -24795,8 +24917,8 @@
 				)
 			)
 		)
-		(property "Value" "LMP2022MM"
-			(at 373.38 132.08 0)
+		(property "Value" "LMP2022MA"
+			(at 365.76 132.08 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -24805,8 +24927,8 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SO:SOIC-8_5.3x6.2mm_P1.27mm"
-			(at 373.38 139.7 0)
+		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
+			(at 365.76 139.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -24817,7 +24939,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/lmp2021.pdf"
-			(at 373.38 139.7 0)
+			(at 365.76 139.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -24828,7 +24950,18 @@
 			)
 		)
 		(property "Description" "Low-Power, Dual Operational Amplifiers, SOIC-8/VSSOP-8"
-			(at 373.38 139.7 0)
+			(at 365.76 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "LMP2022MA/NOPB"
+			(at 365.76 139.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -24866,103 +24999,6 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "U4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Comparator:TLV3501AID")
-		(at 331.47 67.31 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "fda04117-886a-4fe0-b1dd-f70d2517f550")
-		(property "Reference" "U8"
-			(at 331.47 57.912 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "MAX997ESA"
-			(at 331.47 60.452 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
-			(at 331.47 76.835 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tlv3501.pdf"
-			(at 331.47 78.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "High-Speed Comparator, 4.5-ns, Rail-to-Rail, Push-Pull CMOS Output, SOIC-8"
-			(at 331.47 67.31 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "399dd74e-d183-44d2-a976-e686ac075232")
-		)
-		(pin "8"
-			(uuid "f442c9f2-cd01-453a-8a76-48daabc09672")
-		)
-		(pin "4"
-			(uuid "e2c4059a-a5c5-4b01-a09a-7db9e2629bc6")
-		)
-		(pin "6"
-			(uuid "699364ca-5772-4d70-a0df-1ab3c7cc54a7")
-		)
-		(pin "7"
-			(uuid "7ec62cd2-a150-4c16-a0d2-9327140e9b20")
-		)
-		(pin "2"
-			(uuid "555ae3ba-3889-4a78-9076-ac4fdc141aa5")
-		)
-		(pin "3"
-			(uuid "94dee51d-379d-4e0d-b376-109e57e23d74")
-		)
-		(pin "5"
-			(uuid "136d56ab-c3ac-478a-abdc-5c3eba5f0d70")
-		)
-		(instances
-			(project "Igniter Supply Board"
-				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
-					(reference "U8")
 					(unit 1)
 				)
 			)
@@ -25078,7 +25114,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SO:SOIC-8_5.3x6.2mm_P1.27mm"
+		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
 			(at 129.54 220.98 0)
 			(hide yes)
 			(show_name no)
@@ -25089,7 +25125,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.analog.com/media/en/technical-documentation/data-sheets/op37.pdf"
 			(at 129.54 220.98 0)
 			(hide yes)
 			(show_name no)
@@ -25101,6 +25137,17 @@
 			)
 		)
 		(property "Description" ""
+			(at 129.54 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "OP37GSZ"
 			(at 129.54 220.98 0)
 			(hide yes)
 			(show_name no)
