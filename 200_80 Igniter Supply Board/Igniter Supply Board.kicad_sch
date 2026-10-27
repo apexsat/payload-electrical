@@ -4158,7 +4158,7 @@
 					)
 				)
 			)
-			(property "Value" "Si8261BAC"
+			(property "Value" "UCC23513"
 				(at 0 11.43 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -4168,7 +4168,7 @@
 					)
 				)
 			)
-			(property "Footprint" "Package_SO:SSO-6_6.8x4.6mm_P1.27mm_Clearance7mm"
+			(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
 				(at 0 -10.16 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -4180,7 +4180,7 @@
 					)
 				)
 			)
-			(property "Datasheet" "https://docs.broadcom.com/docs/AV02-2928EN"
+			(property "Datasheet" ""
 				(at -2.286 0.127 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -4193,6 +4193,17 @@
 				)
 			)
 			(property "Description" "Gate Drive Optocoupler, Output Current 4.0/4.0A, Propagation Delay 200ns, SSO-6"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Digikey PN" "SI8261BAC-C-ISR"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -4811,43 +4822,25 @@
 							)
 						)
 					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 10.16 0 180)
+					(length 2.54)
+					(name "VO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
 					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 10.16 -1.27 180)
-					(length 2.54)
-					(name "VO"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 10.16 1.27 180)
-					(length 2.54)
-					(name "VO"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "7"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4865,7 +4858,7 @@
 							)
 						)
 					)
-					(number "8"
+					(number "6"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -6908,12 +6901,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "b4392c5c-fc82-4d2b-a1cb-5354f4b2aced")
-	)
-	(junction
-		(at 99.06 104.14)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "be3fa419-f156-4daa-b1df-d5660696a238")
 	)
 	(junction
 		(at 309.88 40.64)
@@ -9099,16 +9086,6 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 104.14) (xy 99.06 105.41)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d14cb0b4-0889-4fca-bc2e-90d7f38584a5")
-	)
-	(wire
-		(pts
 			(xy 186.69 147.32) (xy 191.77 147.32)
 		)
 		(stroke
@@ -9166,16 +9143,6 @@
 			(type default)
 		)
 		(uuid "d6f36952-dbc0-41a4-b257-fa7ea3d1fefa")
-	)
-	(wire
-		(pts
-			(xy 99.06 104.14) (xy 100.33 104.14)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d6f5b3e5-c494-4324-a62e-c879f0e769d0")
 	)
 	(wire
 		(pts
@@ -9579,16 +9546,6 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 102.87) (xy 99.06 104.14)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f17e57e7-ce16-4923-aae4-806f9bfc37e7")
-	)
-	(wire
-		(pts
 			(xy 238.76 78.74) (xy 238.76 88.9)
 		)
 		(stroke
@@ -9596,6 +9553,16 @@
 			(type default)
 		)
 		(uuid "f33457f7-8f13-4c73-87cf-e6c48a06c372")
+	)
+	(wire
+		(pts
+			(xy 99.06 104.14) (xy 100.33 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f352f0c4-4fe3-45be-9797-a3fd922d9062")
 	)
 	(wire
 		(pts
@@ -17366,7 +17333,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "360R"
+		(property "Value" "1.4k"
 			(at 71.628 93.98 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22249,7 +22216,7 @@
 				)
 			)
 		)
-		(property "Value" "Si8261BAC"
+		(property "Value" "UCC23513"
 			(at 88.9 92.71 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22259,7 +22226,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
+		(property "Footprint" "SSO-6_6.8x4.6mm_P1.27mm_Clearance8mm"
 			(at 88.9 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -22294,7 +22261,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "SI8261BAC-C-ISR"
+		(property "Digikey PN" "296-UCC23513QDWYRQ1CT-ND"
 			(at 88.9 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -22308,7 +22275,7 @@
 		(pin "6"
 			(uuid "3e6549b7-fb91-4d70-9f17-21e386172131")
 		)
-		(pin "7"
+		(pin "4"
 			(uuid "c26250ce-9b58-4315-8af7-58d7234131cf")
 		)
 		(pin "5"
@@ -22316,9 +22283,6 @@
 		)
 		(pin "3"
 			(uuid "7cacc4bc-da96-4387-b462-3413ba4f4bac")
-		)
-		(pin "8"
-			(uuid "67bd65f0-cc34-430f-95a9-5aff6cc186cb")
 		)
 		(pin "2"
 			(uuid "9924dcdd-29d8-4715-942f-1a27f5d6a2c6")
