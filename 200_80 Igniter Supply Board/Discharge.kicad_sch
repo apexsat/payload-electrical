@@ -2367,7 +2367,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "OP37GSZ"
+		(property "Digikey PN" "505-OP37GSZ-ND"
 			(at 118.11 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -3787,7 +3787,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "OP37GSZ"
+		(property "Digikey PN" "505-OP37GSZ-ND"
 			(at 73.66 146.05 0)
 			(hide yes)
 			(show_name no)
@@ -4147,7 +4147,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "2019-RK73H1JTTD1001FCT-ND"
+		(property "Digikey PN" "RNCF0603BTE1K00"
 			(at 83.82 83.82 0)
 			(hide yes)
 			(show_name no)

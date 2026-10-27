@@ -6428,7 +6428,7 @@
 		)
 		(uuid "902ae509-64bc-4e95-9ad3-d7bc3a8c2d19")
 	)
-	(text "Designed for 6mA at \n2.8V Vf (worst case)"
+	(text "Designed for 9.6mA at \n2.4V Vf (worst case)"
 		(exclude_from_sim no)
 		(at 65.786 103.632 0)
 		(effects
@@ -6535,6 +6535,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "21936fe3-c545-41b9-a284-f0791fc8fb26")
+	)
+	(junction
+		(at 318.77 217.17)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2354a08f-2dc7-4110-9051-b2ab4544a490")
 	)
 	(junction
 		(at 173.99 124.46)
@@ -7766,6 +7772,16 @@
 	)
 	(wire
 		(pts
+			(xy 318.77 217.17) (xy 318.77 218.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4761cad0-2274-4ec4-90c9-8d779c0e9341")
+	)
+	(wire
+		(pts
 			(xy 224.79 168.91) (xy 236.22 168.91)
 		)
 		(stroke
@@ -8073,6 +8089,16 @@
 			(type default)
 		)
 		(uuid "6a85d7be-0f9e-426a-8e6e-191be7618f75")
+	)
+	(wire
+		(pts
+			(xy 318.77 217.17) (xy 321.31 217.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6ad4410f-0c71-4395-8b85-c544fc019f69")
 	)
 	(wire
 		(pts
@@ -9056,7 +9082,7 @@
 	)
 	(wire
 		(pts
-			(xy 306.07 217.17) (xy 321.31 217.17)
+			(xy 306.07 217.17) (xy 318.77 217.17)
 		)
 		(stroke
 			(width 0)
@@ -10107,7 +10133,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "BSS123NCT-ND"
+		(property "Digikey PN" ""
 			(at 96.52 257.81 0)
 			(hide yes)
 			(show_name no)
@@ -11477,7 +11503,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "750319697"
+		(property "Digikey PN" "1297-750319697CT-ND"
 			(at 113.03 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -11848,7 +11874,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "OP37GSZ"
+		(property "Digikey PN" "505-OP37GSZ-ND"
 			(at 275.59 168.91 0)
 			(hide yes)
 			(show_name no)
@@ -11959,7 +11985,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "BSS123NCT-ND"
+		(property "Digikey PN" ""
 			(at 134.62 257.81 0)
 			(hide yes)
 			(show_name no)
@@ -13605,7 +13631,7 @@
 				)
 			)
 		)
-		(property "Value" ""
+		(property "Value" "ACS37042"
 			(at 229.87 92.71 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13648,7 +13674,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "ACS37042KLHBLT-010B5"
+		(property "Digikey PN" "620-ACS37042KLHBLT-010B5CT-ND"
 			(at 229.87 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -14706,7 +14732,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "OP37GSZ"
+		(property "Digikey PN" "505-OP37GSZ-ND"
 			(at 217.17 220.98 0)
 			(hide yes)
 			(show_name no)
@@ -15730,6 +15756,98 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R_US")
+		(at 318.77 222.25 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "670d0afb-69da-4d22-980d-f8d3e10dff3f")
+		(property "Reference" "R18"
+			(at 312.801 221.869 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 312.801 224.409 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+			(at 319.786 222.504 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 318.77 222.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor, US symbol"
+			(at 318.77 222.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Digikey PN" "RNCF0603BTE10K0CT-ND"
+			(at 318.77 222.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "eb5f7033-d909-4d7c-a587-13f9cdf6cb5f")
+		)
+		(pin "1"
+			(uuid "6be2c0f6-0920-42f6-b4d8-3c201b229002")
+		)
+		(instances
+			(project "Igniter Supply Board"
+				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
+					(reference "R18")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 105.41 232.41 0)
 		(unit 1)
@@ -16395,7 +16513,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "OP37GSZ"
+		(property "Digikey PN" "505-OP37GSZ-ND"
 			(at 172.72 220.98 0)
 			(hide yes)
 			(show_name no)
@@ -16894,7 +17012,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "4.53M"
+		(property "Value" "1M"
 			(at 258.318 139.7 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16938,7 +17056,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "RC2010FK-074M53L"
+		(property "Digikey PN" "2019-HV732HTTE1004FCT-ND"
 			(at 256.54 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -17333,7 +17451,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "1.4k"
+		(property "Value" "270R"
 			(at 71.628 93.98 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17377,7 +17495,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "541-2001-1-ND"
+		(property "Digikey PN" "541-10445-1-ND"
 			(at 78.74 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -17636,7 +17754,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "OP37GSZ"
+		(property "Digikey PN" "505-OP37GSZ-ND"
 			(at 295.91 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -18071,7 +18189,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "NCU18XH103F60RB"
+		(property "Digikey PN" "490-16279-1-ND"
 			(at 142.24 165.1 0)
 			(hide yes)
 			(show_name no)
@@ -19265,7 +19383,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "BSS123NCT-ND"
+		(property "Digikey PN" ""
 			(at 109.22 257.81 0)
 			(hide yes)
 			(show_name no)
@@ -19893,7 +20011,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "OP37GSZ"
+		(property "Digikey PN" "505-OP37GSZ-ND"
 			(at 200.66 173.99 0)
 			(hide yes)
 			(show_name no)
@@ -20096,7 +20214,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "BSS123NCT-ND"
+		(property "Digikey PN" ""
 			(at 121.92 257.81 0)
 			(hide yes)
 			(show_name no)
@@ -22748,7 +22866,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10k"
+		(property "Value" "2.2k"
 			(at 274.066 149.606 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22792,7 +22910,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "RT1206BRD0710KL"
+		(property "Digikey PN" "YAG5058CT-ND"
 			(at 276.86 152.4 90)
 			(hide yes)
 			(show_name no)
@@ -22989,6 +23107,84 @@
 			(project "Igniter Supply Board"
 				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
 					(reference "Q3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 318.77 226.06 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e60f2e3d-a1c9-4274-b524-3c873d203e64")
+		(property "Reference" "#PWR084"
+			(at 318.77 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 318.77 231.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 318.77 226.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 318.77 226.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 318.77 226.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "980b2be7-e797-4cb9-aea6-e135a135cd53")
+		)
+		(instances
+			(project "Igniter Supply Board"
+				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247"
+					(reference "#PWR084")
 					(unit 1)
 				)
 			)
@@ -24158,7 +24354,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "4.53M"
+		(property "Value" "1M"
 			(at 183.388 144.78 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -24202,7 +24398,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "RC2010FK-074M53L"
+		(property "Digikey PN" "2019-HV732HTTE1004FCT-ND"
 			(at 181.61 143.51 0)
 			(hide yes)
 			(show_name no)
@@ -24421,7 +24617,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10k"
+		(property "Value" "2.2k"
 			(at 199.136 154.686 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -24465,7 +24661,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "RT1206BRD0710KL"
+		(property "Digikey PN" "YAG5058CT-ND"
 			(at 201.93 157.48 90)
 			(hide yes)
 			(show_name no)
@@ -25289,7 +25485,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "OP37GSZ"
+		(property "Digikey PN" "505-OP37GSZ-ND"
 			(at 129.54 220.98 0)
 			(hide yes)
 			(show_name no)
