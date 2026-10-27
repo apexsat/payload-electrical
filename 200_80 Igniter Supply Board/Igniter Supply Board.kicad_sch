@@ -4168,7 +4168,7 @@
 					)
 				)
 			)
-			(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
+			(property "Footprint" "SSO-6_6.8x4.6mm_P1.27mm_Clearance8mm"
 				(at 0 -10.16 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -4203,7 +4203,7 @@
 					)
 				)
 			)
-			(property "Digikey PN" "SI8261BAC-C-ISR"
+			(property "Digikey PN" "296-UCC23513QDWYRQ1CT-ND"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -4767,7 +4767,7 @@
 							)
 						)
 					)
-					(number "2"
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -17377,7 +17377,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "RCS0603360RFKEA"
+		(property "Digikey PN" "541-2001-1-ND"
 			(at 78.74 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -22287,7 +22287,7 @@
 		(pin "2"
 			(uuid "9924dcdd-29d8-4715-942f-1a27f5d6a2c6")
 		)
-		(pin "2"
+		(pin "1"
 			(uuid "8b31c77d-1286-483b-8276-8ef71dbee8d9")
 		)
 		(instances
