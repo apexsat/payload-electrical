@@ -11822,7 +11822,7 @@
 		(dnp no)
 		(uuid "1ef64a39-7535-40e7-b813-62f3cb4bc0b1")
 		(property "Reference" "U2"
-			(at 275.59 153.924 0)
+			(at 275.59 155.448 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11832,7 +11832,7 @@
 			)
 		)
 		(property "Value" "OP37"
-			(at 275.59 156.464 0)
+			(at 275.59 157.988 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17012,7 +17012,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "1M"
+		(property "Value" "10M"
 			(at 258.318 139.7 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17056,7 +17056,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "2019-HV732HTTE1004FCT-ND"
+		(property "Digikey PN" "2019-HV732HTTE1005FCT-ND"
 			(at 256.54 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -18699,7 +18699,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "53261-1371"
+		(property "Value" "53398-1371"
 			(at 67.056 145.796 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22866,7 +22866,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2.2k"
+		(property "Value" "22k"
 			(at 274.066 149.606 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22910,7 +22910,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "YAG5058CT-ND"
+		(property "Digikey PN" "YAG2027CT-ND"
 			(at 276.86 152.4 90)
 			(hide yes)
 			(show_name no)
@@ -24354,7 +24354,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "1M"
+		(property "Value" "10M"
 			(at 183.388 144.78 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -24398,7 +24398,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "2019-HV732HTTE1004FCT-ND"
+		(property "Digikey PN" "2019-HV732HTTE1005FCT-ND"
 			(at 181.61 143.51 0)
 			(hide yes)
 			(show_name no)
@@ -24617,7 +24617,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2.2k"
+		(property "Value" "22k"
 			(at 199.136 154.686 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -24661,7 +24661,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "YAG5058CT-ND"
+		(property "Digikey PN" "YAG2027CT-ND"
 			(at 201.93 157.48 90)
 			(hide yes)
 			(show_name no)
