@@ -10229,7 +10229,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+		(property "Digikey PN" "399-C0603C102F3GACTUCT-ND"
 			(at 156.21 227.33 0)
 			(hide yes)
 			(show_name no)
@@ -10491,7 +10491,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+		(property "Digikey PN" "399-C0603C102F3GACTUCT-ND"
 			(at 124.46 106.68 0)
 			(hide yes)
 			(show_name no)
@@ -10675,7 +10675,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+		(property "Digikey PN" "399-C0603C102F3GACTUCT-ND"
 			(at 350.52 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -11263,7 +11263,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+		(property "Digikey PN" "399-C0603C102F3GACTUCT-ND"
 			(at 156.21 237.49 0)
 			(hide yes)
 			(show_name no)
@@ -12816,7 +12816,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "3.3nF"
+		(property "Value" "330pF"
 			(at 295.275 116.459 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12860,7 +12860,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C332K5RACTUCT-ND"
+		(property "Digikey PN" "399-C0603C331F5GACTUCT-ND"
 			(at 297.18 110.49 90)
 			(hide yes)
 			(show_name no)
@@ -14138,7 +14138,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+		(property "Digikey PN" "399-C0603C102F3GACTUCT-ND"
 			(at 309.88 50.8 0)
 			(hide yes)
 			(show_name no)
@@ -14308,7 +14308,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+		(property "Digikey PN" "399-C0603C102F3GACTUCT-ND"
 			(at 283.21 85.09 0)
 			(hide yes)
 			(show_name no)
@@ -14492,7 +14492,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+		(property "Digikey PN" "399-C0603C102F3GACTUCT-ND"
 			(at 350.52 165.1 0)
 			(hide yes)
 			(show_name no)
@@ -14942,7 +14942,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+		(property "Digikey PN" "399-C0603C102F3GACTUCT-ND"
 			(at 317.5 146.05 0)
 			(hide yes)
 			(show_name no)
@@ -18786,7 +18786,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+		(property "Digikey PN" "399-C0603C102F3GACTUCT-ND"
 			(at 199.39 227.33 0)
 			(hide yes)
 			(show_name no)
@@ -19387,7 +19387,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+		(property "Digikey PN" "399-C0603C102F3GACTUCT-ND"
 			(at 111.76 227.33 0)
 			(hide yes)
 			(show_name no)
@@ -19743,7 +19743,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C272K5RACTUCT-ND"
+		(property "Digikey PN" "490-GCM1885C1H272FA16JCT-ND"
 			(at 270.51 96.52 90)
 			(hide yes)
 			(show_name no)
@@ -20733,7 +20733,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+		(property "Digikey PN" "399-C0603C102F3GACTUCT-ND"
 			(at 111.76 237.49 0)
 			(hide yes)
 			(show_name no)
@@ -21861,7 +21861,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+		(property "Digikey PN" "399-C0603C102F3GACTUCT-ND"
 			(at 199.39 237.49 0)
 			(hide yes)
 			(show_name no)
@@ -21953,7 +21953,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+		(property "Digikey PN" "399-C0603C102F3GACTUCT-ND"
 			(at 248.92 231.14 0)
 			(hide yes)
 			(show_name no)
@@ -22357,7 +22357,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "8.2nF"
+		(property "Value" "820pF"
 			(at 279.146 109.22 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22401,7 +22401,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C822K5RACTUCT-ND"
+		(property "Digikey PN" "490-GCM1885C2A821FA16DCT-ND"
 			(at 281.94 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -24969,7 +24969,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C102K5RACTUCT-ND"
+		(property "Digikey PN" "399-C0603C102F3GACTUCT-ND"
 			(at 254 82.55 0)
 			(hide yes)
 			(show_name no)

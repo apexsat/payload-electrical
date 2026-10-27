@@ -1500,6 +1500,12 @@
 		(uuid "0f72660a-a4d3-4988-85de-5fd267207eef")
 	)
 	(junction
+		(at 124.46 177.8)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "31af7eee-fd14-429d-99a9-0888a6e7cb76")
+	)
+	(junction
 		(at 125.73 127)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1728,6 +1734,16 @@
 			(type default)
 		)
 		(uuid "ae392541-478e-46b2-afa2-2155890c4675")
+	)
+	(wire
+		(pts
+			(xy 124.46 177.8) (xy 114.3 177.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b078561f-5d4f-4117-bea7-62630bd36bbe")
 	)
 	(wire
 		(pts
@@ -2147,7 +2163,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
 			(at 88.9 83.82 0)
 			(hide yes)
 			(show_name no)
@@ -2180,7 +2196,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "399-C0603C104K5RACTUCT-ND"
+		(property "Digikey PN" "399-C0603C102F3GACTUCT-ND"
 			(at 88.9 83.82 0)
 			(hide yes)
 			(show_name no)
@@ -2273,7 +2289,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "541-3318-1-ND"
+		(property "Digikey PN" "RG16P24.0KBCT-ND"
 			(at 99.06 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -2724,7 +2740,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "541-3318-1-ND"
+		(property "Digikey PN" "RG16P24.0KBCT-ND"
 			(at 73.66 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -3279,7 +3295,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "541-3318-1-ND"
+		(property "Digikey PN" "RR08P51.0KDCT-ND"
 			(at 99.06 83.82 0)
 			(hide yes)
 			(show_name no)
@@ -3817,7 +3833,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
 			(at 124.46 170.18 0)
 			(hide yes)
 			(show_name no)
@@ -3909,7 +3925,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
 			(at 109.22 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -4317,7 +4333,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "541-3318-1-ND"
+		(property "Digikey PN" "RR08P51.0KDCT-ND"
 			(at 73.66 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -4408,7 +4424,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "541-3318-1-ND"
+		(property "Digikey PN" "A130028CT-ND"
 			(at 83.82 67.31 0)
 			(hide yes)
 			(show_name no)
@@ -4513,6 +4529,83 @@
 		)
 	)
 	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 114.3 177.8 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "d9b45ad3-b651-4b4f-ae40-f81c20e86440")
+		(property "Reference" "#FLG015"
+			(at 114.3 172.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 114.3 181.61 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 114.3 177.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 114.3 177.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 114.3 177.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "2a0e11bd-5e4a-4d81-8d85-10199e675737")
+		)
+		(instances
+			(project "Igniter Supply Board"
+				(path "/0667bf65-916d-41a8-8a49-6f64c5a5f247/273ee1b0-9086-4acc-845c-b41ea2be318e"
+					(reference "#FLG015")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R_US")
 		(at 116.84 54.61 90)
 		(unit 1)
@@ -4577,7 +4670,7 @@
 				)
 			)
 		)
-		(property "Digikey PN" "541-3318-1-ND"
+		(property "Digikey PN" "P123763CT-ND"
 			(at 116.84 54.61 0)
 			(hide yes)
 			(show_name no)
@@ -4728,7 +4821,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
 			(at 125.73 134.62 0)
 			(hide yes)
 			(show_name no)
