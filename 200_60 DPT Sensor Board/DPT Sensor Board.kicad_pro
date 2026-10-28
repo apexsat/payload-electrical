@@ -60,7 +60,7 @@
           "hatch_smoothing_level": 0,
           "hatch_smoothing_value": 0.1,
           "hatch_thickness": 1.0,
-          "min_clearance": 0.5,
+          "min_clearance": 0.2,
           "min_island_area": 10.0,
           "min_thickness": 0.25,
           "pad_connection": 1,
@@ -528,6 +528,7 @@
       "netlist": "",
       "plot": "",
       "specctra_dsn": "",
+      "step": "DPT Sensor Board.step",
       "vrml": ""
     },
     "page_layout_descr_file": ""
@@ -650,7 +651,7 @@
         "uuid": "51a6eb91-ccc6-4723-a9cc-64e8292ae0ba"
       }
     ],
-    "used_designators": "U1,J1",
+    "used_designators": "",
     "variants": []
   },
   "sheets": [

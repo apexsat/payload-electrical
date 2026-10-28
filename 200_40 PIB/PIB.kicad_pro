@@ -104,7 +104,7 @@
         "invalid_outline": "error",
         "isolated_copper": "warning",
         "item_on_disabled_layer": "error",
-        "items_not_allowed": "error",
+        "items_not_allowed": "ignore",
         "length_out_of_range": "error",
         "lib_footprint_issues": "warning",
         "lib_footprint_mismatch": "warning",
@@ -146,8 +146,8 @@
       },
       "rules": {
         "max_error": 0.005,
-        "min_clearance": 0.0,
-        "min_connection": 0.0,
+        "min_clearance": 0.1,
+        "min_connection": 0.1,
         "min_copper_edge_clearance": 0.2,
         "min_groove_width": 0.0,
         "min_hole_clearance": 0.25,
@@ -159,7 +159,7 @@
         "min_text_height": 0.6,
         "min_text_thickness": 0.08,
         "min_through_hole_diameter": 0.3,
-        "min_track_width": 0.0,
+        "min_track_width": 0.1,
         "min_via_annular_width": 0.1,
         "min_via_diameter": 0.5,
         "solder_mask_to_copper_clearance": 0.0,
@@ -641,6 +641,66 @@
           "label": "#",
           "name": "${ITEM_NUMBER}",
           "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Price",
+          "name": "Price",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Sim.Pins",
+          "name": "Sim.Pins",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Tolerance",
+          "name": "Tolerance",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "VENDOR",
+          "name": "VENDOR",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "MF",
+          "name": "MF",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "MP",
+          "name": "MP",
+          "show": true
+        },
+        {
+          "group_by": false,
+          "label": "Package",
+          "name": "Package",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "KLC_S3.3",
+          "name": "KLC_S3.3",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "KLC_S4.1",
+          "name": "KLC_S4.1",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Digikey PN",
+          "name": "Digikey PN",
+          "show": true
         }
       ],
       "filter_string": "",
@@ -699,7 +759,7 @@
         "uuid": "2bb2e4a1-de70-477a-a246-143db0a21e08"
       }
     ],
-    "used_designators": "J1-12,C1-8,C14-39,A1,Y1,FB1,#PWR1-61,T2-3,H6-10,Q1-9,D4-9,U1-14,F1-3,R1-14,R16-47,TP15-45",
+    "used_designators": "D60-61",
     "variants": []
   },
   "sheets": [
@@ -708,16 +768,24 @@
       "PIB"
     ],
     [
-      "00dc5b04-d6ba-43c7-87aa-21dd5f921476",
-      "Igniter Supply"
+      "177725a5-a22e-4ba6-aa4d-305743e89374",
+      "Rogowski Integrator"
     ],
     [
-      "c2c54188-0799-487a-9e24-712f1b78ac8a",
-      "Discharge Supply"
+      "cc1f88ed-408c-4ec5-ab26-d4cb3df82b9c",
+      "DPT MUX"
     ],
     [
       "a3e2437a-f450-49da-ac0f-e1add7c59a42",
       "Valve Driver"
+    ],
+    [
+      "8137034e-e0af-4d52-b7f8-edbfa09911b4",
+      "Discharge Load Switch"
+    ],
+    [
+      "7f136174-6704-4399-958d-df8d2f380711",
+      "Igniter Load Switch"
     ]
   ],
   "text_variables": {},

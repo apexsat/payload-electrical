@@ -1,0 +1,210 @@
+(footprint "Crystal_SMD_Abracon_ABM3B-4Pin_5.0x3.2mm"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(descr "Abracon ABM3B, Miniature Ceramic Crystal, 5.0x3.2mm package, SMD, http://www.abracon.com/Resonators/abm3b.pdf")
+	(property "Reference" "REF**"
+		(at 0 -2.8 0)
+		(layer "F.SilkS")
+		(uuid "716b2766-6951-4982-988d-ce4eb6378979")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "Crystal_SMD_Abracon_ABM3B-4Pin_5.0x3.2mm"
+		(at 0 2.8 0)
+		(layer "F.Fab")
+		(uuid "9b4c68bb-5362-4dd2-ae6f-0e66d3415388")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "f3afdbe8-ba1f-4349-b1d2-99087170357c")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "5ba2c6df-994f-4996-829a-080754af44a4")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "KiLib_Generator" "crystal_resonator_oscillator"
+		(at 0 0 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "0c71c639-6c75-47c4-86fb-1d3aec88471c")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_line
+		(start -3 1.4)
+		(end -3 2)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "2f7face1-6561-490d-85ee-b643347435c2")
+	)
+	(fp_line
+		(start -3 2)
+		(end -2.4 2)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "5d9954bb-2a1f-4d44-bd36-65222a0e06bc")
+	)
+	(fp_line
+		(start -2.76 0.34)
+		(end -2.76 -0.34)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "cb9b50ed-b25c-4a12-a9d3-b2653cb5abc4")
+	)
+	(fp_line
+		(start -0.84 -1.86)
+		(end 0.84 -1.86)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "6691f9ab-ed1a-4ed6-a44d-29f8ee63d3dd")
+	)
+	(fp_line
+		(start 0.84 1.86)
+		(end -0.84 1.86)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "f1d68ec6-a5d7-4ed3-ad1a-66eb8ec27eff")
+	)
+	(fp_line
+		(start 2.76 -0.34)
+		(end 2.76 0.34)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "36308313-aff0-48db-9478-dcceb0fb15cb")
+	)
+	(fp_circle
+		(center 0 0)
+		(end 0.5 0)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill yes)
+		(layer "F.Adhes")
+		(uuid "3d5720df-7aea-4fbf-b083-858315e2a7a6")
+	)
+	(fp_rect
+		(start -3.15 -2.1)
+		(end 3.15 2.1)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "ae0a44c9-0baa-42bf-a98b-9786626adb24")
+	)
+	(fp_poly
+		(pts
+			(xy 2.5 -1.6) (xy 2.5 1.6) (xy -1.7 1.6) (xy -2.5 0.8) (xy -2.5 -1.6)
+		)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "3ea95c0e-a716-41fb-8295-9337cb3a4996")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(uuid "f0b0bdc8-8ca8-4345-bef6-b48f4ec54260")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" smd roundrect
+		(at -2 1.2)
+		(size 1.8 1.2)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.208333)
+		(uuid "b0a7875c-daac-4837-b137-5d424eb5cedf")
+	)
+	(pad "2" smd roundrect
+		(at 2 1.2)
+		(size 1.8 1.2)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.208333)
+		(uuid "0f427152-f6aa-4e1e-84cc-b7649a65b868")
+	)
+	(pad "3" smd roundrect
+		(at 2 -1.2)
+		(size 1.8 1.2)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.208333)
+		(uuid "265ff698-064d-4126-8ee7-00a3c70a02ca")
+	)
+	(pad "4" smd roundrect
+		(at -2 -1.2)
+		(size 1.8 1.2)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.208333)
+		(uuid "190d9946-5b0c-439b-8fc6-08b82f45583e")
+	)
+	(embedded_fonts no)
+	(model "${KICAD10_3DMODEL_DIR}/Crystal.3dshapes/Crystal_SMD_Abracon_ABM3B-4Pin_5.0x3.2mm.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)
