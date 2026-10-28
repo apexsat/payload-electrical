@@ -5,25 +5,25 @@
 | **Board** | 200_40 Payload Interface Board (APEx PMPD thruster, 6U CubeSat) |
 | **Reviewed files** | `PIB.kicad_sch`, `Rogowski.kicad_sch`, `Valve Driver.kicad_sch`, `DPT Mux.kicad_sch`, `PIB.kicad_pcb` (parity only), `firmware/firmware.ioc` (pin/clock config) |
 | **Scope** | The PIB (200_40) only. The igniter board (200_80) is a boilerplate design and out of scope; only the PIB side of the J5 interface is reviewed. |
-| **Reference docs** | `Payload ICD.pdf` (Rev 2.1, 10/22/2026, working copy), `PIB Block Diagram.drawio.png`, `200_60 DPT Sensor Board`, `Rogowski_Coil_Characterization.md` (coil measurements and integrator sizing) |
+| **Reference docs** | `Payload ICD.pdf` (Rev 2.1, 10/22/2026, working copy), `PIB Block Diagram 10-28-2026 Export.png`, `200_60 DPT Sensor Board`, `Rogowski_Coil_Characterization.md` (coil measurements and integrator sizing) |
 | **Datasheets used** | In `200_40 PIB/`: ADM1270 (Rev. A; timer, foldback and ISET figures) and Si7489DP (SOA and thermal impedance). In the repo root: LT3065 (Rev. F). Also LMP202x (TI SNOSAY9G, Rev. G) and STM32G431 (DS12589 Rev 6; ADC clock, R<sub>AIN</sub> and injection limits), which are not in the repo. |
-| **Design state** | branch `pib-split`, `2fd37c5` plus working-copy PCB routing of U6/R43/R44 (2026-10-21) |
-| **PCB** | Routed. Schematic parity is clean, with 0 unconnected pads (2026-10-21, zones refilled). DRC shows 61 silkscreen warnings only: 58 `silk_overlap`, mostly the B.Silk outlines of the ESD diodes, and 3 `silk_over_copper` at U5, U7 and U9. Before release: clean up the silkscreen, then regenerate the fab outputs and the iBOM. |
+| **Design state** | **Rev 1.0 released and ordered.** Release commits `94ea3f9` (MPNs, gerbers, BOM, 2026-10-24) and `350d2e7` (2026-10-25), merged to `main` at `102b15f`. Hardware changes found from here on go to the next board revision (see [Deferred to Next Board Revision](#deferred-to-next-board-revision)). |
+| **PCB** | Rev 1.0 fab outputs are in `200_40 PIB/Outputs/`. Schematic parity is clean, with 0 unconnected pads (re-checked 2026-10-28). DRC shows 69 silkscreen warnings only (66 `silk_overlap`, 3 `silk_over_copper`), shipped as-is; cleanup is deferred (R1). |
 | **Tools** | KiCad 10.0 (`kicad-cli` ERC, netlist, DRC w/ schematic parity). To re-run: point `KICAD_CONFIG_HOME` at a scratch directory whose `10.0/` holds only the stock `sym-lib-table`/`fp-lib-table` (from KiCad's `share/kicad/template/`), so library warnings are real; run `kicad-cli sch erc --severity-all PIB.kicad_sch`; and compare `kicad-cli sch export netlist` output between revisions (`git archive` the old one) to see exactly which parts and nets changed. |
-| **Last updated** | 2026-10-21 |
+| **Last updated** | 2026-10-28 |
 
-**Status key:** `OPEN` (needs a design change) · `VERIFY` (needs a datasheet, bench or part check) · `OPTIONAL` (recommended hardening, not required) · `ICD` (schematic is correct; the ICD must change)
+**Status key:** `OPEN` (needs a design change) · `DOC` (documentation, schematic-field or assembly-note fix; no copper change) · `VERIFY` (needs a datasheet, bench or part check) · `DEFERRED` (hardware change; Rev 1.0 ships without it, fix in the next board revision) · `OPTIONAL` (recommended hardening, not required) · `ICD` (schematic is correct; the ICD must change)
 
-**How to use:** This document lists only issues present in the current KiCad design. When an issue is resolved, delete it. Item IDs are stable, so gaps in the numbering are expected. Don't renumber.
+**How to use:** This document lists only issues present in the current KiCad design. When an issue is resolved, delete it. Item IDs are stable, so gaps in the numbering are expected. Don't renumber. Since Rev 1.0 was ordered, hardware items are `DEFERRED` rather than `OPEN`. Fix them in the next board revision, then delete them.
 
 ---
 
 ## Summary
 
 The pin-to-pad check is clean for every footprint. The main risks are:
-- No critical items are open. Bench and datasheet confirmations are tracked under Open Questions (Q3, Q9).
+- No critical items are open. Bench and datasheet confirmations are tracked under Open Questions (Q3, Q8, Q9) for Rev 1.0 bring-up.
 
-The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD items need to be brought in line with the schematic (see [ICD Update Actions](#icd-update-actions)).
+Rev 1.0 is ordered. The BOM has MPNs and ratings for every part (Verified OK, *BOM / MPN check*). The remaining open work is documentation (F5, F8, P3, P4) and bring-up checks (Q3, Q8, Q9). Hardware improvements (S14, F7, R1) are deferred to the next board revision.
 
 **Design context:**
 - UNP NS requirements apply. Launch inhibits live in EPS, so the PIB and CDH are fully unpowered until after deployment.
@@ -43,14 +43,14 @@ The BOM is not production-ready (no MPNs or capacitor ratings). Several ICD item
 - Rogowski sensor: the flight unit flies only the PEM CWTMini50HF/150 coil head, with the PIB integrating. The complete CWT transducer (0.2 mV/A, ±6 V at 30 kA) is ground calibration equipment.
 - Discharge current is a damped, bidirectional ring. An early scope shot (over a year old) showed ≈ 16 kA peak, ≈ 24 kHz and ≈ 65 µs. The thruster is experimental, so treat these as indicative only, not design inputs.
 
-| Category | Items |
-|---|---|
-| Critical | 0 |
-| Significant | 1 |
-| Footprint / Part | 3 |
-| Project setup | 2 |
-| ICD / Block diagram | 1 |
-| Open questions | 3 |
+| Category | Open (doc / software / test) | Deferred (next board revision) |
+|---|---|---|
+| Critical | 0 | 0 |
+| Significant | 0 | 1 (S14) |
+| Footprint / Part | 2 (F5, F8) | 1 (F7) |
+| Project setup | 2 (P3, P4) | 1 (R1) |
+| ICD / Block diagram | 0 | 0 |
+| Open questions | 3 (Q3, Q8, Q9) | 0 |
 
 ---
 
@@ -62,9 +62,7 @@ _None open._
 
 ## Significant
 
-### S14 — Non-ARM 74HC08 inputs float at reset — `OPTIONAL`
-- R88 holds `/ARM/~{SAFE}` low, so all eight gated outputs are low during reset. The other inputs (`IGNITER_EN`, `DISCHARGE_EN`, `IGNITER_PULSE`, `VALVE1_L/H`, `VALVE2_EN`, `VALVE3_L/H`) float while the STM32 pins are high-Z.
-- That's safe, but floating HC inputs can draw extra supply current or oscillate. Add 100k pull-downs if layout space allows.
+_None open._ S14 is deferred to the next board revision (see [Deferred to Next Board Revision](#deferred-to-next-board-revision)).
 
 ---
 
@@ -72,44 +70,53 @@ _None open._
 
 Pin-to-pad check: every symbol pin maps to a footprint pad (custom DFN-8/10_DD, SOT95P280X145-5N, HARWIN M80, ABM3B, PowerPAK SO-8, SOD-123). MIC4424 pads 1/8 are NC, which is correct. SP0502BAJT on SC-70 is correct.
 
-### F5 — Symbol, value and datasheet mismatches — `OPEN`
+### F5 — Symbol, value and datasheet mismatches — `DOC`
 - **Symbol ≠ part:** Q9–Q11 use the `IRF7403` symbol for an IRF7832. U14/U15 use `74LS08` (DIP filter) for a 74HC08PW. Q1/Q2/Q6 use the `Si7489DP` symbol for an SQJ457EP, and Q3–Q5 use `BSS131` for a BSS123N. D17/D39–D44/D55–D59 use `BAT54J` for a BAT54WS. The pinouts all match.
 - **Stale datasheet links:** Q1/Q2/Q6 → si7489dp.pdf, Q3–Q5 → BSS131, the BAT54WS parts → Nexperia BAT54J, D3/D10/D13/D14 → Vishay SMF (the parts are Littelfuse), D11/D36/D37 → MCC MBR0560 (the part is Slkor), D38 → Littelfuse SD-C (the part is Semtech SD12C), Q9–Q11 → IRF7403, U14/U15 → SN74LS08.
 - **Fix:** update the `Datasheet` field to each MPN's datasheet, or swap in matching symbols. Optional cleanup: delete the `KLC_S3.3`/`KLC_S4.1` fields (318 parts) so they don't appear in BOM exports.
+- **Rev 1.0:** no hardware impact. The ordered BOM is driven by the `MP` and DigiKey fields, which are correct. Still unchanged in the released files (re-checked 2026-10-28).
 
-### F7 — Flight connector retention — `OPEN`
-- PicoBlade (J2, J4, J5, J9, J10, J11, J13, J15) is friction-lock only, which is a vibration risk. The DPT board's J1 (53261-0671) is PicoBlade too, so changing J9/J10 means changing the DPT side as well. Consider Pico-Lock, CLIK-Mate, or Gecko.
-
-### F8 — Flight population — `OPEN`
+### F8 — Flight population and build notes — `DOC`
 - SW1 (SKRKAHE020 tactile switch) and J8 (debug header): decide flight population. A DNP SW1 on flight units is typical.
 - **JP1 (`WD_ENABLE`) must be bridged for flight.** It is a normally-open solder jumper between `/WDG_IN` (PB2, R76) and MAX823 WDI (U12.4). While open, WDI floats and the watchdog is disabled; MAX823 POR supervision and the SW1 reset still reach NRST. Add it to the assembly notes and the flight build checklist.
+- **Rev 1.0:** no part is marked DNP and JP1 is open as fabricated, so the board itself needs no change. Record the flight population (SW1/J8 DNP or fitted) and the JP1 bridge step in the assembly notes and the flight build checklist.
 
 ---
 
 ## Project Setup
 
-### P3 — Empty title blocks — `OPEN`
-- None of the 6 sheets (including the two load-switch sheets) has a title, revision, date or company.
+### P3 — Empty title blocks — `DOC`
+- None of the 6 sheets (including the two load-switch sheets) has a title, revision, date or company. Still empty in the released files (re-checked 2026-10-28). Fill them in as Rev 1.0, with the release date, so printed and PDF schematics carry the revision.
 
-### P4 — ERC cleanup — `OPEN`
-- With stock libraries loaded (KiCad 10.0, 2026-10-21): 13 messages:
+### P4 — ERC cleanup — `DOC`
+- Schematic hygiene only (PWR_FLAGs, a no-connect flag, a symbol refresh). None of it changes copper. With stock libraries loaded (KiCad 10.0, re-checked 2026-10-28 on Rev 1.0): 13 messages:
   - 11× `power_pin_not_driven`: needs PWR_FLAGs.
   - 1× `pin_not_connected`: U4 PC15. Add a no-connect flag or use it.
   - 1× `lib_symbol_mismatch`: C40 (`Device:C_Small`) differs from the installed library copy, most likely a library update. Run "Update symbol from library" on C40.
 
 ---
 
+## Deferred to Next Board Revision
+
+Hardware changes that missed Rev 1.0. The ordered boards ship without them. None is a safety or function issue for Rev 1.0 bring-up.
+
+### S14 — Non-ARM 74HC08 inputs float at reset — `DEFERRED`
+- R88 holds `/ARM/~{SAFE}` low, so all eight gated outputs are low during reset. The other inputs (`IGNITER_EN`, `DISCHARGE_EN`, `IGNITER_PULSE`, `VALVE1_L/H`, `VALVE2_EN`, `VALVE3_L/H`) float while the STM32 pins are high-Z. Rev 1.0 has no pull-downs on these nets (re-checked 2026-10-28).
+- That's safe, but floating HC inputs can draw extra supply current or oscillate. **Next revision:** add 8 × 100k pull-downs.
+- **Rev 1.0 mitigation (firmware):** `MX_GPIO_Init` should drive these pins low as its first action, so they float only during reset and early boot.
+
+### F7 — Flight connector retention — `DEFERRED`
+- PicoBlade (J2, J4, J5, J9, J10, J11, J13, J15) is friction-lock only, which is a vibration risk. The DPT board's J1 (53261-0671) is PicoBlade too, so changing J9/J10 means changing the DPT side as well. **Next revision:** consider Pico-Lock, CLIK-Mate, or Gecko.
+- **Rev 1.0 mitigation (assembly):** if Rev 1.0 boards fly or go through vibration testing, stake the mated connectors per the program's workmanship standard.
+
+### R1 — Silkscreen cleanup — `DEFERRED`
+- Rev 1.0 shipped with 69 DRC silkscreen warnings: 66 `silk_overlap`, mostly the B.Silk outlines of the ESD diodes, and 3 `silk_over_copper` at U5, U7 and U9. They're cosmetic; the fab clips silk over pads. **Next revision:** clean up, then regenerate the fab outputs and the iBOM.
+
+---
+
 ## ICD / Block Diagram Discrepancies
 
-| ID | Item | ICD / Block Diagram | Schematic | Status |
-|---|---|---|---|---|
-| D13 | Block diagram (`PIB Block Diagram.drawio.png`) | Unchanged since before the review. It shows BAT_HOT feeding the 12 V regulator, both ADM1270s and the heater switches directly; a "Valve GSE Bypass" with its own H-bridge and 12 V NMOS; and only the 2 tank thermistors | An upstream ADM1270 (U19) sits between BAT_HOT and `VBAT_PROT`, which feeds the LT3065, U5, U7 and the heater switches Q9/Q11. The GSE path is EGSE-only logic (ADP7142 UVLO, Schmitt edge-pulse U18/U9) diode-OR'd into the shared U3 and Q10, with `GSE_12V` diode-OR'd into `12V_INT` (D36/D11). The PIB, igniter-board and discharge-board NTCs are also read, for 10 external ADC inputs in total | `ICD` — update the drawing: add U19/`VBAT_PROT`, redraw the GSE bypass as logic into the shared drivers, add the 3 extra thermistors |
-
-### ICD Update Actions
-
-Checklist of ICD edits the review has generated. Tick these off as the ICD is revised.
-
-- [ ] **Block diagram (D13):** add the U19 upstream eFuse and `VBAT_PROT`, redraw the GSE bypass as EGSE logic diode-OR'd into the shared drivers, and add the PIB, igniter and discharge thermistors. The ICD text itself is complete as of Rev 2.1.
+_None open._ The ICD text is complete as of Rev 2.1, and the block diagram was redrawn on 2026-10-28 (`PIB Block Diagram 10-28-2026 Export.png`).
 
 ---
 
