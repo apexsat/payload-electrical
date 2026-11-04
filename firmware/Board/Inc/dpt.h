@@ -1,4 +1,11 @@
+#ifndef DPT_H
+#define DPT_H
+
 #include "stm32g4xx_hal.h"
+#include <stdbool.h>
+typedef struct{
+	int32_t C1, C2, C3, C4, C5, C6;
+} ms5540c_cal_t;
 
 typedef struct {
     ms5540c_cal_t cal[2];
@@ -15,3 +22,5 @@ typedef struct {
 
 void ms5540c_init(ms5540c_t * dpt);
 void ms5540c_measure(ms5540c_t * dpt, bool dpt_sel, uint16_t *d1, uint16_t *d2, int32_t *temp_dC, int32_t *p_dmbar);
+
+#endif

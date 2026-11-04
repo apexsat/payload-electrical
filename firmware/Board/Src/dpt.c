@@ -1,8 +1,9 @@
 #include "dpt.h"
 
-typedef struct {
-	int32_t C1, C2, C3, C4, C5, C6;
-} ms5540c_cal_t;
+static void dwt_init(void);
+static void ms5540c_reset(ms5540c_t * dpt, bool dpt_sel);
+static void ms5540c_read_calibration(ms5540c_t * dpt, bool dpt_sel);
+//added these at start for compilation cuz ms5540c_init uses them
 
 void ms5540c_init(ms5540c_t * dpt)
 {
@@ -74,11 +75,12 @@ static uint16_t ms5540c_transaction(ms5540c_t * dpt, bool dpt_sel, uint16_t cmd,
 }
 
 /* ---------- calibration ---------- */
+//changed because transaction req 4 inputs, only had two
 static void ms5540c_read_calibration(ms5540c_t * dpt, bool dpt_sel) {
-	uint16_t W1 = ms5540c_transaction(0x1D50, 0);
-	uint16_t W2 = ms5540c_transaction(0x1D60, 0);
-	uint16_t W3 = ms5540c_transaction(0x1D90, 0);
-	uint16_t W4 = ms5540c_transaction(0x1DA0, 0);
+	uint16_t W1 = ms5540c_transaction(dpt, dpt_sel, 0x1D50, 0);
+	uint16_t W2 = ms5540c_transaction(dpt, dpt_sel, 0x1D60, 0);
+	uint16_t W3 = ms5540c_transaction(dpt, dpt_sel, 0x1D90, 0);
+	uint16_t W4 = ms5540c_transaction(dpt, dpt_sel, 0x1DA0, 0);
 
 	/* MS5540C coefficient extraction - double-check against your datasheet */
 	dpt->cal[dpt_sel].C1 = (W1 >> 1) & 0x7FFF;
