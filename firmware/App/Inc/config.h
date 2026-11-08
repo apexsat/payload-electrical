@@ -6,4 +6,11 @@
 // LHLA1221211H minimum pulse width is known (PIB review Q3).
 #define VALVE_LATCH_PULSE_MS 100u
 
+// How often app_run_once() reads the housekeeping ADC channels (NTCs, igniter
+// V/I, MCU temp, VDDA). Each read blocks for ~45 us.
+#define HK_READ_PERIOD_MS    100u
+
+// Heartbeat LED toggle period.
+#define LED_TOGGLE_PERIOD_MS 500u
+
 #endif /* CONFIG_H */

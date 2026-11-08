@@ -2,6 +2,7 @@
 #define VALVES_H
 
 #include "stm32g4xx_hal.h"
+#include <stdbool.h>
 
 //   Valve 1, Valve 3:
 //latching valves controlled by quad-FET setup
@@ -33,6 +34,12 @@ typedef struct {
     uint16_t      close_pin;
     uint32_t      pulse_ms;    // latching only
     valve_state_t state;       // last commanded state
+
+    // latching only: pulse in progress (ended by valve_update())
+    bool          pulsing;
+    GPIO_TypeDef *pulse_port;  // input currently driven high
+    uint16_t      pulse_pin;
+    uint32_t      pulse_start_ms;
 } valve_t;
 
 /*
@@ -57,8 +64,20 @@ void valve_init_latching(valve_t *v,
 
 void valve_init_solenoid(valve_t *v, GPIO_TypeDef *en_port, uint16_t en_pin);
 
+// Non-blocking. Latching: drives the H or L input high and returns; the
+// pulse is ended by valve_update() once pulse_ms has passed. A new command
+// during a pulse ends that pulse and starts the new one.
+// Solenoid: sets the enable level, no pulse.
 void valve_open(valve_t *v);
 void valve_close(valve_t *v);
+
+// Call often (every main-loop pass) for each valve. Ends a latching pulse
+// when pulse_ms has passed. The pulse runs long by however long the caller
+// goes between calls, so don't block the loop while a valve is pulsing.
+void valve_update(valve_t *v);
+
+// true while a latching pulse is in progress
+bool valve_is_pulsing(const valve_t *v);
 
 //last commanded state
 valve_state_t valve_get_state(const valve_t *v);

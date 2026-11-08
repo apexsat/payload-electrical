@@ -8,6 +8,9 @@ static void ms5540c_read_calibration(ms5540c_t * dpt, bool dpt_sel);
 void ms5540c_init(ms5540c_t * dpt)
 {
     dwt_init();
+	/* Start ~32.75 kHz MCLK to the MS5540C */
+  	HAL_TIM_OC_Start(dpt->mclk_tim, dpt->mclk_tim_channel);
+  	HAL_Delay(1);
     ms5540c_reset(dpt, 0);
     ms5540c_reset(dpt, 1);
     ms5540c_read_calibration(dpt, 0);

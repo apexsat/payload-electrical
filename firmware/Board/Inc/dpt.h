@@ -17,7 +17,8 @@ typedef struct {
     uint16_t din_gpio_pin;
     GPIO_TypeDef * mux_gpio_port;
     uint16_t mux_gpio_pin;
-    
+    TIM_HandleTypeDef * mclk_tim;
+    uint32_t mclk_tim_channel;
 } ms5540c_t;
 
 void ms5540c_init(ms5540c_t * dpt);

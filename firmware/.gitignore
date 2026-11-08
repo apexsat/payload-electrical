@@ -1,0 +1,8 @@
+# CubeIDE build output
+Debug/
+Release/
+
+# Per-user IDE state
+*.launch
+.settings/stm32cubeide.project.prefs
+.settings/com.st.stm32cube.ide.mcu.sfrview.prefs

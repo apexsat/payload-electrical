@@ -87,6 +87,12 @@ void Error_Handler(void);
 #define PD_RST_GPIO_Port GPIOA
 #define DPT_TANK_FRIT_SEL_Pin GPIO_PIN_15
 #define DPT_TANK_FRIT_SEL_GPIO_Port GPIOA
+#define DPT_SCK_Pin GPIO_PIN_10
+#define DPT_SCK_GPIO_Port GPIOC
+#define DPT_MISO_Pin GPIO_PIN_11
+#define DPT_MISO_GPIO_Port GPIOC
+#define DPT_MOSI_Pin GPIO_PIN_12
+#define DPT_MOSI_GPIO_Port GPIOC
 #define DEBUG_LED_Pin GPIO_PIN_2
 #define DEBUG_LED_GPIO_Port GPIOD
 #define VALVE1_L_Pin GPIO_PIN_3

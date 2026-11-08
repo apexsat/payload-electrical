@@ -41,3 +41,6 @@ fp-info-cache
 
 # KiCAD History
 .history
+
+# macOS Finder metadata
+.DS_Store
