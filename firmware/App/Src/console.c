@@ -12,7 +12,6 @@ void console_init(UART_HandleTypeDef *huart)
     setvbuf(stdout, NULL, _IONBF, 0);
 }
 
-/* newlib's _write() in Core/Src/syscalls.c calls this for every printf character. */
 int __io_putchar(int ch)
 {
     if (console_uart != NULL) {

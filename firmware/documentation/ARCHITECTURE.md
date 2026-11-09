@@ -16,12 +16,12 @@ Each driver is the only code that touches its pins and peripherals. HAL handles 
 
 CubeMX's `MX_*_Init()` functions configure every peripheral before `app_init()` runs, so drivers receive initialized handles. A driver's init does what CubeMX does not:
 - start peripherals: TIM3 MCLK output, ADC calibration, SPI1 receive interrupt, DWT counter
-- reconfigure at runtime when needed: SPI3 clock phase for MS5540C reads and writes, ADC1 scan vs. dual mode
-- check the handle settings it depends on (e.g. SPI3 clock ≤ 500 kHz) and return an error if they don't match
+- reconfigure at runtime when needed: ADC1 scan vs. dual mode, I2C2 slave address
+- check the handle settings it depends on (e.g. SPI1 8-bit slave with DMA) and return an error if they don't match
 
 | Driver    | Hardware                                                                                              |
 |-----------|-------------------------------------------------------------------------------------------------------|
-| `DPT`     | SPI3, PA15 mux select, TIM3 CH2 MCLK. One instance per sensor (tank, frit)                            |
+| `DPT`     | Bit-banged GPIO: PC10 SCK, PC12 DIN, PC11 DOUT. PA15 mux select (low tank, high frit), TIM3 CH2 MCLK  |
 | `lg16`    | I2C3 flow sensor                                                                                      |
 | `adc`     | ADC1, ADC2, DMA1 Ch1, sample trigger timer. Housekeeping scan mode and dual-simultaneous capture mode |
 | `analog`  | Conversions only: counts to volts, amps, °C                                                           |
@@ -79,7 +79,7 @@ Interrupts copy data, set flags and return.
 | LPUART1 RX        | 3        | Console line buffer                         |
 | SysTick           | 15       | `HAL_GetTick()`                             |
 
-HAL completion callbacks are shared by every instance of a peripheral type (one `HAL_SPI_RxCpltCallback` serves SPI1 and SPI3), so each callback dispatches on `hspi->Instance`.
+HAL completion callbacks are shared by every instance of a peripheral type (one `HAL_I2C_ErrorCallback` serves I2C2 and I2C3), so each callback dispatches on `hi2c->Instance`.
 
 Shared variables are `volatile`. Telemetry is double-buffered: the main loop fills the back copy and swaps a pointer, and interrupts read only the front copy.
 
