@@ -94,21 +94,21 @@ static void ms5540c_read_calibration(ms5540c_t * dpt, bool dpt_sel) {
 	dpt->cal[dpt_sel].C6 = W2 & 0x3F;
 }
 
-/* Returns temperature in 0.1 degC and pressure in 0.1 mbar (integers). */
-void ms5540c_measure(ms5540c_t * dpt, bool dpt_sel, uint16_t *d1, uint16_t *d2, int32_t *temp_dC,
-		int32_t *p_dmbar) {
-	*d1 = ms5540c_transaction(dpt, dpt_sel, 0x0F40, 40); /* D1 = pressure,    ~35 ms conversion */
-	*d2 = ms5540c_transaction(dpt, dpt_sel, 0x0F20, 40); /* D2 = temperature, ~35 ms conversion */
+/* Returns temperature in degC and pressure in mbar (float). */
+void ms5540c_measure(ms5540c_t * dpt, bool dpt_sel, float *temp, float *p_mbar) 
+{
+	uint16_t d1 = ms5540c_transaction(dpt, dpt_sel, 0x0F40, 40); /* D1 = pressure,    ~35 ms conversion */
+	uint16_t d2 = ms5540c_transaction(dpt, dpt_sel, 0x0F20, 40); /* D2 = temperature, ~35 ms conversion */
 
 	int32_t UT1 = (dpt->cal[dpt_sel].C5 << 3) + 20224;
-	int32_t dT = (int32_t) (*d2) - UT1;
+	int32_t dT = (int32_t) (d2) - UT1;
 	int32_t TEMP = 200 + ((dT * (dpt->cal[dpt_sel].C6 + 50)) >> 10);
 	int32_t OFF = (dpt->cal[dpt_sel].C2 * 4) + (((dpt->cal[dpt_sel].C4 - 512) * dT) >> 12);
 	int32_t SENS = dpt->cal[dpt_sel].C1 + ((dpt->cal[dpt_sel].C3 * dT) >> 10) + 24576;
-	int32_t X = (int32_t) (((int64_t) SENS * ((int32_t) (*d1) - 7168)) >> 14)
+	int32_t X = (int32_t) (((int64_t) SENS * ((int32_t) (d1) - 7168)) >> 14)
 			- OFF;
 	int32_t P = ((X * 10) >> 5) + 2500;
 
-	*temp_dC = TEMP;
-	*p_dmbar = P;
+	*temp = TEMP * 0.1;
+	*p_mbar = P * 0.1;
 }
