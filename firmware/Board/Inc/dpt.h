@@ -22,6 +22,6 @@ typedef struct {
 } ms5540c_t;
 
 void ms5540c_init(ms5540c_t * dpt);
-void ms5540c_measure(ms5540c_t * dpt, bool dpt_sel, float * temp, float * p_mbar);
+bool ms5540c_measure(ms5540c_t * dpt, bool dpt_sel, float * temp, float * p_mbar);
 
 #endif

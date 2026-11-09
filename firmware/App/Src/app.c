@@ -38,10 +38,8 @@ static valve_t valve3;  // latching
 static pib_adc_t pib_adc;
 
 static ms5540c_t dpt;
-static uint16_t dpt_d1[2];
-static uint16_t dpt_d2[2];
-static int32_t dpt_t_dC[2];
-static int32_t dpt_p_dmbar[2];
+static float dpt_t_C[2];
+static float dpt_p_mbar[2];
 static bool dpt_ok[2];
 static uint8_t dpt_next;
 
@@ -160,8 +158,7 @@ static void app_execute(const telemetry_cmd_t *cmd, uint32_t now)
 static void read_dpt(void)
 {
     uint8_t s = dpt_next;
-    ms5540c_measure(&dpt, s == DPT_FRIT, &dpt_d1[s], &dpt_d2[s], &dpt_t_dC[s], &dpt_p_dmbar[s]);
-    dpt_ok[s] = dpt_d1[s] != 0u && dpt_d1[s] != 0xFFFFu && dpt_d2[s] != 0u && dpt_d2[s] != 0xFFFFu;
+    dpt_ok[s] = !ms5540c_measure(&dpt, s == DPT_FRIT, &dpt_t_C[s], &dpt_p_mbar[s]);
     dpt_next = (s == DPT_TANK) ? DPT_FRIT : DPT_TANK;
 }
 
@@ -169,10 +166,10 @@ static void build_housekeeping(telemetry_hk_t *hk, uint32_t now)
 {
     hk->status = (state == PIB_ARMED) ? TLM_STATUS_ARMED : 0u;
     hk->uptime_s = (float)now / 1000.0f;
-    hk->frit_mbar = dpt_ok[DPT_FRIT] ? (float)dpt_p_dmbar[DPT_FRIT] / 10.0f : NAN;
-    hk->frit_degC = dpt_ok[DPT_FRIT] ? (float)dpt_t_dC[DPT_FRIT] / 10.0f : NAN;
-    hk->tank_mbar = dpt_ok[DPT_TANK] ? (float)dpt_p_dmbar[DPT_TANK] / 10.0f : NAN;
-    hk->tank_degC = dpt_ok[DPT_TANK] ? (float)dpt_t_dC[DPT_TANK] / 10.0f : NAN;
+    hk->frit_mbar = dpt_ok[DPT_FRIT] ? dpt_p_mbar[DPT_FRIT] / 10.0f : NAN;
+    hk->frit_degC = dpt_ok[DPT_FRIT] ? dpt_t_C[DPT_FRIT] / 10.0f : NAN;
+    hk->tank_mbar = dpt_ok[DPT_TANK] ? dpt_p_mbar[DPT_TANK] / 10.0f : NAN;
+    hk->tank_degC = dpt_ok[DPT_TANK] ? dpt_t_C[DPT_TANK] / 10.0f : NAN;
     hk->tank_ntc_degC[0] = NAN;
     hk->tank_ntc_degC[1] = NAN;
     hk->pib_degC[0] = NAN;

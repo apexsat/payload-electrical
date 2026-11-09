@@ -94,11 +94,13 @@ static void ms5540c_read_calibration(ms5540c_t * dpt, bool dpt_sel) {
 	dpt->cal[dpt_sel].C6 = W2 & 0x3F;
 }
 
-/* Returns temperature in degC and pressure in mbar (float). */
-void ms5540c_measure(ms5540c_t * dpt, bool dpt_sel, float *temp, float *p_mbar) 
+/* Returns temperature in degC and pressure in mbar (float). Returns 1 if fail */
+bool ms5540c_measure(ms5540c_t * dpt, bool dpt_sel, float *temp, float *p_mbar) 
 {
 	uint16_t d1 = ms5540c_transaction(dpt, dpt_sel, 0x0F40, 40); /* D1 = pressure,    ~35 ms conversion */
 	uint16_t d2 = ms5540c_transaction(dpt, dpt_sel, 0x0F20, 40); /* D2 = temperature, ~35 ms conversion */
+
+	if (d1 == 0xffff || d2 == 0xffff) return 1;
 
 	int32_t UT1 = (dpt->cal[dpt_sel].C5 << 3) + 20224;
 	int32_t dT = (int32_t) (d2) - UT1;
@@ -111,4 +113,6 @@ void ms5540c_measure(ms5540c_t * dpt, bool dpt_sel, float *temp, float *p_mbar)
 
 	*temp = TEMP * 0.1;
 	*p_mbar = P * 0.1;
+
+	return 0;
 }
