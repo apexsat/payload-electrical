@@ -1,0 +1,40 @@
+%TF.GenerationSoftware,KiCad,Pcbnew,10.0.6*%
+%TF.CreationDate,2026-10-28T19:05:02-04:00*%
+%TF.ProjectId,DPT Sensor Board,44505420-5365-46e7-936f-7220426f6172,rev?*%
+%TF.SameCoordinates,Original*%
+%TF.FileFunction,Paste,Top*%
+%TF.FilePolarity,Positive*%
+%FSLAX46Y46*%
+G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
+G04 Created by KiCad (PCBNEW 10.0.6) date 2026-10-28 19:05:02*
+%MOMM*%
+%LPD*%
+G01*
+G04 APERTURE LIST*
+G04 Aperture macros list*
+%AMOutline4P*
+0 Free polygon, 4 corners , with rotation*
+0 The origin of the aperture is its center*
+0 number of corners: always 4*
+0 $1 to $8 corner X, Y*
+0 $9 Rotation angle, in degrees counterclockwise*
+0 create outline with 4 corners*
+4,1,4,$1,$2,$3,$4,$5,$6,$7,$8,$1,$2,$9*%
+G04 Aperture macros list end*
+%ADD10Outline4P,-1.125000X-0.450000X1.125000X-0.450000X1.125000X0.450000X-1.125000X0.450000X0.000000*%
+%ADD11Outline4P,-1.400000X-0.450000X1.400000X-0.450000X1.400000X0.450000X-1.400000X0.450000X0.000000*%
+G04 APERTURE END LIST*
+D10*
+%TO.C,U1*%
+X150925000Y-95000000D03*
+X150925000Y-96250000D03*
+D11*
+X151200000Y-97550000D03*
+D10*
+X150925000Y-98800000D03*
+X156275000Y-98800000D03*
+X156275000Y-97550000D03*
+X156275000Y-96250000D03*
+X156275000Y-95000000D03*
+%TD*%
+M02*

@@ -526,7 +526,7 @@
     "last_paths": {
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "Outputs/",
       "specctra_dsn": "",
       "step": "DPT Sensor Board.step",
       "vrml": ""
