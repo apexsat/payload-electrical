@@ -1,0 +1,31 @@
+{
+  "configurations": [
+    {
+      "name": "STM32G431",
+      "includePath": [
+        "${workspaceFolder}/Core/Inc",
+        "${workspaceFolder}/App/Inc",
+        "${workspaceFolder}/Board/Inc",
+        "${workspaceFolder}/Drivers/STM32G4xx_HAL_Driver/Inc",
+        "${workspaceFolder}/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy",
+        "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32G4xx/Include",
+        "${workspaceFolder}/Drivers/CMSIS/Include"
+      ],
+      "defines": [
+        "DEBUG",
+        "USE_HAL_DRIVER",
+        "STM32G431xx"
+      ],
+      "compilerPath": "/opt/homebrew/bin/arm-none-eabi-gcc",
+      "compilerArgs": [
+        "-mcpu=cortex-m4",
+        "-mthumb",
+        "-mfpu=fpv4-sp-d16",
+        "-mfloat-abi=hard"
+      ],
+      "cStandard": "gnu11",
+      "intelliSenseMode": "gcc-arm"
+    }
+  ],
+  "version": 4
+}
