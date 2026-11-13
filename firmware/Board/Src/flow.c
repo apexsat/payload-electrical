@@ -1,5 +1,16 @@
 #include "flow.h"
 
+static const uint16_t scale_factor_addr[8] = { // Maps calibration field to scale factor
+    0x2B6,
+    0x5B6,
+    0x8B6,
+    0xBB6,
+    0xEB6,
+    0xEB6,
+    0xEB6,
+    0xEB6,
+};
+
 static uint8_t checksum(uint16_t data16)
 {
     uint8_t data[2]; uint8_t byteCtr; uint8_t calc_crc = 0;

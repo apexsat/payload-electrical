@@ -19,17 +19,6 @@
 #define LG160431D_SN_ADDR 0x2F8
 #define LG160431D_PN_ADDR 0x2E8
 
-static uint16_t scale_factor_addr[8] = { // Maps calibration field to scale factor
-    0x2B6,
-    0x5B6,
-    0x8B6,
-    0xBB6,
-    0xEB6,
-    0xEB6,
-    0xEB6,
-    0xEB6,
-};
-
 typedef struct {
     uint8_t addr;
     I2C_HandleTypeDef * i2c;
