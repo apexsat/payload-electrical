@@ -9,7 +9,9 @@
 #define TLM_REG_SAFE_PAYLOAD      0x06u
 #define TLM_REG_ARM_PAYLOAD       0x07u
 #define TLM_REG_FIRE_PULSE        0x08u
+#define TLM_REG_SET_VALVE         0x09u
 #define TLM_REG_HEATER_OVERRIDE   0x0Au
+#define TLM_REG_SET_OUTPUT        0x0Bu
 #define TLM_REG_SET_TANK_TEMP     0x0Cu
 #define TLM_REG_FRIT_PT           0x10u
 #define TLM_REG_TANK_PT           0x18u
@@ -19,6 +21,11 @@
 #define TLM_REG_IGN_SUPPLY_V      0x38u
 #define TLM_REG_IGN_TEMP          0x3Cu
 #define TLM_REG_DCHG_TEMP         0x40u
+#define TLM_REG_PIB_STATE         0x44u
+#define TLM_REG_OUTPUTS           0x45u
+#define TLM_REG_INPUTS            0x46u
+#define TLM_REG_VALVES            0x47u
+#define TLM_REG_NTC_RAW           0x48u
 #define TLM_REG_PULSE_HEADER      0x50u
 #define TLM_REG_WAVEFORM_FIRST    0x60u
 #define TLM_REG_WAVEFORM_LAST     0x73u
@@ -33,6 +40,28 @@
 #define TLM_STATUS_DRDY           (1u << 4)
 #define TLM_STATUS_BATT_UVLO      (1u << 5)
 #define TLM_STATUS_TEMP_FAULT     (1u << 6)
+
+typedef enum {
+    TLM_OUT_VBAT_EN = 0,
+    TLM_OUT_ARM_SAFE,
+    TLM_OUT_IGNITER_EN,
+    TLM_OUT_DISCHARGE_EN,
+    TLM_OUT_HTR1_EN,
+    TLM_OUT_HTR2_EN,
+    TLM_OUT_PD_RST,
+    TLM_OUT_WDG_IN,
+    TLM_OUT_COUNT
+} tlm_output_t;
+
+typedef enum {
+    TLM_IN_PGOOD_12V = 0,
+    TLM_IN_VBAT_PGOOD,
+    TLM_IN_IGNITER_PGOOD,
+    TLM_IN_DISCHARGE_PGOOD,
+    TLM_IN_COUNT
+} tlm_input_t;
+
+#define TLM_NTC_RAW_COUNT         3u
 
 #define TLM_WAVE_SAMPLES          ((TLM_REG_WAVEFORM_LAST - TLM_REG_WAVEFORM_FIRST + 1u) * 4u)
 
@@ -53,6 +82,11 @@ typedef struct {
     float ign_supply_v;
     float ign_degC;
     float dchg_degC;
+    uint8_t pib_state;
+    uint8_t outputs;
+    uint8_t inputs;
+    uint8_t valves;
+    uint16_t ntc_raw[TLM_NTC_RAW_COUNT];
 } telemetry_hk_t;
 
 typedef struct {
