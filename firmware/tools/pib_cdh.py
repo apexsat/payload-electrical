@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import glob
+import os
 import struct
 import sys
 import time
@@ -13,10 +14,11 @@ DRDY_TIMEOUT_S = 0.5
 WAVE_FIRST = 0x60
 WAVE_SAMPLES = 80
 WAVE_CHUNK_REGS = 10
-SAMPLE_RATE_HZ = 32e6 / 15
+NOMINAL_SAMPLE_RATE_HZ = 32e6 / 15
 PULSE_STEP_US = 0.1
 ADC_VREF_V = 3.3
-IGN_V_PER_PIN_V = -453.0
+IGN_V_PER_PIN_V = -455.0
+TESTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tests")
 
 STATUS_BITS = ["ARMED", "FLOW_FAULT", "IGNITER_FAULT", "DISCHARGE_FAULT", "DRDY", "BATT_UVLO", "TEMP_FAULT"]
 
@@ -107,11 +109,12 @@ def arm_once(link):
 
 def fire(link, width_us):
     steps = round(width_us / PULSE_STEP_US)
-    if not 0 <= steps <= 0xFFFF:
-        sys.exit("pulse width must be 0 to %.1f us" % (0xFFFF * PULSE_STEP_US))
+    if not 0 <= steps <= 0xFFFFFFFF:
+        sys.exit("pulse width must be 0 to %.1f us" % (0xFFFFFFFF * PULSE_STEP_US))
     if not read_status(link) & 0x01:
         sys.exit("PIB is not ARMED; use 'arm fire ...'")
-    link.write(0x08, struct.pack("<H", steps))
+    link.write(0x08, struct.pack("<I", steps))
+    time.sleep(steps * PULSE_STEP_US * 1e-6)
     t_end = time.time() + DRDY_TIMEOUT_S
     while time.time() < t_end:
         if read_status(link) & 0x10:
@@ -127,13 +130,21 @@ def read_wave(link):
     data = b""
     for reg in range(WAVE_FIRST, WAVE_FIRST + WAVE_SAMPLES // 4, WAVE_CHUNK_REGS):
         data += link.read(reg, WAVE_CHUNK_REGS * 16)
-    return list(struct.iter_unpack("<HH", data))
+    return list(struct.iter_unpack("<HH", data)), read_pulse_header(link)
 
 
-def print_wave(samples, csv_path):
-    rows = [(i, i / SAMPLE_RATE_HZ * 1e6, v, c, counts_to_pin_v(v), counts_to_pin_v(c))
+def print_wave(wave, csv_path):
+    samples, hdr = wave
+    sample_us = hdr["sample_us"]
+    if not 0.1 < sample_us < 10.0:
+        sample_us = 1e6 / NOMINAL_SAMPLE_RATE_HZ
+        print("warning: board did not report a valid sample period (old firmware?), using nominal %.3f us" % sample_us)
+    fire = hdr["fire_sample"]
+    rows = [(i, (i - fire) * sample_us, v, c, counts_to_pin_v(v), counts_to_pin_v(c))
             for i, (v, c) in enumerate(samples)]
     if csv_path:
+        os.makedirs(TESTS_DIR, exist_ok=True)
+        csv_path = os.path.join(TESTS_DIR, os.path.basename(csv_path))
         with open(csv_path, "w") as f:
             f.write("sample,time_us,voltage_counts,current_counts,voltage_pin_v,current_pin_v\n")
             for r in rows:
@@ -143,7 +154,7 @@ def print_wave(samples, csv_path):
     v_pin = [r[4] for r in rows]
     i_pin = [r[5] for r in rows]
     title = "Discharge capture   %d samples   %.3f us apart   pin volts, %.1f V full scale" % (
-        len(rows), 1e6 / SAMPLE_RATE_HZ, ADC_VREF_V)
+        len(rows), sample_us, ADC_VREF_V)
     body = [["%d" % r[0], "%.3f" % r[1],
              "%.3f V" % r[4], "%4d" % r[2], bar(r[4], ADC_VREF_V),
              "%.3f V" % r[5], "%4d" % r[3], bar(r[5], ADC_VREF_V)] for r in rows]
@@ -215,8 +226,9 @@ def print_table(title, headers, rows, align, groups=None):
 
 
 def read_pulse_header(link):
-    index, peak_i, peak_v = struct.unpack("<IHH", link.read(0x50, 8))
-    return {"index": index, "peak_i": peak_i, "peak_v": peak_v}
+    index, peak_i, peak_v, sample_us, fire_sample = struct.unpack("<IHHfI", link.read(0x50, 16))
+    return {"index": index, "peak_i": peak_i, "peak_v": peak_v,
+            "sample_us": sample_us, "fire_sample": fire_sample}
 
 
 def read_hk(link):
@@ -378,20 +390,20 @@ def main():
     sub.add_parser("safe", formatter_class=raw_fmt, help="SAFE the payload: valves closed, ARM line low",
                    description="Send SAFE (register 0x06). Valves close and the ARM line drops.")
     fp = sub.add_parser("fire", formatter_class=raw_fmt, help="fire one igniter pulse (PIB must be ARMED)",
-                        description="Send FIRE_PULSE (register 0x08) with the pulse width, then wait up to 0.5 s\n"
+                        description="Send FIRE_PULSE (register 0x08) with the pulse width, wait out the pulse, then wait up to 0.5 s\n"
                                     "for DRDY and print the pulse number and igniter peak V and I.\n"
-                                    "Refuses if the PIB isn't ARMED; use 'arm fire <us>' to arm first.\n"
-                                    "The PIB cuts widths above its cap (IGNITER_PULSE_MAX_100NS, 10 us for now).",
+                                    "Refuses if the PIB isn't ARMED; use 'arm fire <us>' to arm first.",
                         epilog="examples:\n  pib_cdh.py --link nucleo arm fire 5\n"
-                               "  pib_cdh.py --link nucleo fire 2.5 --csv shot2.csv")
+                               "  pib_cdh.py --link nucleo fire 2.5 --csv shot2.csv\n"
+                               "  pib_cdh.py --link nucleo arm fire 500000")
     fp.add_argument("width_us", type=float, help="igniter pulse width in microseconds, in 0.1 us steps (e.g. 5 or 2.5)")
     fp.add_argument("--wave", action="store_true", help="print the waveform after the pulse")
-    fp.add_argument("--csv", metavar="FILE", help="save the waveform to FILE instead of printing it")
+    fp.add_argument("--csv", metavar="FILE", help="save the waveform to tests/FILE instead of printing it")
     wv = sub.add_parser("wave", formatter_class=raw_fmt, help="read the last pulse's voltage/current waveform",
                         description="Read the 80 voltage/current sample pairs from registers 0x60-0x73: 12-bit ADC\n"
                                     "counts, about 0.47 us apart, starting at ignition. Reading them lowers DRDY.\n"
                                     "The data stays until the next FIRE, so you can read it more than once.")
-    wv.add_argument("--csv", metavar="FILE", help="save to FILE (columns: sample, time_us, voltage_counts, current_counts)")
+    wv.add_argument("--csv", metavar="FILE", help="save to tests/FILE (columns: sample, time_us, voltage_counts, current_counts)")
     r = sub.add_parser("raw", formatter_class=raw_fmt, help="read raw register bytes, printed in hex (debugging)",
                        description="Read n bytes starting at a register and print them in hex.",
                        epilog="example:\n  pib_cdh.py --link nucleo raw 0x50 8    (the pulse header)")

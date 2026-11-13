@@ -13,6 +13,7 @@ typedef struct {
 void igniter_init(igniter_t *ign);
 void igniter_pd_release(igniter_t *ign);
 void igniter_pd_reset(igniter_t *ign);
-void igniter_pulse(igniter_t *ign, uint16_t width_100ns);
+void igniter_delay_us(uint16_t us);
+void igniter_pulse(igniter_t *ign, uint32_t width_100ns);
 
 #endif

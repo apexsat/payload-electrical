@@ -56,6 +56,9 @@ HAL_StatusTypeDef pib_adc_init(pib_adc_t *adc, ADC_HandleTypeDef *master, ADC_Ha
     adc->burst.state = ADC_BURST_IDLE;
     active_adc = adc;
 
+    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+
     if (HAL_ADCEx_Calibration_Start(master, ADC_SINGLE_ENDED) != HAL_OK) {
         return HAL_ERROR;
     }
@@ -316,6 +319,31 @@ void pib_adc_burst_abort(pib_adc_t *adc)
 uint32_t pib_adc_burst_count(pib_adc_t *adc)
 {
     return adc->burst.n_samples - __HAL_DMA_GET_COUNTER(adc->master->DMA_Handle);
+}
+
+uint32_t pib_adc_burst_sync(pib_adc_t *adc, uint32_t min_count, uint32_t *cycles)
+{
+    while ((adc->burst.state == ADC_BURST_RUNNING) && (pib_adc_burst_count(adc) < min_count)) {
+    }
+
+    uint32_t primask = __get_PRIMASK();
+    __disable_irq();
+    uint32_t limit = SystemCoreClock / 100000U;
+    uint32_t start = DWT->CYCCNT;
+    uint32_t k = pib_adc_burst_count(adc);
+    uint32_t now;
+    uint32_t c;
+    do {
+        c = pib_adc_burst_count(adc);
+        now = DWT->CYCCNT;
+    } while ((c == k) && ((now - start) < limit));
+    __set_PRIMASK(primask);
+
+    if (c == k) {
+        return 0U;
+    }
+    *cycles = now;
+    return c;
 }
 
 /* ---- HAL callbacks (global: must not be defined anywhere else) ------------ */

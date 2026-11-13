@@ -135,4 +135,6 @@ void pib_adc_burst_abort(pib_adc_t *adc);
 
 uint32_t pib_adc_burst_count(pib_adc_t *adc);
 
+uint32_t pib_adc_burst_sync(pib_adc_t *adc, uint32_t min_count, uint32_t *cycles);
+
 #endif /* PIB_ADC_H */

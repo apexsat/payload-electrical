@@ -43,6 +43,8 @@ static igniter_t igniter;
 static uint32_t burst_buf[WAVE_PRE_SAMPLES + TLM_WAVE_SAMPLES];
 static bool drdy;
 static uint32_t pulse_index;
+static bool pd_rst_held;
+static uint32_t pd_rst_ms;
 
 static thermistor_t ntc_pib = { NTC_10K_BETA_K, 25.0f, NTC_10K_R25_KOHM, NTC_PIB_BIAS_KOHM };
 static thermistor_t ntc_ign = { NTC_10K_BETA_K, 25.0f, NTC_10K_R25_KOHM, NTC_IGN_BIAS_KOHM };
@@ -79,12 +81,16 @@ static void start_arming(uint32_t now)
 {
     HAL_GPIO_WritePin(VBAT_EN_GPIO_Port, VBAT_EN_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(ARM_SAFE_GPIO_Port, ARM_SAFE_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(IGNITER_EN_GPIO_Port, IGNITER_EN_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(DISCHARGE_EN_GPIO_Port, DISCHARGE_EN_Pin, GPIO_PIN_SET);
     state = PIB_ARMING;
     state_ms = now;
 }
 
 static void start_safing(uint32_t now)
 {
+    HAL_GPIO_WritePin(IGNITER_EN_GPIO_Port, IGNITER_EN_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(DISCHARGE_EN_GPIO_Port, DISCHARGE_EN_Pin, GPIO_PIN_RESET);
     valve_close(&valve1);
     valve_close(&valve2);
     valve_close(&valve3);
@@ -130,24 +136,36 @@ static void set_drdy(bool on)
     HAL_GPIO_WritePin(DRDY_GPIO_Port, DRDY_Pin, on ? GPIO_PIN_SET : GPIO_PIN_RESET);
 }
 
-static void fire_pulse(uint16_t width_100ns)
+static void fire_pulse(uint32_t width_100ns)
 {
-    if (width_100ns > IGNITER_PULSE_MAX_100NS) {
-        width_100ns = IGNITER_PULSE_MAX_100NS;
-    }
-
     set_drdy(false);
     igniter_pd_release(&igniter);
+    igniter_delay_us(PD_RST_SETTLE_US);
 
     if (pib_adc_burst_start(&pib_adc, burst_buf, WAVE_PRE_SAMPLES + TLM_WAVE_SAMPLES) != HAL_OK) {
         igniter_pd_reset(&igniter);
+        pd_rst_held = false;
         return;
     }
 
+    uint32_t c0 = 0u;
+    uint32_t c1 = 0u;
     __disable_irq();
-    uint32_t first = pib_adc_burst_count(&pib_adc);
+    uint32_t sync0 = pib_adc_burst_sync(&pib_adc, 0u, &c0);
+    uint32_t first = pib_adc_burst_sync(&pib_adc, WAVE_PRE_SAMPLES, &c1);
+    bool synced = (sync0 != 0u) && (first > sync0);
+    if (first == 0u) {
+        first = pib_adc_burst_count(&pib_adc);
+    }
     igniter_pulse(&igniter, width_100ns);
     __enable_irq();
+    pd_rst_ms = HAL_GetTick();
+    pd_rst_held = true;
+
+    float sample_us = NAN;
+    if (synced) {
+        sample_us = (float)(c1 - c0) * 1e6f / ((float)SystemCoreClock * (float)(first - sync0));
+    }
 
     adc_burst_state_t s;
     uint32_t t0 = HAL_GetTick();
@@ -164,18 +182,15 @@ static void fire_pulse(uint16_t width_100ns)
         peak_v = pib_adc.hk.raw[HK_V_IGN_PK];
     }
 
-    igniter_pd_reset(&igniter);
-    telemetry_set_pulse_header(pulse_index, peak_i, peak_v);
+    uint32_t start = (first > WAVE_PRE_SAMPLES) ? WAVE_PRE_SAMPLES : first;
+    telemetry_set_pulse_header(pulse_index, peak_i, peak_v, sample_us, first - start);
 
     if (s != ADC_BURST_DONE) {
         pib_adc_burst_abort(&pib_adc);
         return;
     }
 
-    if (first > WAVE_PRE_SAMPLES) {
-        first = WAVE_PRE_SAMPLES;
-    }
-    telemetry_set_waveform(&burst_buf[first]);
+    telemetry_set_waveform(&burst_buf[start]);
     set_drdy(true);
 }
 
@@ -202,7 +217,8 @@ static void app_execute(const telemetry_cmd_t *cmd, uint32_t now)
     case TLM_REG_FIRE_PULSE:
         if (state == PIB_ARMED) {
             heartbeat_ms = now;
-            fire_pulse((uint16_t)(cmd->data[0] | (cmd->data[1] << 8)));
+            fire_pulse((uint32_t)cmd->data[0] | ((uint32_t)cmd->data[1] << 8) |
+                       ((uint32_t)cmd->data[2] << 16) | ((uint32_t)cmd->data[3] << 24));
         }
         break;
 
@@ -322,6 +338,11 @@ void app_run_once(void)
     }
 
     state_step(now);
+
+    if (pd_rst_held && (now - pd_rst_ms) >= PD_RST_HOLD_MS) {
+        pd_rst_held = false;
+        igniter_pd_reset(&igniter);
+    }
 
     if (drdy && telemetry_take_waveform_read()) {
         set_drdy(false);

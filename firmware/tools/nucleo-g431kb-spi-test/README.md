@@ -380,7 +380,7 @@ python3 pib_cdh.py --link nucleo --port /dev/cu.usbmodem1103 safe
 | Command | What it does |
 |---|---|
 | `hk` / `watch` | Read housekeeping once / every second |
-| `fire <µs>` | Send FIRE_PULSE with that width (0.1 µs steps, little-endian), then wait for DRDY. Refuses if the PIB isn't ARMED. `--wave` prints the waveform afterwards; `--csv FILE` saves it |
+| `fire <µs>` | Send FIRE_PULSE with that width (0.1 µs steps, 4-byte little-endian), then wait for DRDY. Refuses if the PIB isn't ARMED. `--wave` prints the waveform afterwards; `--csv FILE` saves it |
 | `wave` | Read the last pulse's 80 voltage/current samples from 0x60–0x73 (12-bit counts, about 0.47 µs apart). Reading it clears DRDY |
 | `safe` | SAFE the payload |
 | `raw <reg> <n>` | Read n bytes starting at a register, printed in hex |
@@ -388,4 +388,3 @@ python3 pib_cdh.py --link nucleo --port /dev/cu.usbmodem1103 safe
 
 **`arm` in front of a command** sends ARM once, waits up to 1 s for the ARMED status bit, then runs the command, e.g. `arm fire 5`. Nothing re-sends ARM afterwards. The PIB SAFEs itself 10 s after the last ARM or FIRE command; send `safe` to do it sooner.
 
-The PIB firmware caps the pulse width at `IGNITER_PULSE_MAX_100NS` in `firmware/App/Inc/config.h`. A longer request is cut to the cap.

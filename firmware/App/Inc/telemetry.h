@@ -71,7 +71,8 @@ typedef struct {
 void telemetry_init(void);
 void telemetry_update_snapshot(const telemetry_hk_t *hk);
 void telemetry_set_waveform(const uint32_t *samples);
-void telemetry_set_pulse_header(uint32_t pulse_index, uint16_t ign_peak_i, uint16_t ign_peak_v);
+void telemetry_set_pulse_header(uint32_t pulse_index, uint16_t ign_peak_i, uint16_t ign_peak_v,
+                                float sample_us, uint32_t fire_sample);
 bool telemetry_take_waveform_read(void);
 uint16_t telemetry_read(uint8_t addr, uint8_t *dst, uint16_t n);
 void telemetry_on_write(uint8_t addr, const uint8_t *data, uint16_t n);

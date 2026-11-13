@@ -15,7 +15,7 @@ typedef struct {
 static const cmd_def_t cmd_defs[] = {
     { TLM_REG_SAFE_PAYLOAD,    0u },
     { TLM_REG_ARM_PAYLOAD,     1u },
-    { TLM_REG_FIRE_PULSE,      2u },
+    { TLM_REG_FIRE_PULSE,      4u },
     { TLM_REG_HEATER_OVERRIDE, 2u },
     { TLM_REG_SET_TANK_TEMP,   4u },
 };
@@ -24,7 +24,7 @@ static uint8_t hk_image[2][HK_IMAGE_SIZE];
 static volatile uint8_t front;
 static uint8_t wave_image[WAVE_SLOTS * WAVE_SLOT_SIZE];
 static volatile bool wave_read;
-static uint8_t pulse_header[8];
+static uint8_t pulse_header[16];
 
 static telemetry_cmd_t queue[TLM_CMD_QUEUE_LEN];
 static volatile uint8_t q_head;
@@ -104,13 +104,16 @@ void telemetry_update_snapshot(const telemetry_hk_t *hk)
     front = back;
 }
 
-void telemetry_set_pulse_header(uint32_t pulse_index, uint16_t ign_peak_i, uint16_t ign_peak_v)
+void telemetry_set_pulse_header(uint32_t pulse_index, uint16_t ign_peak_i, uint16_t ign_peak_v,
+                                float sample_us, uint32_t fire_sample)
 {
     put_u32(&pulse_header[0], pulse_index);
     pulse_header[4] = (uint8_t)ign_peak_i;
     pulse_header[5] = (uint8_t)(ign_peak_i >> 8);
     pulse_header[6] = (uint8_t)ign_peak_v;
     pulse_header[7] = (uint8_t)(ign_peak_v >> 8);
+    put_f32(&pulse_header[8], sample_us);
+    put_u32(&pulse_header[12], fire_sample);
     memcpy(&hk_image[0][TLM_REG_PULSE_HEADER], pulse_header, sizeof pulse_header);
     memcpy(&hk_image[1][TLM_REG_PULSE_HEADER], pulse_header, sizeof pulse_header);
 }
