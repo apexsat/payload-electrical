@@ -9,6 +9,7 @@
 #include "telemetry.h"
 #include "igniter.h"
 #include "thermistor.h"
+#include "flow.h"
 
 #include <math.h>
 
@@ -17,6 +18,7 @@ extern ADC_HandleTypeDef hadc1;
 extern ADC_HandleTypeDef hadc2;
 extern SPI_HandleTypeDef hspi1;
 extern I2C_HandleTypeDef hi2c2;
+extern I2C_HandleTypeDef hi2c3;
 extern TIM_HandleTypeDef htim3;
 
 enum {
@@ -54,6 +56,17 @@ static float dpt_t_C[2];
 static float dpt_p_mbar[2];
 static bool dpt_ok[2];
 static uint8_t dpt_next;
+
+typedef enum {
+    FLOW_MEAS_FLOW,
+    FLOW_MEAS_TEMP,
+} flow_meas_t;
+
+static lg160431d_t flow = { .addr = FLOW_I2C_ADDR, .i2c = &hi2c3 };
+static bool flow_ok;              // init succeeded
+static flow_meas_t flow_meas;     // measurement currently triggered / next to trigger
+static float flow_ul_min = NAN;   // last good readings; NAN until the first one
+static float flow_temp_degC = NAN;
 
 static uint32_t last_hk_ms;
 static uint32_t last_led_ms;
@@ -244,6 +257,35 @@ static void read_dpt(void)
     dpt_next = (s == DPT_TANK) ? DPT_FRIT : DPT_TANK;
 }
 
+// Alternate flow -> temp. Each call either triggers the next
+// measurement or polls the one in progress; the sensor NACKs until it is done.
+static void flow_step(void)
+{
+    if (!flow_ok) {
+        return;
+    }
+
+    if (!flow.conv_in_progress) {
+        switch (flow_meas) {
+        case FLOW_MEAS_FLOW: (void)lg160431d_trigger_flow(&flow); break;
+        case FLOW_MEAS_TEMP: (void)lg160431d_trigger_temp(&flow); break;
+        }
+        return;  // on failure conv_in_progress stays false and we retry next call
+    }
+
+    float v;
+    bool err;
+    switch (flow_meas) {
+    case FLOW_MEAS_FLOW: err = lg160431d_poll_flow(&flow, &v); if (!err) flow_ul_min = v;    break;
+    default:             err = lg160431d_poll_temp(&flow, &v); if (!err) flow_temp_degC = v; break;
+    }
+
+    // Still converting (NACK): keep polling. Done (good result or CRC fail): move on.
+    if (!err || !flow.conv_in_progress) {
+        flow_meas = (flow_meas == FLOW_MEAS_FLOW) ? FLOW_MEAS_TEMP : FLOW_MEAS_FLOW;
+    }
+}
+
 static float ntc_degC(thermistor_t *t, hk_ch_t ch)
 {
     uint16_t raw = pib_adc.hk.raw[ch];
@@ -268,8 +310,11 @@ static void build_housekeeping(telemetry_hk_t *hk, uint32_t now)
     hk->tank_ntc_degC[1] = NAN;
     hk->pib_degC[0] = ntc_degC(&ntc_pib, HK_NTC_PIB);
     hk->pib_degC[1] = (float)pib_adc.hk.temp_mcu_degC;
-    hk->flow_ul_min = NAN;
-    hk->flow_degC = NAN;
+    hk->flow_ul_min = flow_ul_min;
+    hk->flow_degC = flow_temp_degC;
+    if (!flow_ok) {
+        hk->status |= TLM_STATUS_FLOW_FAULT;
+    }
     hk->ign_supply_v = (float)pib_adc.hk.mv[HK_V_IGN_SUPPLY] / 1000.0f * IGN_SUPPLY_V_PER_PIN_V;
     hk->ign_degC = ntc_degC(&ntc_ign, HK_NTC_IGN);
     hk->dchg_degC = NAN;
@@ -301,6 +346,9 @@ void app_init(void)
     dpt.mclk_tim = &htim3;
     dpt.mclk_tim_channel = TIM_CHANNEL_2;
     ms5540c_init(&dpt);
+
+    // No-hold-master mode so app_run_once() can poll instead of blocking
+    flow_ok = !lg160431d_init(&flow, FLOW_CAL_FIELD, false, FLOW_RESOLUTION, false);
 
     igniter.pulse_port = IGNITER_PULSE_GPIO_Port;
     igniter.pulse_pin = IGNITER_PULSE_Pin;
@@ -359,6 +407,8 @@ void app_run_once(void)
         read_dpt();
         now = HAL_GetTick();
     }
+
+    flow_step();
 
     // Housekeeping read. Returns HAL_BUSY (skipped) while a burst is running.
     if ((now - last_hk_ms) >= HK_READ_PERIOD_MS) {
