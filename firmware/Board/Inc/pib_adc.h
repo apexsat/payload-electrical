@@ -133,4 +133,6 @@ HAL_StatusTypeDef pib_adc_burst_read(pib_adc_t *adc, uint32_t *buf, uint32_t n_s
 /* Stop a running burst. Leaves the ADCs enabled. */
 void pib_adc_burst_abort(pib_adc_t *adc);
 
+uint32_t pib_adc_burst_count(pib_adc_t *adc);
+
 #endif /* PIB_ADC_H */

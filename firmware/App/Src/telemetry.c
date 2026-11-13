@@ -23,6 +23,8 @@ static const cmd_def_t cmd_defs[] = {
 static uint8_t hk_image[2][HK_IMAGE_SIZE];
 static volatile uint8_t front;
 static uint8_t wave_image[WAVE_SLOTS * WAVE_SLOT_SIZE];
+static volatile bool wave_read;
+static uint8_t pulse_header[8];
 
 static telemetry_cmd_t queue[TLM_CMD_QUEUE_LEN];
 static volatile uint8_t q_head;
@@ -69,6 +71,7 @@ void telemetry_init(void)
 {
     memset(hk_image, 0, sizeof hk_image);
     memset(wave_image, 0, sizeof wave_image);
+    memset(pulse_header, 0, sizeof pulse_header);
     front = 0;
     q_head = 0;
     q_tail = 0;
@@ -93,8 +96,38 @@ void telemetry_update_snapshot(const telemetry_hk_t *hk)
     put_f32(&img[TLM_REG_PIB_TEMP + 4u], hk->pib_degC[1]);
     put_f32(&img[TLM_REG_FLOW], hk->flow_ul_min);
     put_f32(&img[TLM_REG_FLOW + 4u], hk->flow_degC);
+    put_f32(&img[TLM_REG_IGN_SUPPLY_V], hk->ign_supply_v);
+    put_f32(&img[TLM_REG_IGN_TEMP], hk->ign_degC);
+    put_f32(&img[TLM_REG_DCHG_TEMP], hk->dchg_degC);
+    memcpy(&img[TLM_REG_PULSE_HEADER], pulse_header, sizeof pulse_header);
 
     front = back;
+}
+
+void telemetry_set_pulse_header(uint32_t pulse_index, uint16_t ign_peak_i, uint16_t ign_peak_v)
+{
+    put_u32(&pulse_header[0], pulse_index);
+    pulse_header[4] = (uint8_t)ign_peak_i;
+    pulse_header[5] = (uint8_t)(ign_peak_i >> 8);
+    pulse_header[6] = (uint8_t)ign_peak_v;
+    pulse_header[7] = (uint8_t)(ign_peak_v >> 8);
+    memcpy(&hk_image[0][TLM_REG_PULSE_HEADER], pulse_header, sizeof pulse_header);
+    memcpy(&hk_image[1][TLM_REG_PULSE_HEADER], pulse_header, sizeof pulse_header);
+}
+
+void telemetry_set_waveform(const uint32_t *samples)
+{
+    for (uint32_t i = 0; i < TLM_WAVE_SAMPLES; i++) {
+        put_u32(&wave_image[i * 4u], samples[i]);
+    }
+    wave_read = false;
+}
+
+bool telemetry_take_waveform_read(void)
+{
+    bool r = wave_read;
+    wave_read = false;
+    return r;
 }
 
 uint16_t telemetry_read(uint8_t addr, uint8_t *dst, uint16_t n)
@@ -109,6 +142,9 @@ uint16_t telemetry_read(uint8_t addr, uint8_t *dst, uint16_t n)
     while (done < n && off < (int32_t)IMAGE_SIZE) {
         dst[done++] = (off < (int32_t)HK_IMAGE_SIZE) ? hk[off] : wave_image[off - (int32_t)HK_IMAGE_SIZE];
         off++;
+    }
+    if (off == (int32_t)IMAGE_SIZE) {
+        wave_read = true;
     }
     stats.reads++;
     return done;

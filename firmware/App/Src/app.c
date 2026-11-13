@@ -7,6 +7,8 @@
 #include "spi_slave.h"
 #include "i2c_slave.h"
 #include "telemetry.h"
+#include "igniter.h"
+#include "thermistor.h"
 
 #include <math.h>
 
@@ -36,6 +38,14 @@ static valve_t valve3;  // latching
 // ADC1 + ADC2. Latest housekeeping values: pib_adc.hk (raw[], mv[],
 // vdda_mv, temp_mcu_degC, indexed by hk_ch_t). Bursts: pib_adc_burst_*().
 static pib_adc_t pib_adc;
+
+static igniter_t igniter;
+static uint32_t burst_buf[WAVE_PRE_SAMPLES + TLM_WAVE_SAMPLES];
+static bool drdy;
+static uint32_t pulse_index;
+
+static thermistor_t ntc_pib = { NTC_10K_BETA_K, 25.0f, NTC_10K_R25_KOHM, NTC_PIB_BIAS_KOHM };
+static thermistor_t ntc_ign = { NTC_10K_BETA_K, 25.0f, NTC_10K_R25_KOHM, NTC_IGN_BIAS_KOHM };
 
 static ms5540c_t dpt;
 static float dpt_t_C[2];
@@ -114,6 +124,61 @@ static void state_step(uint32_t now)
     }
 }
 
+static void set_drdy(bool on)
+{
+    drdy = on;
+    HAL_GPIO_WritePin(DRDY_GPIO_Port, DRDY_Pin, on ? GPIO_PIN_SET : GPIO_PIN_RESET);
+}
+
+static void fire_pulse(uint16_t width_100ns)
+{
+    if (width_100ns > IGNITER_PULSE_MAX_100NS) {
+        width_100ns = IGNITER_PULSE_MAX_100NS;
+    }
+
+    set_drdy(false);
+    igniter_pd_release(&igniter);
+
+    if (pib_adc_burst_start(&pib_adc, burst_buf, WAVE_PRE_SAMPLES + TLM_WAVE_SAMPLES) != HAL_OK) {
+        igniter_pd_reset(&igniter);
+        return;
+    }
+
+    __disable_irq();
+    uint32_t first = pib_adc_burst_count(&pib_adc);
+    igniter_pulse(&igniter, width_100ns);
+    __enable_irq();
+
+    adc_burst_state_t s;
+    uint32_t t0 = HAL_GetTick();
+    do {
+        s = pib_adc_burst_poll(&pib_adc);
+    } while (s != ADC_BURST_DONE && s != ADC_BURST_ERROR &&
+             (HAL_GetTick() - t0) <= PULSE_CAPTURE_TIMEOUT_MS);
+
+    pulse_index++;
+    uint16_t peak_i = 0u;
+    uint16_t peak_v = 0u;
+    if (s == ADC_BURST_DONE && pib_adc_read_housekeeping(&pib_adc) == HAL_OK) {
+        peak_i = pib_adc.hk.raw[HK_I_IGN_PK];
+        peak_v = pib_adc.hk.raw[HK_V_IGN_PK];
+    }
+
+    igniter_pd_reset(&igniter);
+    telemetry_set_pulse_header(pulse_index, peak_i, peak_v);
+
+    if (s != ADC_BURST_DONE) {
+        pib_adc_burst_abort(&pib_adc);
+        return;
+    }
+
+    if (first > WAVE_PRE_SAMPLES) {
+        first = WAVE_PRE_SAMPLES;
+    }
+    telemetry_set_waveform(&burst_buf[first]);
+    set_drdy(true);
+}
+
 static void app_execute(const telemetry_cmd_t *cmd, uint32_t now)
 {
     switch (cmd->addr) {
@@ -137,6 +202,7 @@ static void app_execute(const telemetry_cmd_t *cmd, uint32_t now)
     case TLM_REG_FIRE_PULSE:
         if (state == PIB_ARMED) {
             heartbeat_ms = now;
+            fire_pulse((uint16_t)(cmd->data[0] | (cmd->data[1] << 8)));
         }
         break;
 
@@ -162,9 +228,21 @@ static void read_dpt(void)
     dpt_next = (s == DPT_TANK) ? DPT_FRIT : DPT_TANK;
 }
 
+static float ntc_degC(thermistor_t *t, hk_ch_t ch)
+{
+    uint16_t raw = pib_adc.hk.raw[ch];
+    if (raw < NTC_MIN_COUNTS || raw > NTC_MAX_COUNTS) {
+        return NAN;
+    }
+    return ratiometric_to_thermistor_temp(t, (float)raw / 4095.0f);
+}
+
 static void build_housekeeping(telemetry_hk_t *hk, uint32_t now)
 {
     hk->status = (state == PIB_ARMED) ? TLM_STATUS_ARMED : 0u;
+    if (drdy) {
+        hk->status |= TLM_STATUS_DRDY;
+    }
     hk->uptime_s = (float)now / 1000.0f;
     hk->frit_mbar = dpt_ok[DPT_FRIT] ? dpt_p_mbar[DPT_FRIT] / 10.0f : NAN;
     hk->frit_degC = dpt_ok[DPT_FRIT] ? dpt_t_C[DPT_FRIT] / 10.0f : NAN;
@@ -172,10 +250,13 @@ static void build_housekeeping(telemetry_hk_t *hk, uint32_t now)
     hk->tank_degC = dpt_ok[DPT_TANK] ? dpt_t_C[DPT_TANK] / 10.0f : NAN;
     hk->tank_ntc_degC[0] = NAN;
     hk->tank_ntc_degC[1] = NAN;
-    hk->pib_degC[0] = NAN;
+    hk->pib_degC[0] = ntc_degC(&ntc_pib, HK_NTC_PIB);
     hk->pib_degC[1] = (float)pib_adc.hk.temp_mcu_degC;
     hk->flow_ul_min = NAN;
     hk->flow_degC = NAN;
+    hk->ign_supply_v = (float)pib_adc.hk.mv[HK_V_IGN_SUPPLY] / 1000.0f * IGN_SUPPLY_V_PER_PIN_V;
+    hk->ign_degC = ntc_degC(&ntc_ign, HK_NTC_IGN);
+    hk->dchg_degC = NAN;
 }
 
 void app_init(void)
@@ -204,6 +285,12 @@ void app_init(void)
     dpt.mclk_tim = &htim3;
     dpt.mclk_tim_channel = TIM_CHANNEL_2;
     ms5540c_init(&dpt);
+
+    igniter.pulse_port = IGNITER_PULSE_GPIO_Port;
+    igniter.pulse_pin = IGNITER_PULSE_Pin;
+    igniter.pd_rst_port = PD_RST_GPIO_Port;
+    igniter.pd_rst_pin = PD_RST_Pin;
+    igniter_init(&igniter);
 
     state = PIB_SAFE;
     telemetry_init();
@@ -235,6 +322,10 @@ void app_run_once(void)
     }
 
     state_step(now);
+
+    if (drdy && telemetry_take_waveform_read()) {
+        set_drdy(false);
+    }
 
     if (heater_on && (now - heater_on_ms) >= HEATER_OVERRIDE_MAX_MS) {
         heater_on = false;

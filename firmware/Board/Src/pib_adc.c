@@ -313,6 +313,11 @@ void pib_adc_burst_abort(pib_adc_t *adc)
     adc->burst.state = ADC_BURST_IDLE;
 }
 
+uint32_t pib_adc_burst_count(pib_adc_t *adc)
+{
+    return adc->burst.n_samples - __HAL_DMA_GET_COUNTER(adc->master->DMA_Handle);
+}
+
 /* ---- HAL callbacks (global: must not be defined anywhere else) ------------ */
 
 /*

@@ -16,6 +16,9 @@
 #define TLM_REG_TANK_TEMP         0x20u
 #define TLM_REG_PIB_TEMP          0x28u
 #define TLM_REG_FLOW              0x30u
+#define TLM_REG_IGN_SUPPLY_V      0x38u
+#define TLM_REG_IGN_TEMP          0x3Cu
+#define TLM_REG_DCHG_TEMP         0x40u
 #define TLM_REG_PULSE_HEADER      0x50u
 #define TLM_REG_WAVEFORM_FIRST    0x60u
 #define TLM_REG_WAVEFORM_LAST     0x73u
@@ -31,6 +34,8 @@
 #define TLM_STATUS_BATT_UVLO      (1u << 5)
 #define TLM_STATUS_TEMP_FAULT     (1u << 6)
 
+#define TLM_WAVE_SAMPLES          ((TLM_REG_WAVEFORM_LAST - TLM_REG_WAVEFORM_FIRST + 1u) * 4u)
+
 #define TLM_CMD_MAX_DATA          4u
 #define TLM_CMD_QUEUE_LEN         4u
 
@@ -45,6 +50,9 @@ typedef struct {
     float pib_degC[2];
     float flow_ul_min;
     float flow_degC;
+    float ign_supply_v;
+    float ign_degC;
+    float dchg_degC;
 } telemetry_hk_t;
 
 typedef struct {
@@ -62,6 +70,9 @@ typedef struct {
 
 void telemetry_init(void);
 void telemetry_update_snapshot(const telemetry_hk_t *hk);
+void telemetry_set_waveform(const uint32_t *samples);
+void telemetry_set_pulse_header(uint32_t pulse_index, uint16_t ign_peak_i, uint16_t ign_peak_v);
+bool telemetry_take_waveform_read(void);
 uint16_t telemetry_read(uint8_t addr, uint8_t *dst, uint16_t n);
 void telemetry_on_write(uint8_t addr, const uint8_t *data, uint16_t n);
 bool telemetry_take_command(telemetry_cmd_t *cmd);

@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "spi_telemetry_test.h"
+#include "spi_bridge.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -31,6 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define RUN_SPI_BRIDGE 1
 
 /* USER CODE END PD */
 
@@ -90,7 +92,11 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
+#if RUN_SPI_BRIDGE
+  spi_bridge_init(&hspi1);
+#else
   spi_test_init(&hspi1);
+#endif
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -100,7 +106,11 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+#if RUN_SPI_BRIDGE
+    spi_bridge_run_once();
+#else
     spi_test_run_once();
+#endif
   }
   /* USER CODE END 3 */
 }

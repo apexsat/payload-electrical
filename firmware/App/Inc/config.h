@@ -20,4 +20,17 @@
 #define ARM_PGOOD_TIMEOUT_MS      200u
 #define HEATER_OVERRIDE_MAX_MS    60000u
 
+#define IGNITER_PULSE_MAX_100NS   100u
+#define WAVE_PRE_SAMPLES          16u
+#define PULSE_CAPTURE_TIMEOUT_MS  2u
+
+#define NTC_10K_BETA_K            3380.0f
+#define NTC_10K_R25_KOHM          10.0f
+#define NTC_PIB_BIAS_KOHM         10.0f
+#define NTC_IGN_BIAS_KOHM         10.0f
+#define NTC_MIN_COUNTS            20u
+#define NTC_MAX_COUNTS            4075u
+
+#define IGN_SUPPLY_V_PER_PIN_V    (-453.0f)
+
 #endif /* CONFIG_H */

@@ -6,6 +6,8 @@ This project covers **only the SPI part**, and it uses a NUCLEO-G431KB in place 
 
 The PIB firmware is not modified. The PIB runs its normal firmware from the `firmware/` project.
 
+The same project can also run as a **laptop-to-PIB SPI bridge** for command-line control (section 11). `RUN_SPI_BRIDGE` near the top of `Core/Src/main.c` picks the mode: `1` = bridge, `0` = this Test 2 checker. It is currently `1`; set it to `0` and rebuild before running the Test 2 procedure below.
+
 ---
 
 ## 1. What's in this folder
@@ -325,3 +327,65 @@ In every scenario it checks the following:
 Then it checks that the run passes only in the normal and reset scenarios, and that each fault increments the right counter.
 
 These checks only show that the logic matches the PIB source. **They are not evidence that the hardware works.** Only section 8 provides that.
+
+---
+
+## 11. Laptop command line through the Nucleo (SPI bridge)
+
+With `RUN_SPI_BRIDGE` set to `1` in `Core/Src/main.c`, the Nucleo stops polling on its own and instead passes SPI transactions from the laptop to the PIB. `firmware/tools/pib_cdh.py` runs on the laptop and does all the PIB-specific work: register addresses, the ARM code, pulse widths and decoding.
+
+```
+laptop (pib_cdh.py) ──USB──▶ Nucleo ST-LINK virtual COM port ──USART2 PA2/PA3──▶ Nucleo ──SPI1──▶ PIB
+```
+
+The wiring, power order and ST-LINK serial-number setup are the same as in sections 4–6. The USB cable you already use for the Nucleo carries the serial link too. The ST-LINK's virtual COM port is wired to USART2 on PA2/PA3; source: ST's `NUCLEO-G431KB/Examples/UART/UART_HyperTerminal_DMA/readme.txt` in STM32Cube FW_G4 V1.6.3.
+
+### 11.1 Bridge protocol
+
+The serial link runs at 115200 baud, 8N1. The laptop sends one request, and the Nucleo answers it before it accepts the next one.
+
+| Direction | Bytes |
+|---|---|
+| Laptop → Nucleo | `0xA5`, length low byte, length high byte, then *length* bytes to send on SPI (1–384) |
+| Nucleo → laptop | `0x5A`, HAL status (0 = OK), length low byte, length high byte, then the *length* bytes received on SPI |
+
+Each request is one CS-low transaction. If a request stops partway for more than 100 ms, the Nucleo throws it away and waits for the next `0xA5`. LD2 toggles on every transaction.
+
+### 11.2 Setup
+
+1. Flash the Nucleo with `RUN_SPI_BRIDGE` = `1` (section 6.6; use **Run** instead of **Debug** if you don't need to watch variables).
+2. Install pyserial once:
+   ```sh
+   python3 -m pip install pyserial
+   ```
+3. Find the Nucleo's serial port:
+   ```sh
+   ls /dev/cu.usbmodem*
+   ```
+   If the PIB's ST-LINK also shows a port, unplug the Nucleo, list again, and the port that disappeared is the Nucleo's. With only one port present, `pib_cdh.py` picks it automatically.
+
+### 11.3 Commands
+
+Run these from `firmware/tools`. Replace the port with yours.
+
+```sh
+python3 pib_cdh.py --link nucleo --port /dev/cu.usbmodem1103 hk
+python3 pib_cdh.py --link nucleo --port /dev/cu.usbmodem1103 watch
+python3 pib_cdh.py --link nucleo --port /dev/cu.usbmodem1103 arm fire 5 --wave
+python3 pib_cdh.py --link nucleo --port /dev/cu.usbmodem1103 arm fire 5 --csv shot1.csv
+python3 pib_cdh.py --link nucleo --port /dev/cu.usbmodem1103 wave
+python3 pib_cdh.py --link nucleo --port /dev/cu.usbmodem1103 safe
+```
+
+| Command | What it does |
+|---|---|
+| `hk` / `watch` | Read housekeeping once / every second |
+| `fire <µs>` | Send FIRE_PULSE with that width (0.1 µs steps, little-endian), then wait for DRDY. Refuses if the PIB isn't ARMED. `--wave` prints the waveform afterwards; `--csv FILE` saves it |
+| `wave` | Read the last pulse's 80 voltage/current samples from 0x60–0x73 (12-bit counts, about 0.47 µs apart). Reading it clears DRDY |
+| `safe` | SAFE the payload |
+| `raw <reg> <n>` | Read n bytes starting at a register, printed in hex |
+| `arm` (alone) | ARM, re-send ARM every 2 s for `--hold` seconds, then SAFE (unless `--stay-armed`) |
+
+**`arm` in front of a command** sends ARM once, waits up to 1 s for the ARMED status bit, then runs the command, e.g. `arm fire 5`. Nothing re-sends ARM afterwards. The PIB SAFEs itself 10 s after the last ARM or FIRE command; send `safe` to do it sooner.
+
+The PIB firmware caps the pulse width at `IGNITER_PULSE_MAX_100NS` in `firmware/App/Inc/config.h`. A longer request is cut to the cap.
