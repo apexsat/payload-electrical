@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import glob
+import math
 import os
 import struct
 import sys
@@ -18,6 +19,7 @@ NOMINAL_SAMPLE_RATE_HZ = 32e6 / 15
 PULSE_STEP_US = 0.1
 ADC_VREF_V = 3.3
 IGN_V_PER_PIN_V = -455.0
+SIG_FIGS = 4  # significant figures for every measured value printed or saved
 TESTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tests")
 
 STATUS_BITS = ["ARMED", "FLOW_FAULT", "IGNITER_FAULT", "DISCHARGE_FAULT", "DRDY", "BATT_UVLO", "TEMP_FAULT"]
@@ -138,7 +140,7 @@ def print_wave(wave, csv_path):
     sample_us = hdr["sample_us"]
     if not 0.1 < sample_us < 10.0:
         sample_us = 1e6 / NOMINAL_SAMPLE_RATE_HZ
-        print("warning: board did not report a valid sample period (old firmware?), using nominal %.3f us" % sample_us)
+        print("warning: board did not report a valid sample period (old firmware?), using nominal %s us" % sig(sample_us))
     fire = hdr["fire_sample"]
     rows = [(i, (i - fire) * sample_us, v, c, counts_to_pin_v(v), counts_to_pin_v(c))
             for i, (v, c) in enumerate(samples)]
@@ -148,21 +150,21 @@ def print_wave(wave, csv_path):
         with open(csv_path, "w") as f:
             f.write("sample,time_us,voltage_counts,current_counts,voltage_pin_v,current_pin_v\n")
             for r in rows:
-                f.write("%d,%.3f,%d,%d,%.4f,%.4f\n" % r)
+                f.write("%d,%s,%d,%d,%s,%s\n" % (r[0], sig(r[1]), r[2], r[3], sig(r[4]), sig(r[5])))
         print("wrote %d samples to %s" % (len(rows), csv_path))
         return
     v_pin = [r[4] for r in rows]
     i_pin = [r[5] for r in rows]
-    title = "Discharge capture   %d samples   %.3f us apart   pin volts, %.1f V full scale" % (
-        len(rows), sample_us, ADC_VREF_V)
-    body = [["%d" % r[0], "%.3f" % r[1],
-             "%.3f V" % r[4], "%4d" % r[2], bar(r[4], ADC_VREF_V),
-             "%.3f V" % r[5], "%4d" % r[3], bar(r[5], ADC_VREF_V)] for r in rows]
+    title = "Discharge capture   %d samples   %s us apart   pin volts, %s V full scale" % (
+        len(rows), sig(sample_us), sig(ADC_VREF_V))
+    body = [["%d" % r[0], sig(r[1]),
+             "%s V" % sig(r[4]), "%4d" % r[2], bar(r[4], ADC_VREF_V),
+             "%s V" % sig(r[5]), "%4d" % r[3], bar(r[5], ADC_VREF_V)] for r in rows]
     print_table(title,
                 ["#", "t (us)", "pin", "counts", "0 ────── 3.3", "pin", "counts", "0 ────── 3.3"],
                 body, "rrrrlrrl", groups=[(2, 3, "voltage  PA0"), (5, 3, "current  PA1")])
-    print("  voltage  min %.3f V  max %.3f V  mean %.3f V" % (min(v_pin), max(v_pin), sum(v_pin) / len(v_pin)))
-    print("  current  min %.3f V  max %.3f V  mean %.3f V" % (min(i_pin), max(i_pin), sum(i_pin) / len(i_pin)))
+    for name, xs in (("voltage", v_pin), ("current", i_pin)):
+        print("  %s  min %s V  max %s V  mean %s V" % (name, sig(min(xs)), sig(max(xs)), sig(sum(xs) / len(xs))))
     print()
 
 
@@ -250,8 +252,19 @@ def read_hk(link):
     }
 
 
-def fmt(v, unit, digits=1):
-    return "--" if v != v else ("%.*f %s" % (digits, v, unit))
+def sig(v, n=SIG_FIGS):
+    """v rounded to n significant figures, in plain (non-exponent) notation."""
+    if v != v or v in (float("inf"), float("-inf")):
+        return str(v)
+    if v == 0:
+        return "0"
+    v = float("%.*g" % (n, v))  # round first, so 9.9996 -> 10.00, not 10.000
+    decimals = max(0, n - 1 - math.floor(math.log10(abs(v))))
+    return "%.*f" % (decimals, v)
+
+
+def fmt(v, unit):
+    return "--" if v != v else "%s %s" % (sig(v), unit)
 
 
 def counts_to_pin_v(counts):
@@ -263,8 +276,8 @@ def pulse_line(p):
         return "none since boot"
     return "#%d   peak V %d cnt (~%s)   peak I %d cnt (%s at pin, amps scale TBD)" % (
         p["index"],
-        p["peak_v"], fmt(counts_to_pin_v(p["peak_v"]) * IGN_V_PER_PIN_V, "V", 0),
-        p["peak_i"], fmt(counts_to_pin_v(p["peak_i"]), "V", 3))
+        p["peak_v"], fmt(counts_to_pin_v(p["peak_v"]) * IGN_V_PER_PIN_V, "V"),
+        p["peak_i"], fmt(counts_to_pin_v(p["peak_i"]), "V"))
 
 
 def print_hk(hk):
@@ -279,7 +292,7 @@ def print_hk(hk):
         ["", "tank 1", t("tank_ntc1_degC")],
         ["", "tank 2", t("tank_ntc2_degC")],
         ["", "discharge", t("dchg_ntc_degC")],
-        ["igniter", "supply", fmt(hk["ign_supply_v"], "V", 0)],
+        ["igniter", "supply", fmt(hk["ign_supply_v"], "V")],
     ]
     pk = hk["pulse"]
     if pk["index"] == 0:
@@ -287,8 +300,8 @@ def print_hk(hk):
     else:
         rows += [
             ["", "last pulse", "#%d" % pk["index"]],
-            ["", "peak V", "%s   (%d cnt)" % (fmt(counts_to_pin_v(pk["peak_v"]) * IGN_V_PER_PIN_V, "V", 0), pk["peak_v"])],
-            ["", "peak I", "%s at pin   (%d cnt, amps scale TBD)" % (fmt(counts_to_pin_v(pk["peak_i"]), "V", 3), pk["peak_i"])],
+            ["", "peak V", "%s   (%d cnt)" % (fmt(counts_to_pin_v(pk["peak_v"]) * IGN_V_PER_PIN_V, "V"), pk["peak_v"])],
+            ["", "peak I", "%s at pin   (%d cnt, amps scale TBD)" % (fmt(counts_to_pin_v(pk["peak_i"]), "V"), pk["peak_i"])],
         ]
     rows += [
         ["flow", "rate", "%s @ %s" % (fmt(hk["flow_ulmin"], "uL/min"), t("flow_degC"))],
