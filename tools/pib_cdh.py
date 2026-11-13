@@ -64,9 +64,9 @@ class NucleoLink:
     def __init__(self, port, baud):
         import serial
         if port is None:
-            ports = glob.glob("/dev/cu.usbmodem*")
+            ports = sorted(glob.glob("/dev/cu.usbmodem*") + glob.glob("/dev/ttyACM*"))
             if len(ports) != 1:
-                sys.exit("give --port; found %s" % (ports or "no /dev/cu.usbmodem* ports"))
+                sys.exit("give --port; found %s" % (ports or "no /dev/cu.usbmodem* or /dev/ttyACM* ports"))
             port = ports[0]
         self.ser = serial.Serial(port, baud, timeout=1.0)
         self.ser.reset_input_buffer()
@@ -350,8 +350,8 @@ more help on one command:
 first-time setup:
   python3 -m pip install pyserial
   Flash the Nucleo with RUN_SPI_BRIDGE = 1 (Core/Src/main.c).
-  ls /dev/cu.usbmodem*   lists serial ports; pass the Nucleo's with --port if
-  more than one shows up."""
+  ls /dev/cu.usbmodem* (macOS) or ls /dev/ttyACM* (Linux) lists serial ports;
+  pass the Nucleo's with --port if more than one shows up."""
 
 
 def main():
@@ -362,8 +362,8 @@ def main():
     g.add_argument("--link", choices=["spi", "i2c", "nucleo"], default="spi",
                    help="how to reach the PIB: nucleo = through the Nucleo bridge over USB (use this on the bench); "
                         "spi / i2c = straight from a Raspberry Pi's own pins. Default: spi")
-    g.add_argument("--port", help="Nucleo serial port, e.g. /dev/cu.usbmodem1103. "
-                                  "Default: the only /dev/cu.usbmodem* port, if exactly one exists")
+    g.add_argument("--port", help="Nucleo serial port, e.g. /dev/cu.usbmodem1103 (macOS) or /dev/ttyACM0 (Linux). "
+                                  "Default: the only /dev/cu.usbmodem* or /dev/ttyACM* port, if exactly one exists")
     g.add_argument("--baud", type=int, default=115200, help="Nucleo serial speed; must match its firmware. Default: 115200")
     g.add_argument("--spi-bus", type=int, default=0, help="Raspberry Pi SPI bus (--link spi). Default: 0")
     g.add_argument("--spi-dev", type=int, default=0, help="Raspberry Pi SPI chip select (--link spi). Default: 0")
