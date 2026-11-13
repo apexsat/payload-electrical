@@ -26,7 +26,7 @@
 #define HEATER_OVERRIDE_MAX_MS    60000u
 
 #define PD_RST_SETTLE_US          5u
-#define PD_RST_HOLD_MS            50u
+#define PD_RST_HOLD_MS            70u
 #define WAVE_PRE_SAMPLES          16u
 #define PULSE_CAPTURE_TIMEOUT_MS  2u
 

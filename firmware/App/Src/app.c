@@ -33,6 +33,29 @@ typedef enum {
     PIB_SAFING,
 } pib_state_t;
 
+typedef struct {
+    GPIO_TypeDef *port;
+    uint16_t pin;
+} pin_t;
+
+static const pin_t outputs[TLM_OUT_COUNT] = {
+    [TLM_OUT_VBAT_EN]      = { VBAT_EN_GPIO_Port,      VBAT_EN_Pin },
+    [TLM_OUT_ARM_SAFE]     = { ARM_SAFE_GPIO_Port,     ARM_SAFE_Pin },
+    [TLM_OUT_IGNITER_EN]   = { IGNITER_EN_GPIO_Port,   IGNITER_EN_Pin },
+    [TLM_OUT_DISCHARGE_EN] = { DISCHARGE_EN_GPIO_Port, DISCHARGE_EN_Pin },
+    [TLM_OUT_HTR1_EN]      = { HTR1_EN_GPIO_Port,      HTR1_EN_Pin },
+    [TLM_OUT_HTR2_EN]      = { HTR2_EN_GPIO_Port,      HTR2_EN_Pin },
+    [TLM_OUT_PD_RST]       = { PD_RST_GPIO_Port,       PD_RST_Pin },
+    [TLM_OUT_WDG_IN]       = { WDG_IN_GPIO_Port,       WDG_IN_Pin },
+};
+
+static const pin_t inputs[TLM_IN_COUNT] = {
+    [TLM_IN_PGOOD_12V]       = { PGOOD_12V_GPIO_Port,       PGOOD_12V_Pin },
+    [TLM_IN_VBAT_PGOOD]      = { VBAT_PGOOD_GPIO_Port,      VBAT_PGOOD_Pin },
+    [TLM_IN_IGNITER_PGOOD]   = { IGNITER_PGOOD_GPIO_Port,   IGNITER_PGOOD_Pin },
+    [TLM_IN_DISCHARGE_PGOOD] = { DISCHARGE_PGOOD_GPIO_Port, DISCHARGE_PGOOD_Pin },
+};
+
 static valve_t valve1;  // latching
 static valve_t valve2;  // normally-closed solenoid
 static valve_t valve3;  // latching
@@ -90,6 +113,54 @@ static void set_heaters(bool on)
     HAL_GPIO_WritePin(HTR2_EN_GPIO_Port, HTR2_EN_Pin, level);
 }
 
+static bool pin_high(const pin_t *p)
+{
+    return HAL_GPIO_ReadPin(p->port, p->pin) == GPIO_PIN_SET;
+}
+
+static bool arm_output(uint8_t id)
+{
+    return (id == TLM_OUT_ARM_SAFE) || (id == TLM_OUT_IGNITER_EN) || (id == TLM_OUT_DISCHARGE_EN);
+}
+
+static bool any_arm_output_high(void)
+{
+    for (uint8_t i = 0; i < TLM_OUT_COUNT; i++) {
+        if (arm_output(i) && pin_high(&outputs[i])) {
+            return true;
+        }
+    }
+    return false;
+}
+
+static void set_output(uint8_t id, bool on, uint32_t now)
+{
+    bool heater = (id == TLM_OUT_HTR1_EN) || (id == TLM_OUT_HTR2_EN);
+    if (on && heater) {
+        HAL_GPIO_WritePin(VBAT_EN_GPIO_Port, VBAT_EN_Pin, GPIO_PIN_SET);
+    }
+    HAL_GPIO_WritePin(outputs[id].port, outputs[id].pin, on ? GPIO_PIN_SET : GPIO_PIN_RESET);
+    if (on && arm_output(id)) {
+        heartbeat_ms = now;
+    }
+    if (heater) {
+        heater_on = pin_high(&outputs[TLM_OUT_HTR1_EN]) || pin_high(&outputs[TLM_OUT_HTR2_EN]);
+        if (on) {
+            heater_on_ms = now;
+        }
+    }
+}
+
+static valve_t *valve_by_id(uint8_t id)
+{
+    switch (id) {
+    case 1u: return &valve1;
+    case 2u: return &valve2;
+    case 3u: return &valve3;
+    default: return NULL;
+    }
+}
+
 static void start_arming(uint32_t now)
 {
     HAL_GPIO_WritePin(VBAT_EN_GPIO_Port, VBAT_EN_Pin, GPIO_PIN_SET);
@@ -114,6 +185,12 @@ static void start_safing(uint32_t now)
 static void state_step(uint32_t now)
 {
     switch (state) {
+    case PIB_SAFE:
+        if (any_arm_output_high() && (now - heartbeat_ms) >= CDH_HEARTBEAT_TIMEOUT_MS) {
+            start_safing(now);
+        }
+        break;
+
     case PIB_ARMING:
         if (HAL_GPIO_ReadPin(PGOOD_12V_GPIO_Port, PGOOD_12V_Pin) == GPIO_PIN_SET) {
             valve_open(&valve1);
@@ -211,9 +288,7 @@ static void app_execute(const telemetry_cmd_t *cmd, uint32_t now)
 {
     switch (cmd->addr) {
     case TLM_REG_SAFE_PAYLOAD:
-        if (state == PIB_ARMING || state == PIB_ARMED) {
-            start_safing(now);
-        }
+        start_safing(now);
         break;
 
     case TLM_REG_ARM_PAYLOAD:
@@ -239,6 +314,25 @@ static void app_execute(const telemetry_cmd_t *cmd, uint32_t now)
         heater_on = (cmd->data[0] != 0u) && (cmd->data[1] != 0u);
         heater_on_ms = now;
         set_heaters(heater_on);
+        break;
+
+    case TLM_REG_SET_VALVE: {
+        valve_t *v = valve_by_id(cmd->data[0]);
+        if (v == NULL) {
+            break;
+        }
+        if (cmd->data[1] != 0u) {
+            valve_open(v);
+        } else {
+            valve_close(v);
+        }
+        break;
+    }
+
+    case TLM_REG_SET_OUTPUT:
+        if (cmd->data[0] < TLM_OUT_COUNT) {
+            set_output(cmd->data[0], cmd->data[1] != 0u, now);
+        }
         break;
 
     case TLM_REG_SET_TANK_TEMP:
@@ -318,6 +412,26 @@ static void build_housekeeping(telemetry_hk_t *hk, uint32_t now)
     hk->ign_supply_v = (float)pib_adc.hk.mv[HK_V_IGN_SUPPLY] / 1000.0f * IGN_SUPPLY_V_PER_PIN_V;
     hk->ign_degC = ntc_degC(&ntc_ign, HK_NTC_IGN);
     hk->dchg_degC = NAN;
+    hk->pib_state = (uint8_t)state;
+    hk->outputs = 0u;
+    for (uint8_t i = 0; i < TLM_OUT_COUNT; i++) {
+        if (pin_high(&outputs[i])) {
+            hk->outputs |= (uint8_t)(1u << i);
+        }
+    }
+    hk->inputs = 0u;
+    for (uint8_t i = 0; i < TLM_IN_COUNT; i++) {
+        if (pin_high(&inputs[i])) {
+            hk->inputs |= (uint8_t)(1u << i);
+        }
+    }
+    hk->valves = (uint8_t)(valve_get_state(&valve1) | (valve_get_state(&valve2) << 2) |
+                           (valve_get_state(&valve3) << 4) |
+                           (valve_is_pulsing(&valve1) ? 0x40u : 0u) |
+                           (valve_is_pulsing(&valve3) ? 0x80u : 0u));
+    hk->ntc_raw[0] = pib_adc.hk.raw[HK_TANK_NTC_1];
+    hk->ntc_raw[1] = pib_adc.hk.raw[HK_TANK_NTC_2];
+    hk->ntc_raw[2] = pib_adc.hk.raw[HK_NTC_DCHG];
 }
 
 void app_init(void)

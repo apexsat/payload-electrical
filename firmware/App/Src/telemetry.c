@@ -16,6 +16,8 @@ static const cmd_def_t cmd_defs[] = {
     { TLM_REG_SAFE_PAYLOAD,    0u },
     { TLM_REG_ARM_PAYLOAD,     1u },
     { TLM_REG_FIRE_PULSE,      4u },
+    { TLM_REG_SET_VALVE,       2u },
+    { TLM_REG_SET_OUTPUT,      2u },
     { TLM_REG_HEATER_OVERRIDE, 2u },
     { TLM_REG_SET_TANK_TEMP,   4u },
 };
@@ -39,6 +41,12 @@ static void put_u32(uint8_t *p, uint32_t v)
     p[1] = (uint8_t)(v >> 8);
     p[2] = (uint8_t)(v >> 16);
     p[3] = (uint8_t)(v >> 24);
+}
+
+static void put_u16(uint8_t *p, uint16_t v)
+{
+    p[0] = (uint8_t)v;
+    p[1] = (uint8_t)(v >> 8);
 }
 
 static void put_f32(uint8_t *p, float f)
@@ -99,6 +107,13 @@ void telemetry_update_snapshot(const telemetry_hk_t *hk)
     put_f32(&img[TLM_REG_IGN_SUPPLY_V], hk->ign_supply_v);
     put_f32(&img[TLM_REG_IGN_TEMP], hk->ign_degC);
     put_f32(&img[TLM_REG_DCHG_TEMP], hk->dchg_degC);
+    img[TLM_REG_PIB_STATE] = hk->pib_state;
+    img[TLM_REG_OUTPUTS] = hk->outputs;
+    img[TLM_REG_INPUTS] = hk->inputs;
+    img[TLM_REG_VALVES] = hk->valves;
+    for (uint32_t i = 0; i < TLM_NTC_RAW_COUNT; i++) {
+        put_u16(&img[TLM_REG_NTC_RAW + i * 2u], hk->ntc_raw[i]);
+    }
     memcpy(&img[TLM_REG_PULSE_HEADER], pulse_header, sizeof pulse_header);
 
     front = back;
