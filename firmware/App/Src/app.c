@@ -260,10 +260,10 @@ static void build_housekeeping(telemetry_hk_t *hk, uint32_t now)
         hk->status |= TLM_STATUS_DRDY;
     }
     hk->uptime_s = (float)now / 1000.0f;
-    hk->frit_mbar = dpt_ok[DPT_FRIT] ? dpt_p_mbar[DPT_FRIT] / 10.0f : NAN;
-    hk->frit_degC = dpt_ok[DPT_FRIT] ? dpt_t_C[DPT_FRIT] / 10.0f : NAN;
-    hk->tank_mbar = dpt_ok[DPT_TANK] ? dpt_p_mbar[DPT_TANK] / 10.0f : NAN;
-    hk->tank_degC = dpt_ok[DPT_TANK] ? dpt_t_C[DPT_TANK] / 10.0f : NAN;
+    hk->frit_mbar = dpt_ok[DPT_FRIT] ? dpt_p_mbar[DPT_FRIT] : NAN;
+    hk->frit_degC = dpt_ok[DPT_FRIT] ? dpt_t_C[DPT_FRIT] : NAN;
+    hk->tank_mbar = dpt_ok[DPT_TANK] ? dpt_p_mbar[DPT_TANK] : NAN;
+    hk->tank_degC = dpt_ok[DPT_TANK] ? dpt_t_C[DPT_TANK] : NAN;
     hk->tank_ntc_degC[0] = NAN;
     hk->tank_ntc_degC[1] = NAN;
     hk->pib_degC[0] = ntc_degC(&ntc_pib, HK_NTC_PIB);
