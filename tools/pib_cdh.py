@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import difflib
 import glob
 import os
 import struct
@@ -21,6 +22,22 @@ IGN_V_PER_PIN_V = -455.0
 TESTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tests")
 
 STATUS_BITS = ["ARMED", "FLOW_FAULT", "IGNITER_FAULT", "DISCHARGE_FAULT", "DRDY", "BATT_UVLO", "TEMP_FAULT"]
+PIB_STATES = ["SAFE", "ARMING", "ARMED", "SAFING"]
+OUTPUTS = [
+    ("vbat", "VBAT_EN", "battery bus enable"),
+    ("arm", "ARM_SAFE", "ARM line (turns on the 12 V that drives the valves)"),
+    ("igniter", "IGNITER_EN", "igniter HV supply enable"),
+    ("discharge", "DISCHARGE_EN", "discharge HV supply enable"),
+    ("htr1", "HTR1_EN", "heater 1 (also turns on vbat)"),
+    ("htr2", "HTR2_EN", "heater 2 (also turns on vbat)"),
+    ("pdrst", "PD_RST", "igniter peak-detector reset"),
+    ("wdg", "WDG_IN", "watchdog input pin"),
+]
+INPUTS = ["PGOOD_12V", "VBAT_PGOOD", "IGNITER_PGOOD", "DISCHARGE_PGOOD"]
+VALVE_STATES = ["unknown", "closed", "open", "?"]
+VALVE_NAMES = {1: "V1 latching", 2: "V2 solenoid (NC)", 3: "V3 latching"}
+REG_SET_VALVE = 0x09
+REG_SET_OUTPUT = 0x0B
 
 
 class SpiLink:
@@ -66,7 +83,9 @@ class NucleoLink:
         if port is None:
             ports = sorted(glob.glob("/dev/cu.usbmodem*") + glob.glob("/dev/ttyACM*"))
             if len(ports) != 1:
-                sys.exit("give --port; found %s" % (ports or "no /dev/cu.usbmodem* or /dev/ttyACM* ports"))
+                sys.exit("give --port; found %s\nexample: python3 pib_cdh.py --link nucleo --port %s hk"
+                         % (ports or "no /dev/cu.usbmodem* or /dev/ttyACM* ports",
+                            ports[0] if ports else "/dev/cu.usbmodem1103"))
             port = ports[0]
         self.ser = serial.Serial(port, baud, timeout=1.0)
         self.ser.reset_input_buffer()
@@ -110,9 +129,9 @@ def arm_once(link):
 def fire(link, width_us):
     steps = round(width_us / PULSE_STEP_US)
     if not 0 <= steps <= 0xFFFFFFFF:
-        sys.exit("pulse width must be 0 to %.1f us" % (0xFFFFFFFF * PULSE_STEP_US))
+        sys.exit("pulse width must be 0 to %.1f us\nexample: %sarm fire 5" % (0xFFFFFFFF * PULSE_STEP_US, EXAMPLE))
     if not read_status(link) & 0x01:
-        sys.exit("PIB is not ARMED; use 'arm fire ...'")
+        sys.exit("PIB is not ARMED; put 'arm' in front to arm first\nexample: %sarm fire %g" % (EXAMPLE, width_us))
     link.write(0x08, struct.pack("<I", steps))
     time.sleep(steps * PULSE_STEP_US * 1e-6)
     t_end = time.time() + DRDY_TIMEOUT_S
@@ -247,6 +266,8 @@ def read_hk(link):
         "flow_ulmin": f(0x30), "flow_degC": f(0x34),
         "ign_supply_v": f(0x38), "ign_ntc_degC": f(0x3C), "dchg_ntc_degC": f(0x40),
         "pulse": dict(zip(("index", "peak_i", "peak_v"), struct.unpack_from("<IHH", b, 0x50))),
+        "pib_state": b[0x44], "outputs": b[0x45], "inputs": b[0x46], "valves": b[0x47],
+        "ntc_raw": struct.unpack_from("<HHH", b, 0x48),
     }
 
 
@@ -267,6 +288,32 @@ def pulse_line(p):
         p["peak_i"], fmt(counts_to_pin_v(p["peak_i"]), "V", 3))
 
 
+def raw_ntc(counts):
+    return "-- C   (%d cnt, %.3f V at pin; part not set yet)" % (counts, counts_to_pin_v(counts))
+
+
+def valve_text(hk, n):
+    st = VALVE_STATES[(hk["valves"] >> (2 * (n - 1))) & 0x03]
+    pulsing = (n == 1 and hk["valves"] & 0x40) or (n == 3 and hk["valves"] & 0x80)
+    return st + ("   (coil pulsing)" if pulsing else "")
+
+
+def io_rows(hk):
+    state = hk["pib_state"]
+    rows = [["state", "PIB", PIB_STATES[state] if state < len(PIB_STATES) else "? (%d)" % state]]
+    rows += [["valves" if n == 1 else "", VALVE_NAMES[n], valve_text(hk, n)] for n in (1, 2, 3)]
+    rows += [["outputs" if i == 0 else "", "%s  (%s)" % (pin, name), "ON" if hk["outputs"] >> i & 1 else "off"]
+             for i, (name, pin, _) in enumerate(OUTPUTS)]
+    rows += [["inputs" if i == 0 else "", name, "high" if hk["inputs"] >> i & 1 else "low"]
+             for i, name in enumerate(INPUTS)]
+    return rows
+
+
+def print_io(hk):
+    print_table("PIB outputs and inputs   (valve state = last command; there is no position sensor)",
+                ["group", "item", "state"], io_rows(hk), "lll")
+
+
 def print_hk(hk):
     t = lambda key: fmt(hk[key], "C")
     rows = [
@@ -276,9 +323,9 @@ def print_hk(hk):
         ["temperature", "PIB", t("pib_ntc_degC")],
         ["", "MCU", t("mcu_degC")],
         ["", "igniter", t("ign_ntc_degC")],
-        ["", "tank 1", t("tank_ntc1_degC")],
-        ["", "tank 2", t("tank_ntc2_degC")],
-        ["", "discharge", t("dchg_ntc_degC")],
+        ["", "tank 1", t("tank_ntc1_degC") if hk["tank_ntc1_degC"] == hk["tank_ntc1_degC"] else raw_ntc(hk["ntc_raw"][0])],
+        ["", "tank 2", t("tank_ntc2_degC") if hk["tank_ntc2_degC"] == hk["tank_ntc2_degC"] else raw_ntc(hk["ntc_raw"][1])],
+        ["", "discharge", t("dchg_ntc_degC") if hk["dchg_ntc_degC"] == hk["dchg_ntc_degC"] else raw_ntc(hk["ntc_raw"][2])],
         ["igniter", "supply", fmt(hk["ign_supply_v"], "V", 0)],
     ]
     pk = hk["pulse"]
@@ -293,6 +340,7 @@ def print_hk(hk):
     rows += [
         ["flow", "rate", "%s @ %s" % (fmt(hk["flow_ulmin"], "uL/min"), t("flow_degC"))],
     ]
+    rows += io_rows(hk)
     print_table("PIB housekeeping   uptime %s   (-- = no sensor or part unknown)" % fmt(hk["uptime_s"], "s"),
                 ["group", "sensor", "value"], rows, "lll")
 
@@ -312,6 +360,25 @@ def arm(link, hold_s, stay_armed):
         print_hk(read_hk(link))
 
 
+ON_OFF = {"on": 1, "off": 0}
+OPEN_CLOSE = {"open": 1, "close": 0}
+
+
+def set_valve(link, which, action):
+    for n in ([1, 2, 3] if which == "all" else [int(which)]):
+        link.write(REG_SET_VALVE, [n, OPEN_CLOSE[action]])
+    time.sleep(0.3)
+    print_io(read_hk(link))
+
+
+def set_output(link, names, level):
+    for i, (name, _, _) in enumerate(OUTPUTS):
+        if name in names:
+            link.write(REG_SET_OUTPUT, [i, ON_OFF[level]])
+    time.sleep(0.2)
+    print_io(read_hk(link))
+
+
 HELP_DESCRIPTION = """\
 Control the PIB from a laptop or Raspberry Pi, acting as the spacecraft computer (CDH).
 Each run sends one command and exits.
@@ -325,17 +392,34 @@ and the Nucleo passes each SPI transaction to the PIB."""
 
 HELP_EPILOG = """\
 SAFE and ARMED:
-  The PIB starts SAFE (valves closed, ARM line low). ARM turns on the battery bus,
-  raises the ARM line, waits up to 200 ms for the 12 V supply, opens the valves and
-  sets the ARMED status bit. It needs battery voltage on J3 pins 1-3; with only
-  3.3 V / 5 V the PIB can't arm. While ARMED, the PIB SAFEs itself if no ARM or FIRE
-  command arrives for 10 s. Nothing re-sends ARM in the background.
+  The PIB starts SAFE (valves closed, ARM line low). 'safe' works from any state:
+  it drops the igniter / discharge enables, closes all three valves and lowers
+  the ARM line. It leaves heaters, vbat, pdrst and wdg alone.
+  ARM turns on the battery bus, raises the ARM line, waits up to 200 ms for the
+  12 V supply, opens the valves and sets the ARMED status bit. It needs battery
+  voltage on J3 pins 1-3; with only 3.3 V / 5 V the PIB can't arm. While ARMED,
+  the PIB SAFEs itself if no ARM or FIRE command arrives for 10 s. Nothing
+  re-sends ARM in the background.
 
 putting 'arm' in front of a command:
   'arm <command>' sends ARM once, waits up to 1 s for ARMED, then runs the command.
   It stops with an error, without running the command, if the PIB doesn't arm.
 
-examples (bench, from firmware/tools):
+bench control ('io', 'valve', 'heater', 'out'):
+  These work in any state, without arming. 'out' names:
+    vbat       VBAT_EN       battery bus enable
+    arm        ARM_SAFE      ARM line (turns on the 12 V that drives the valves)
+    igniter    IGNITER_EN    igniter HV supply enable
+    discharge  DISCHARGE_EN  discharge HV supply enable
+    htr1, htr2 HTR1/2_EN     heaters (also turn on vbat)
+    pdrst      PD_RST        igniter peak-detector reset
+    wdg        WDG_IN        watchdog input pin
+  Valves need 12 V: in SAFE, run 'out arm on' before 'valve'.
+  Timeouts: arm / igniter / discharge turned on with 'out' SAFE the PIB 10 s
+  after the last such command (closing the valves); heaters turn off 60 s after
+  the last heater-on. vbat, pdrst and wdg have no timeout.
+
+examples (bench, from tools/):
   python3 pib_cdh.py --link nucleo hk
   python3 pib_cdh.py --link nucleo watch
   python3 pib_cdh.py --link nucleo arm fire 5 --csv shot1.csv
@@ -343,6 +427,15 @@ examples (bench, from firmware/tools):
   python3 pib_cdh.py --link nucleo wave
   python3 pib_cdh.py --link nucleo safe
   python3 pib_cdh.py --link nucleo raw 0x50 8
+
+bench control examples:
+  python3 pib_cdh.py --link nucleo io
+  python3 pib_cdh.py --link nucleo out arm on
+  python3 pib_cdh.py --link nucleo valve 2 open
+  python3 pib_cdh.py --link nucleo valve all close
+  python3 pib_cdh.py --link nucleo heater 1 on
+  python3 pib_cdh.py --link nucleo heater both off
+  python3 pib_cdh.py --link nucleo out discharge off
 
 more help on one command:
   python3 pib_cdh.py fire --help
@@ -354,9 +447,30 @@ first-time setup:
   pass the Nucleo's with --port if more than one shows up."""
 
 
+EXAMPLE = "python3 pib_cdh.py --link nucleo "
+
+
+class Parser(argparse.ArgumentParser):
+    def __init__(self, *args, example=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.example = example
+
+    def error(self, message):
+        example = self.example or "hk"
+        subs = next((a.choices for a in self._actions if isinstance(a, argparse._SubParsersAction)), None)
+        typed = [w for w in sys.argv[1:] if not w.startswith("-")]
+        for word in typed if subs else []:
+            near = difflib.get_close_matches(word, subs, n=1)
+            if near:
+                example = subs[near[0]].example
+                break
+        self.print_usage(sys.stderr)
+        self.exit(2, "%s: error: %s\nexample: %s%s\n" % (self.prog, message, EXAMPLE, example))
+
+
 def main():
     raw_fmt = argparse.RawDescriptionHelpFormatter
-    p = argparse.ArgumentParser(prog="pib_cdh.py", description=HELP_DESCRIPTION, epilog=HELP_EPILOG,
+    p = Parser(prog="pib_cdh.py", example="hk", description=HELP_DESCRIPTION, epilog=HELP_EPILOG,
                                 formatter_class=raw_fmt)
     g = p.add_argument_group("connection (options go before the command)")
     g.add_argument("--link", choices=["spi", "i2c", "nucleo"], default="spi",
@@ -371,15 +485,15 @@ def main():
     g.add_argument("--i2c-bus", type=int, default=1, help="Raspberry Pi I2C bus (--link i2c). Default: 1")
     g.add_argument("--i2c-addr", type=lambda s: int(s, 0), default=0x42, help="PIB I2C address (--link i2c). Default: 0x42")
     sub = p.add_subparsers(dest="cmd", title="commands", metavar="<command>")
-    sub.add_parser("hk", formatter_class=raw_fmt, help="read and print housekeeping once",
+    sub.add_parser("hk", example="hk", formatter_class=raw_fmt, help="read and print housekeeping once",
                    description="Read registers 0x00-0x57 once and print them with units: status flags, uptime,\n"
                                "frit and tank pressure/temperature, PIB / MCU / igniter / tank / discharge\n"
                                "temperatures, igniter supply voltage, flow, and the last pulse header.\n"
                                "'--' means no reading (no sensor fitted, or its part isn't known yet).")
-    w = sub.add_parser("watch", formatter_class=raw_fmt, help="print housekeeping repeatedly until Ctrl+C",
+    w = sub.add_parser("watch", example="watch --period 2", formatter_class=raw_fmt, help="print housekeeping repeatedly until Ctrl+C",
                        description="Same as 'hk', repeated until you press Ctrl+C.")
     w.add_argument("--period", type=float, default=1.0, help="seconds between reads. Default: 1")
-    a = sub.add_parser("arm", formatter_class=raw_fmt, help="ARM, re-send ARM every 2 s for --hold seconds, then SAFE",
+    a = sub.add_parser("arm", example="arm --hold 10", formatter_class=raw_fmt, help="ARM, re-send ARM every 2 s for --hold seconds, then SAFE",
                        description="Used alone: ARM, print housekeeping, re-send ARM every 2 s until --hold seconds\n"
                                    "have passed, then SAFE (unless --stay-armed).\n"
                                    "Used in front of another command ('arm fire 5'): ARM once, wait for ARMED,\n"
@@ -387,9 +501,9 @@ def main():
     a.add_argument("--hold", type=float, default=5.0, help="seconds to keep re-sending ARM. Default: 5")
     a.add_argument("--stay-armed", action="store_true",
                    help="don't SAFE at the end; the PIB still SAFEs itself 10 s after the last ARM")
-    sub.add_parser("safe", formatter_class=raw_fmt, help="SAFE the payload: valves closed, ARM line low",
+    sub.add_parser("safe", example="safe", formatter_class=raw_fmt, help="SAFE the payload: valves closed, ARM line low",
                    description="Send SAFE (register 0x06). Valves close and the ARM line drops.")
-    fp = sub.add_parser("fire", formatter_class=raw_fmt, help="fire one igniter pulse (PIB must be ARMED)",
+    fp = sub.add_parser("fire", example="arm fire 5", formatter_class=raw_fmt, help="fire one igniter pulse (PIB must be ARMED)",
                         description="Send FIRE_PULSE (register 0x08) with the pulse width, wait out the pulse, then wait up to 0.5 s\n"
                                     "for DRDY and print the pulse number and igniter peak V and I.\n"
                                     "Refuses if the PIB isn't ARMED; use 'arm fire <us>' to arm first.",
@@ -399,12 +513,44 @@ def main():
     fp.add_argument("width_us", type=float, help="igniter pulse width in microseconds, in 0.1 us steps (e.g. 5 or 2.5)")
     fp.add_argument("--wave", action="store_true", help="print the waveform after the pulse")
     fp.add_argument("--csv", metavar="FILE", help="save the waveform to tests/FILE instead of printing it")
-    wv = sub.add_parser("wave", formatter_class=raw_fmt, help="read the last pulse's voltage/current waveform",
+    wv = sub.add_parser("wave", example="wave --csv shot1.csv", formatter_class=raw_fmt, help="read the last pulse's voltage/current waveform",
                         description="Read the 80 voltage/current sample pairs from registers 0x60-0x73: 12-bit ADC\n"
                                     "counts, about 0.47 us apart, starting at ignition. Reading them lowers DRDY.\n"
                                     "The data stays until the next FIRE, so you can read it more than once.")
     wv.add_argument("--csv", metavar="FILE", help="save to tests/FILE (columns: sample, time_us, voltage_counts, current_counts)")
-    r = sub.add_parser("raw", formatter_class=raw_fmt, help="read raw register bytes, printed in hex (debugging)",
+    sub.add_parser("io", example="io", formatter_class=raw_fmt, help="print state, valves, output pins and power-good inputs",
+                   description="Read registers 0x44-0x47 and print the state machine state, each valve's last\n"
+                               "commanded state, every output pin the PIB drives, and the four power-good inputs.\n"
+                               "'hk' prints the same rows at the bottom of its table.")
+    vp = sub.add_parser("valve", example="valve 1 open", formatter_class=raw_fmt, help="<1|2|3|all> <open|close>   open or close a valve",
+                        description="Send SET_VALVE (register 0x09). Works in any state.\n"
+                                    "V1 and V3 are latching: the PIB pulses the coil for 100 ms and the valve stays put.\n"
+                                    "V2 is the normally-closed solenoid: it stays open only while powered.\n"
+                                    "The valve drivers run from the 12 V supply, which comes up with the ARM line.\n"
+                                    "In SAFE, run 'out arm on' first or the coil gets no power (the PIB still\n"
+                                    "records the new state, since it has no position sensor). 'out arm on' times\n"
+                                    "out after 10 s, which SAFEs the PIB and closes all three valves.",
+                        epilog="examples:\n  pib_cdh.py --link nucleo out arm on\n"
+                               "  pib_cdh.py --link nucleo valve 1 open\n"
+                               "  pib_cdh.py --link nucleo valve all close")
+    vp.add_argument("which", choices=["1", "2", "3", "all"], help="valve number, or all")
+    vp.add_argument("action", choices=["open", "close"])
+    hp = sub.add_parser("heater", example="heater both on", formatter_class=raw_fmt, help="<1|2|both> <on|off>   switch heaters (60 s auto-off)",
+                        description="Send SET_OUTPUT (register 0x0B) for HTR1_EN / HTR2_EN. Turning a heater on also\n"
+                                    "turns on the battery bus (vbat). The PIB turns all heaters off 60 s after the\n"
+                                    "last heater-on command.")
+    hp.add_argument("which", choices=["1", "2", "both"])
+    hp.add_argument("level", choices=["on", "off"])
+    op = sub.add_parser("out", example="out arm on", formatter_class=raw_fmt, help="<name> <on|off>   drive one PIB output pin; names below",
+                        description="Send SET_OUTPUT (register 0x0B). Works in any state and does not go through\n"
+                                    "the ARM sequence or its 12 V check. 'safe' turns arm / igniter / discharge back off.\n"
+                                    "Like ARMED, these three time out: the PIB SAFEs itself 10 s after the last\n"
+                                    "'out arm|igniter|discharge on' (or ARM) command. Re-send it to keep them up.\n\n"
+                                    "outputs:\n" + "\n".join("  %-10s %-13s %s" % o for o in OUTPUTS))
+    op.add_argument("name", choices=[o[0] for o in OUTPUTS], metavar="name",
+                    help="one of: " + ", ".join(o[0] for o in OUTPUTS))
+    op.add_argument("level", choices=["on", "off"])
+    r = sub.add_parser("raw", example="raw 0x50 8", formatter_class=raw_fmt, help="read raw register bytes, printed in hex (debugging)",
                        description="Read n bytes starting at a register and print them in hex.",
                        epilog="example:\n  pib_cdh.py --link nucleo raw 0x50 8    (the pulse header)")
     r.add_argument("reg", type=lambda s: int(s, 0), help="first register, decimal or hex (e.g. 0x50)")
@@ -421,7 +567,9 @@ def main():
                 arm_first = True
                 del argv[i]
             break
-    args = p.parse_args(argv)
+    args, extra = p.parse_known_args(argv)
+    if extra:
+        (sub.choices[args.cmd] if args.cmd else p).error("unrecognized arguments: %s" % " ".join(extra))
     if args.cmd is None:
         p.print_help()
         return
@@ -446,6 +594,14 @@ def main():
         arm(link, args.hold, args.stay_armed)
     elif args.cmd == "safe":
         link.write(0x06)
+    elif args.cmd == "io":
+        print_io(read_hk(link))
+    elif args.cmd == "valve":
+        set_valve(link, args.which, args.action)
+    elif args.cmd == "heater":
+        set_output(link, ["htr1", "htr2"] if args.which == "both" else ["htr" + args.which], args.level)
+    elif args.cmd == "out":
+        set_output(link, [args.name], args.level)
     elif args.cmd == "raw":
         print(link.read(args.reg, args.n).hex(" "))
     elif args.cmd == "fire":
