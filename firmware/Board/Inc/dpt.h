@@ -23,5 +23,8 @@ typedef struct {
 
 void ms5540c_init(ms5540c_t * dpt);
 bool ms5540c_measure(ms5540c_t * dpt, bool dpt_sel, float * temp, float * p_mbar);
+void ms5540c_start(ms5540c_t * dpt, bool dpt_sel, bool temperature);
+uint16_t ms5540c_read(ms5540c_t * dpt, bool dpt_sel);
+bool ms5540c_compute(ms5540c_t * dpt, bool dpt_sel, uint16_t d1, uint16_t d2, float * temp, float * p_mbar);
 
 #endif

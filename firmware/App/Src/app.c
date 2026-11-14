@@ -81,6 +81,16 @@ static bool dpt_ok[2];
 static uint8_t dpt_next;
 
 typedef enum {
+    DPT_IDLE,
+    DPT_CONV_PRESSURE,
+    DPT_CONV_TEMP,
+} dpt_phase_t;
+
+static dpt_phase_t dpt_phase;
+static uint16_t dpt_d1;
+static uint32_t dpt_step_ms;
+
+typedef enum {
     FLOW_MEAS_FLOW,
     FLOW_MEAS_TEMP,
 } flow_meas_t;
@@ -344,11 +354,41 @@ static void app_execute(const telemetry_cmd_t *cmd, uint32_t now)
     }
 }
 
-static void read_dpt(void)
+static void dpt_step(uint32_t now)
 {
     uint8_t s = dpt_next;
-    dpt_ok[s] = !ms5540c_measure(&dpt, s == DPT_FRIT, &dpt_t_C[s], &dpt_p_mbar[s]);
-    dpt_next = (s == DPT_TANK) ? DPT_FRIT : DPT_TANK;
+    bool sel = (s == DPT_FRIT);
+
+    switch (dpt_phase) {
+    case DPT_IDLE:
+        if ((now - last_dpt_ms) < DPT_READ_PERIOD_MS) {
+            return;
+        }
+        last_dpt_ms = now;
+        ms5540c_start(&dpt, sel, false);
+        dpt_step_ms = now;
+        dpt_phase = DPT_CONV_PRESSURE;
+        break;
+
+    case DPT_CONV_PRESSURE:
+        if ((now - dpt_step_ms) <= DPT_CONV_MS) {
+            return;
+        }
+        dpt_d1 = ms5540c_read(&dpt, sel);
+        ms5540c_start(&dpt, sel, true);
+        dpt_step_ms = now;
+        dpt_phase = DPT_CONV_TEMP;
+        break;
+
+    case DPT_CONV_TEMP:
+        if ((now - dpt_step_ms) <= DPT_CONV_MS) {
+            return;
+        }
+        dpt_ok[s] = !ms5540c_compute(&dpt, sel, dpt_d1, ms5540c_read(&dpt, sel), &dpt_t_C[s], &dpt_p_mbar[s]);
+        dpt_next = (s == DPT_TANK) ? DPT_FRIT : DPT_TANK;
+        dpt_phase = DPT_IDLE;
+        break;
+    }
 }
 
 // Alternate flow -> temp. Each call either triggers the next
@@ -515,11 +555,8 @@ void app_run_once(void)
         set_heaters(false);
     }
 
-    if ((now - last_dpt_ms) >= DPT_READ_PERIOD_MS &&
-        !valve_is_pulsing(&valve1) && !valve_is_pulsing(&valve3)) {
-        last_dpt_ms = now;
-        read_dpt();
-        now = HAL_GetTick();
+    if (!valve_is_pulsing(&valve1) && !valve_is_pulsing(&valve3)) {
+        dpt_step(now);
     }
 
     flow_step();

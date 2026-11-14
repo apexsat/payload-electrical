@@ -99,7 +99,25 @@ bool ms5540c_measure(ms5540c_t * dpt, bool dpt_sel, float *temp, float *p_mbar)
 {
 	uint16_t d1 = ms5540c_transaction(dpt, dpt_sel, 0x0F40, 40); /* D1 = pressure,    ~35 ms conversion */
 	uint16_t d2 = ms5540c_transaction(dpt, dpt_sel, 0x0F20, 40); /* D2 = temperature, ~35 ms conversion */
+	return ms5540c_compute(dpt, dpt_sel, d1, d2, temp, p_mbar);
+}
 
+void ms5540c_start(ms5540c_t * dpt, bool dpt_sel, bool temperature)
+{
+    HAL_GPIO_WritePin(dpt->mux_gpio_port, dpt->mux_gpio_pin, dpt_sel);
+	ms5540c_reset(dpt, dpt_sel);
+	send_bits(dpt, dpt_sel, temperature ? 0x0F20 : 0x0F40, 16);
+}
+
+uint16_t ms5540c_read(ms5540c_t * dpt, bool dpt_sel)
+{
+	uint16_t r = read_word(dpt, dpt_sel);
+	ms5540c_reset(dpt, dpt_sel);
+	return r;
+}
+
+bool ms5540c_compute(ms5540c_t * dpt, bool dpt_sel, uint16_t d1, uint16_t d2, float *temp, float *p_mbar)
+{
 	if (d1 == 0xffff || d2 == 0xffff) return 1;
 
 	int32_t UT1 = (dpt->cal[dpt_sel].C5 << 3) + 20224;

@@ -147,6 +147,34 @@ def fire(link, width_us):
     return False
 
 
+def seq(link, count, width_us, hz, csv_name):
+    if count < 1 or hz <= 0:
+        sys.exit("count must be at least 1 and rate above 0 Hz\nexample: %sarm seq 10 5 2" % EXAMPLE)
+    period = 1.0 / hz
+    if csv_name:
+        base, ext = os.path.splitext(csv_name)
+        ext = ext or ".csv"
+    late = 0
+    t0 = time.time()
+    for k in range(count):
+        wait = t0 + k * period - time.time()
+        if wait > 0:
+            time.sleep(wait)
+        elif k:
+            late += 1
+        t_last = time.time()
+        print("pulse %d of %d" % (k + 1, count))
+        if fire(link, width_us) and csv_name:
+            print_wave(read_wave(link), "%s_%04d%s" % (base, k + 1, ext))
+    elapsed = t_last - t0
+    rate = (count - 1) / elapsed if count > 1 and elapsed > 0 else hz
+    print("seq done: %d pulses of %s us in %s s (asked %s Hz, got %s Hz)" % (
+        count, sig(width_us), sig(elapsed), sig(hz), sig(rate)))
+    if late:
+        print("warning: %d pulses started late; the link can't keep up with %s Hz%s" % (
+            late, sig(hz), " while saving waveforms" if csv_name else ""))
+
+
 def read_wave(link):
     data = b""
     for reg in range(WAVE_FIRST, WAVE_FIRST + WAVE_SAMPLES // 4, WAVE_CHUNK_REGS):
@@ -437,6 +465,7 @@ examples (bench, from tools/):
   python3 pib_cdh.py --link nucleo watch
   python3 pib_cdh.py --link nucleo arm fire 5 --csv shot1.csv
   python3 pib_cdh.py --link nucleo fire 2.5 --wave
+  python3 pib_cdh.py --link nucleo arm seq 10 5 2 --csv run1
   python3 pib_cdh.py --link nucleo wave
   python3 pib_cdh.py --link nucleo safe
   python3 pib_cdh.py --link nucleo raw 0x50 8
@@ -526,6 +555,20 @@ def main():
     fp.add_argument("width_us", type=float, help="igniter pulse width in microseconds, in 0.1 us steps (e.g. 5 or 2.5)")
     fp.add_argument("--wave", action="store_true", help="print the waveform after the pulse")
     fp.add_argument("--csv", metavar="FILE", help="save the waveform to tests/FILE instead of printing it")
+    tp = sub.add_parser("seq", example="arm seq 10 5 2", formatter_class=raw_fmt,
+                        help="<count> <width_us> <hz>   fire a sequence of igniter pulses (PIB must be ARMED)",
+                        description="Fire <count> igniter pulses of <width_us> each, one every 1/<hz> seconds, timed\n"
+                                    "from the laptop. Each pulse is a normal FIRE (see 'fire --help'), so each one\n"
+                                    "also keeps the PIB ARMED. Stops if the PIB SAFEs part way through.\n"
+                                    "With --csv NAME, each pulse's waveform is saved to tests/NAME_0001.csv,\n"
+                                    "tests/NAME_0002.csv, and so on. Reading a waveform takes time over the link,\n"
+                                    "so high rates may run slower than asked; the summary prints the real rate.",
+                        epilog="examples:\n  pib_cdh.py --link nucleo arm seq 10 5 2\n"
+                               "  pib_cdh.py --link nucleo arm seq 50 2.5 1 --csv run1")
+    tp.add_argument("count", type=int, help="number of pulses")
+    tp.add_argument("width_us", type=float, help="pulse width in microseconds, in 0.1 us steps")
+    tp.add_argument("hz", type=float, help="pulses per second")
+    tp.add_argument("--csv", metavar="NAME", help="save each pulse's waveform to tests/NAME_0001.csv, NAME_0002.csv, ...")
     wv = sub.add_parser("wave", example="wave --csv shot1.csv", formatter_class=raw_fmt, help="read the last pulse's voltage/current waveform",
                         description="Read the 80 voltage/current sample pairs from registers 0x60-0x73: 12-bit ADC\n"
                                     "counts, about 0.47 us apart, starting at ignition. Reading them lowers DRDY.\n"
@@ -620,6 +663,8 @@ def main():
     elif args.cmd == "fire":
         if fire(link, args.width_us) and (args.wave or args.csv):
             print_wave(read_wave(link), args.csv)
+    elif args.cmd == "seq":
+        seq(link, args.count, args.width_us, args.hz, args.csv)
     elif args.cmd == "wave":
         print_wave(read_wave(link), args.csv)
 

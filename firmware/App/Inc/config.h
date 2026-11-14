@@ -14,6 +14,7 @@
 #define LED_TOGGLE_PERIOD_MS 500u
 
 #define DPT_READ_PERIOD_MS        500u
+#define DPT_CONV_MS               40u
 
 // LG16-0431D liquid flow sensor on I2C3 (INT_I2C)
 #define FLOW_I2C_ADDR             0x51u
