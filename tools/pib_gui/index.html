@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>APEx PIB Bench Interface</title>
+  <link rel="icon" href="apex_logo.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header id="ribbon">
+    <div class="brand"><img src="apex_logo.png" alt="APEx logo"><h1>APEx <span>PIB Bench Interface</span></h1></div>
+    <div id="link" class="chip big bad">DISCONNECTED</div>
+    <div class="clk"><small>UPTIME</small><b id="h-up">—</b></div>
+    <div class="clk"><small>LAST READ</small><b id="h-age">—</b></div>
+    <div class="clk"><small>RUNNING</small><b id="h-job">—</b></div>
+    <div class="spacer"></div>
+    <div id="h-err" class="errtext"></div>
+    <button id="b-stop" class="btn stop">STOP and Safe</button>
+  </header>
+
+  <main class="page">
+    <div class="left">
+      <section class="tile pidtile">
+        <h2><span>P&amp;ID</span><em id="pl-age"></em></h2>
+        <div class="pidwrap"><canvas id="plumb" width="1250" height="730"></canvas></div>
+      </section>
+      <section class="tile hktile">
+        <h2><span>Housekeeping</span><em id="hk-title"></em></h2>
+        <div class="hkgrid"><table id="hk-a"><tbody></tbody></table><table id="hk-b"><tbody></tbody></table><table id="hk-c"><tbody></tbody></table></div>
+        <div class="sub">-- = no reading (no sensor fitted, or its part isn't known yet). Outputs, power-good inputs and valve states are in the P&amp;ID.</div>
+      </section>
+    </div>
+
+    <div class="right">
+      <section class="tile">
+        <h2><span>Waveform</span><em id="wave-age"></em></h2>
+        <canvas id="scope" class="scope" width="1040" height="400"></canvas>
+        <div class="two" style="margin-top:4px">
+          <div class="kv"><span>Igniter peak V</span><b id="pk-v">—</b><u>V</u></div>
+          <div class="kv"><span>Igniter peak I (at pin)</span><b id="pk-i">—</b><u>V</u></div>
+        </div>
+        <div class="sub" id="wave-note"></div>
+        <details style="margin-top:4px"><summary>Waveform samples</summary>
+          <div class="scroll"><table class="log"><thead><tr><th>#</th><th>t (us)</th><th>V pin</th><th>V counts</th><th>I pin</th><th>I counts</th></tr></thead><tbody id="wave-rows"></tbody></table></div>
+        </details>
+      </section>
+
+      <section class="tile">
+        <h2><span>Command</span></h2>
+        <label class="f">Command<select id="cmd-sel"></select></label>
+        <div class="sub" id="cmd-desc" style="margin-top:4px"></div>
+        <div class="row" id="cmd-args"></div>
+        <div class="row"><label class="f" style="max-width:150px">Then wait, s (in a sequence)<input id="cmd-wait" type="number" value="1" min="0" step="0.5"></label>
+          <button class="btn primary" id="b-send">Send</button><button class="btn" id="b-add">Add to sequence ↓</button></div>
+        <div class="err" id="cmd-err"></div>
+      </section>
+
+      <section class="tile seqtile">
+        <h2><span>Sequence</span><em id="seq-n"></em></h2>
+        <ol class="seq" id="seq"></ol>
+        <div class="err" id="seq-err"></div>
+        <div class="btns" style="margin-top:0"><button class="btn primary" id="b-run">Run sequence</button><button class="btn" id="b-clear">Clear</button>
+          <select id="saved" style="flex:1;min-width:120px"></select><button class="btn sm" id="b-load">Load Saved Sequence</button><button class="btn sm" id="b-save">Save as…</button></div>
+      </section>
+    </div>
+  </main>
+
+  <div class="below">
+    <section class="tile">
+      <h2><span>Log</span></h2>
+      <div class="scroll tall"><table class="log"><tbody id="log"></tbody></table></div>
+    </section>
+    <details class="tile" open><summary>Connection</summary>
+      <div class="row">
+        <label class="f">Link<select id="c-link"></select></label>
+        <label class="f" data-for="nucleo">Port<input id="c-port" list="ports" placeholder="auto-detect" style="width:200px"></label>
+        <label class="f" data-for="nucleo">Baud<input id="c-baud" type="number" value="115200" style="width:90px"></label>
+        <label class="f" data-for="spi">SPI bus<input id="c-spibus" type="number" value="0" style="width:60px"></label>
+        <label class="f" data-for="spi">SPI dev<input id="c-spidev" type="number" value="0" style="width:60px"></label>
+        <label class="f" data-for="spi">SPI Hz<input id="c-spihz" type="number" value="1000000" style="width:100px"></label>
+        <label class="f" data-for="i2c">I2C bus<input id="c-i2cbus" type="number" value="1" style="width:60px"></label>
+        <label class="f" data-for="i2c">I2C addr<input id="c-i2caddr" value="0x42" style="width:70px"></label>
+      </div>
+      <datalist id="ports"></datalist>
+      <div class="btns"><button class="btn primary" id="b-connect">Connect</button><button class="btn" id="b-disconnect">Disconnect</button><span class="sub" id="c-desc"></span></div>
+    </details>
+  </div>
+  <script src="pid.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

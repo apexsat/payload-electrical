@@ -15,8 +15,8 @@
 
 #define DPT_READ_PERIOD_MS        500u
 
-// LG16-0431D liquid flow sensor on I2C3 (INT_I2C)
-#define FLOW_I2C_ADDR             0x51u
+// LG16-0431D liquid flow sensor on I2C3 (INT_I2C), 7-bit address (flow.c shifts it left by one)
+#define FLOW_I2C_ADDR             0x54u
 #define FLOW_CAL_FIELD            0u     // CF0 = water, CF1 = IPA
 #define FLOW_RESOLUTION           7u     // 7 = 16-bit flow (69.3 ms), 6 = 15-bit (34.8 ms)
 

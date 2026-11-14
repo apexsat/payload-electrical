@@ -339,7 +339,7 @@ def print_hk(hk):
         ["", "tank 1", t("tank_ntc1_degC") if hk["tank_ntc1_degC"] == hk["tank_ntc1_degC"] else raw_ntc(hk["ntc_raw"][0])],
         ["", "tank 2", t("tank_ntc2_degC") if hk["tank_ntc2_degC"] == hk["tank_ntc2_degC"] else raw_ntc(hk["ntc_raw"][1])],
         ["", "discharge", t("dchg_ntc_degC") if hk["dchg_ntc_degC"] == hk["dchg_ntc_degC"] else raw_ntc(hk["ntc_raw"][2])],
-        ["igniter", "supply", fmt(hk["ign_supply_v"], "V", 0)],
+        ["igniter", "supply", fmt(hk["ign_supply_v"], "V")],
     ]
     pk = hk["pulse"]
     if pk["index"] == 0:
