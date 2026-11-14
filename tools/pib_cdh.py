@@ -20,6 +20,7 @@ NOMINAL_SAMPLE_RATE_HZ = 32e6 / 15
 PULSE_STEP_US = 0.1
 ADC_VREF_V = 3.3
 IGN_V_PER_PIN_V = -455.0
+DCHG_V_PER_PIN_V = -4e6 / 22.6e3
 SIG_FIGS = 4  # significant figures for every measured value printed or saved
 TESTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tests")
 
@@ -189,29 +190,36 @@ def print_wave(wave, csv_path):
         sample_us = 1e6 / NOMINAL_SAMPLE_RATE_HZ
         print("warning: board did not report a valid sample period (old firmware?), using nominal %s us" % sig(sample_us))
     fire = hdr["fire_sample"]
-    rows = [(i, (i - fire) * sample_us, v, c, counts_to_pin_v(v), counts_to_pin_v(c))
+    vref = vref_v(hdr["vdda_mv"])
+    rows = [(i, (i - fire) * sample_us, v, c, counts_to_pin_v(v, vref), counts_to_pin_v(c, vref),
+             counts_to_pin_v(v, vref) * DCHG_V_PER_PIN_V)
             for i, (v, c) in enumerate(samples)]
     if csv_path:
         os.makedirs(TESTS_DIR, exist_ok=True)
         csv_path = os.path.join(TESTS_DIR, os.path.basename(csv_path))
         with open(csv_path, "w") as f:
-            f.write("sample,time_us,voltage_counts,current_counts,voltage_pin_v,current_pin_v\n")
-            for r in rows:
-                f.write("%d,%s,%d,%d,%s,%s\n" % (r[0], sig(r[1]), r[2], r[3], sig(r[4]), sig(r[5])))
+            peaks = (sig(counts_to_pin_v(hdr["peak_v"], vref) * IGN_V_PER_PIN_V), sig(counts_to_pin_v(hdr["peak_i"], vref)),
+                     sig(max((r[6] for r in rows), key=abs)), sig(max((r[5] for r in rows), key=abs)))
+            f.write("sample,time_us,voltage_counts,current_counts,voltage_pin_v,current_pin_v,discharge_v,vdda_v,,"
+                    "peak_igniter_v,peak_igniter_i_pin_v,peak_discharge_v,peak_discharge_i_pin_v\n")
+            for k, r in enumerate(rows):
+                f.write("%d,%s,%d,%d,%s,%s,%s,%s" % (r[0], sig(r[1]), r[2], r[3], sig(r[4]), sig(r[5]), sig(r[6]), sig(vref)))
+                f.write(",,%s,%s,%s,%s\n" % peaks if k == 0 else "\n")
         print("wrote %d samples to %s" % (len(rows), csv_path))
         return
     v_pin = [r[4] for r in rows]
     i_pin = [r[5] for r in rows]
-    title = "Discharge capture   %d samples   %s us apart   pin volts, %s V full scale" % (
-        len(rows), sig(sample_us), sig(ADC_VREF_V))
+    v_hv = [r[6] for r in rows]
+    title = "Discharge capture   %d samples   %s us apart   VDDA %s V" % (
+        len(rows), sig(sample_us), sig(vref))
     body = [["%d" % r[0], sig(r[1]),
-             "%s V" % sig(r[4]), "%4d" % r[2], bar(r[4], ADC_VREF_V),
-             "%s V" % sig(r[5]), "%4d" % r[3], bar(r[5], ADC_VREF_V)] for r in rows]
+             "%s V" % sig(r[6]), "%s V" % sig(r[4]), "%4d" % r[2], bar(r[4], vref),
+             "%s V" % sig(r[5]), "%4d" % r[3], bar(r[5], vref)] for r in rows]
     print_table(title,
-                ["#", "t (us)", "pin", "counts", "0 ────── 3.3", "pin", "counts", "0 ────── 3.3"],
-                body, "rrrrlrrl", groups=[(2, 3, "voltage  PA0"), (5, 3, "current  PA1")])
-    for name, xs in (("voltage", v_pin), ("current", i_pin)):
-        print("  %s  min %s V  max %s V  mean %s V" % (name, sig(min(xs)), sig(max(xs)), sig(sum(xs) / len(xs))))
+                ["#", "t (us)", "discharge", "pin", "counts", "0 ────── VDDA", "pin", "counts", "0 ────── VDDA"],
+                body, "rrrrrlrrl", groups=[(2, 4, "voltage  PA0"), (6, 3, "current  PA1")])
+    for name, xs, unit in (("discharge voltage", v_hv, "V"), ("voltage pin", v_pin, "V"), ("current pin", i_pin, "V")):
+        print("  %s  min %s %s  max %s %s  mean %s %s" % (name, sig(min(xs)), unit, sig(max(xs)), unit, sig(sum(xs) / len(xs)), unit))
     print()
 
 
@@ -275,13 +283,13 @@ def print_table(title, headers, rows, align, groups=None):
 
 
 def read_pulse_header(link):
-    index, peak_i, peak_v, sample_us, fire_sample = struct.unpack("<IHHfI", link.read(0x50, 16))
+    index, peak_i, peak_v, sample_us, fire_sample, vdda_mv = struct.unpack("<IHHfHH", link.read(0x50, 16))
     return {"index": index, "peak_i": peak_i, "peak_v": peak_v,
-            "sample_us": sample_us, "fire_sample": fire_sample}
+            "sample_us": sample_us, "fire_sample": fire_sample, "vdda_mv": vdda_mv}
 
 
 def read_hk(link):
-    b = link.read(0x00, 0x58)
+    b = link.read(0x00, 0x60)
     f = lambda off: struct.unpack_from("<f", b, off)[0]
     status = b[0]
     flags = [name for i, name in enumerate(STATUS_BITS) if status & (1 << i)]
@@ -295,9 +303,10 @@ def read_hk(link):
         "pib_ntc_degC": f(0x28), "mcu_degC": f(0x2C),
         "flow_ulmin": f(0x30), "flow_degC": f(0x34),
         "ign_supply_v": f(0x38), "ign_ntc_degC": f(0x3C), "dchg_ntc_degC": f(0x40),
-        "pulse": dict(zip(("index", "peak_i", "peak_v"), struct.unpack_from("<IHH", b, 0x50))),
+        "pulse": dict(zip(("index", "peak_i", "peak_v", "vdda_mv"), struct.unpack_from("<IHH6xH", b, 0x50))),
         "pib_state": b[0x44], "outputs": b[0x45], "inputs": b[0x46], "valves": b[0x47],
         "ntc_raw": struct.unpack_from("<HHH", b, 0x48),
+        "vdda_mv": struct.unpack_from("<H", b, 0x4E)[0],
     }
 
 
@@ -316,8 +325,12 @@ def fmt(v, unit):
     return "--" if v != v else "%s %s" % (sig(v), unit)
 
 
-def counts_to_pin_v(counts):
-    return counts / 4095 * ADC_VREF_V
+def vref_v(vdda_mv):
+    return vdda_mv / 1000 if 2500 < vdda_mv < 3700 else ADC_VREF_V
+
+
+def counts_to_pin_v(counts, vref=ADC_VREF_V):
+    return counts / 4095 * vref
 
 
 def pulse_line(p):
@@ -325,12 +338,12 @@ def pulse_line(p):
         return "none since boot"
     return "#%d   peak V %d cnt (~%s)   peak I %d cnt (%s at pin, amps scale TBD)" % (
         p["index"],
-        p["peak_v"], fmt(counts_to_pin_v(p["peak_v"]) * IGN_V_PER_PIN_V, "V"),
-        p["peak_i"], fmt(counts_to_pin_v(p["peak_i"]), "V"))
+        p["peak_v"], fmt(counts_to_pin_v(p["peak_v"], vref_v(p["vdda_mv"])) * IGN_V_PER_PIN_V, "V"),
+        p["peak_i"], fmt(counts_to_pin_v(p["peak_i"], vref_v(p["vdda_mv"])), "V"))
 
 
-def raw_ntc(counts):
-    return "-- C   (%d cnt, %.3f V at pin; part not set yet)" % (counts, counts_to_pin_v(counts))
+def raw_ntc(counts, vref=ADC_VREF_V):
+    return "-- C   (%d cnt, %.3f V at pin; part not set yet)" % (counts, counts_to_pin_v(counts, vref))
 
 
 def valve_text(hk, n):
@@ -357,6 +370,7 @@ def print_io(hk):
 
 def print_hk(hk):
     t = lambda key: fmt(hk[key], "C")
+    vref = vref_v(hk["vdda_mv"])
     rows = [
         ["status", "flags", "0x%02X  %s" % (hk["status"], hk["flags"])],
         ["pressure", "frit", "%s @ %s" % (fmt(hk["frit_mbar"], "mbar"), t("frit_degC"))],
@@ -364,10 +378,11 @@ def print_hk(hk):
         ["temperature", "PIB", t("pib_ntc_degC")],
         ["", "MCU", t("mcu_degC")],
         ["", "igniter", t("ign_ntc_degC")],
-        ["", "tank 1", t("tank_ntc1_degC") if hk["tank_ntc1_degC"] == hk["tank_ntc1_degC"] else raw_ntc(hk["ntc_raw"][0])],
-        ["", "tank 2", t("tank_ntc2_degC") if hk["tank_ntc2_degC"] == hk["tank_ntc2_degC"] else raw_ntc(hk["ntc_raw"][1])],
-        ["", "discharge", t("dchg_ntc_degC") if hk["dchg_ntc_degC"] == hk["dchg_ntc_degC"] else raw_ntc(hk["ntc_raw"][2])],
-        ["igniter", "supply", fmt(hk["ign_supply_v"], "V", 0)],
+        ["", "tank 1", t("tank_ntc1_degC") if hk["tank_ntc1_degC"] == hk["tank_ntc1_degC"] else raw_ntc(hk["ntc_raw"][0], vref)],
+        ["", "tank 2", t("tank_ntc2_degC") if hk["tank_ntc2_degC"] == hk["tank_ntc2_degC"] else raw_ntc(hk["ntc_raw"][1], vref)],
+        ["", "discharge", t("dchg_ntc_degC") if hk["dchg_ntc_degC"] == hk["dchg_ntc_degC"] else raw_ntc(hk["ntc_raw"][2], vref)],
+        ["supply", "VDDA", fmt(hk["vdda_mv"] / 1000, "V")],
+        ["igniter", "supply", fmt(hk["ign_supply_v"], "V")],
     ]
     pk = hk["pulse"]
     if pk["index"] == 0:
@@ -375,8 +390,8 @@ def print_hk(hk):
     else:
         rows += [
             ["", "last pulse", "#%d" % pk["index"]],
-            ["", "peak V", "%s   (%d cnt)" % (fmt(counts_to_pin_v(pk["peak_v"]) * IGN_V_PER_PIN_V, "V"), pk["peak_v"])],
-            ["", "peak I", "%s at pin   (%d cnt, amps scale TBD)" % (fmt(counts_to_pin_v(pk["peak_i"]), "V"), pk["peak_i"])],
+            ["", "peak V", "%s   (%d cnt)" % (fmt(counts_to_pin_v(pk["peak_v"], vref_v(pk["vdda_mv"])) * IGN_V_PER_PIN_V, "V"), pk["peak_v"])],
+            ["", "peak I", "%s at pin   (%d cnt, amps scale TBD)" % (fmt(counts_to_pin_v(pk["peak_i"], vref_v(pk["vdda_mv"])), "V"), pk["peak_i"])],
         ]
     rows += [
         ["flow", "rate", "%s @ %s" % (fmt(hk["flow_ulmin"], "uL/min"), t("flow_degC"))],
@@ -470,6 +485,9 @@ examples (bench, from tools/):
   python3 pib_cdh.py --link nucleo safe
   python3 pib_cdh.py --link nucleo raw 0x50 8
 
+demo console (a window with the system diagram and every control above):
+  python3 pib_cdh.py --link nucleo --gui
+
 bench control examples:
   python3 pib_cdh.py --link nucleo io
   python3 pib_cdh.py --link nucleo out arm on
@@ -484,6 +502,7 @@ more help on one command:
 
 first-time setup:
   python3 -m pip install pyserial
+  python3 -m pip install pyside6      (only for --gui)
   Flash the Nucleo with RUN_SPI_BRIDGE = 1 (Core/Src/main.c).
   ls /dev/cu.usbmodem* (macOS) or ls /dev/ttyACM* (Linux) lists serial ports;
   pass the Nucleo's with --port if more than one shows up."""
@@ -526,9 +545,11 @@ def main():
     g.add_argument("--spi-hz", type=int, default=1_000_000, help="Raspberry Pi SPI clock in Hz (--link spi). Default: 1000000")
     g.add_argument("--i2c-bus", type=int, default=1, help="Raspberry Pi I2C bus (--link i2c). Default: 1")
     g.add_argument("--i2c-addr", type=lambda s: int(s, 0), default=0x42, help="PIB I2C address (--link i2c). Default: 0x42")
+    p.add_argument("--gui", action="store_true",
+                   help="open the demo console window instead of running a command (needs PySide6)")
     sub = p.add_subparsers(dest="cmd", title="commands", metavar="<command>")
     sub.add_parser("hk", example="hk", formatter_class=raw_fmt, help="read and print housekeeping once",
-                   description="Read registers 0x00-0x57 once and print them with units: status flags, uptime,\n"
+                   description="Read registers 0x00-0x5F once and print them with units: status flags, uptime,\n"
                                "frit and tank pressure/temperature, PIB / MCU / igniter / tank / discharge\n"
                                "temperatures, igniter supply voltage, flow, and the last pulse header.\n"
                                "'--' means no reading (no sensor fitted, or its part isn't known yet).")
@@ -626,16 +647,25 @@ def main():
     args, extra = p.parse_known_args(argv)
     if extra:
         (sub.choices[args.cmd] if args.cmd else p).error("unrecognized arguments: %s" % " ".join(extra))
-    if args.cmd is None:
+    if args.cmd is None and not args.gui:
         p.print_help()
         return
 
-    if args.link == "spi":
-        link = SpiLink(args.spi_bus, args.spi_dev, args.spi_hz)
-    elif args.link == "i2c":
-        link = I2cLink(args.i2c_bus, args.i2c_addr)
-    else:
-        link = NucleoLink(args.port, args.baud)
+    def make_link():
+        if args.link == "spi":
+            return SpiLink(args.spi_bus, args.spi_dev, args.spi_hz)
+        if args.link == "i2c":
+            return I2cLink(args.i2c_bus, args.i2c_addr)
+        return NucleoLink(args.port, args.baud)
+
+    if args.gui:
+        try:
+            import pib_gui
+        except ImportError as e:
+            sys.exit("--gui needs PySide6: python3 -m pip install pyside6\n(%s)" % e)
+        sys.exit(pib_gui.run(make_link, args.link))
+
+    link = make_link()
 
     if arm_first:
         arm_once(link)

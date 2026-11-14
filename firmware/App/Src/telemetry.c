@@ -114,13 +114,14 @@ void telemetry_update_snapshot(const telemetry_hk_t *hk)
     for (uint32_t i = 0; i < TLM_NTC_RAW_COUNT; i++) {
         put_u16(&img[TLM_REG_NTC_RAW + i * 2u], hk->ntc_raw[i]);
     }
+    put_u16(&img[TLM_REG_VDDA], hk->vdda_mv);
     memcpy(&img[TLM_REG_PULSE_HEADER], pulse_header, sizeof pulse_header);
 
     front = back;
 }
 
 void telemetry_set_pulse_header(uint32_t pulse_index, uint16_t ign_peak_i, uint16_t ign_peak_v,
-                                float sample_us, uint32_t fire_sample)
+                                float sample_us, uint16_t fire_sample, uint16_t vdda_mv)
 {
     put_u32(&pulse_header[0], pulse_index);
     pulse_header[4] = (uint8_t)ign_peak_i;
@@ -128,7 +129,8 @@ void telemetry_set_pulse_header(uint32_t pulse_index, uint16_t ign_peak_i, uint1
     pulse_header[6] = (uint8_t)ign_peak_v;
     pulse_header[7] = (uint8_t)(ign_peak_v >> 8);
     put_f32(&pulse_header[8], sample_us);
-    put_u32(&pulse_header[12], fire_sample);
+    put_u16(&pulse_header[12], fire_sample);
+    put_u16(&pulse_header[14], vdda_mv);
     memcpy(&hk_image[0][TLM_REG_PULSE_HEADER], pulse_header, sizeof pulse_header);
     memcpy(&hk_image[1][TLM_REG_PULSE_HEADER], pulse_header, sizeof pulse_header);
 }

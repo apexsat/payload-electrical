@@ -26,6 +26,7 @@
 #define TLM_REG_INPUTS            0x46u
 #define TLM_REG_VALVES            0x47u
 #define TLM_REG_NTC_RAW           0x48u
+#define TLM_REG_VDDA              0x4Eu
 #define TLM_REG_PULSE_HEADER      0x50u
 #define TLM_REG_WAVEFORM_FIRST    0x60u
 #define TLM_REG_WAVEFORM_LAST     0x73u
@@ -87,6 +88,7 @@ typedef struct {
     uint8_t inputs;
     uint8_t valves;
     uint16_t ntc_raw[TLM_NTC_RAW_COUNT];
+    uint16_t vdda_mv;
 } telemetry_hk_t;
 
 typedef struct {
@@ -106,7 +108,7 @@ void telemetry_init(void);
 void telemetry_update_snapshot(const telemetry_hk_t *hk);
 void telemetry_set_waveform(const uint32_t *samples);
 void telemetry_set_pulse_header(uint32_t pulse_index, uint16_t ign_peak_i, uint16_t ign_peak_v,
-                                float sample_us, uint32_t fire_sample);
+                                float sample_us, uint16_t fire_sample, uint16_t vdda_mv);
 bool telemetry_take_waveform_read(void);
 uint16_t telemetry_read(uint8_t addr, uint8_t *dst, uint16_t n);
 void telemetry_on_write(uint8_t addr, const uint8_t *data, uint16_t n);

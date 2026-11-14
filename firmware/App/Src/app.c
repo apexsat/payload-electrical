@@ -73,6 +73,7 @@ static uint32_t pd_rst_ms;
 
 static thermistor_t ntc_pib = { NTC_10K_BETA_K, 25.0f, NTC_10K_R25_KOHM, NTC_PIB_BIAS_KOHM };
 static thermistor_t ntc_ign = { NTC_10K_BETA_K, 25.0f, NTC_10K_R25_KOHM, NTC_IGN_BIAS_KOHM };
+static thermistor_t ntc_tank = { NTC_TANK_BETA_K, 25.0f, NTC_TANK_R25_KOHM, NTC_TANK_BIAS_KOHM };
 
 static ms5540c_t dpt;
 static float dpt_t_C[2];
@@ -103,6 +104,7 @@ static float flow_temp_degC = NAN;
 
 static uint32_t last_hk_ms;
 static uint32_t last_led_ms;
+static uint32_t last_wdg_ms;
 static uint32_t last_dpt_ms;
 
 static pib_state_t state;
@@ -277,13 +279,17 @@ static void fire_pulse(uint32_t width_100ns)
     pulse_index++;
     uint16_t peak_i = 0u;
     uint16_t peak_v = 0u;
+    uint32_t vdda = pib_adc.burst.vdda_before_mv;
+    if (s == ADC_BURST_DONE && pib_adc.burst.vdda_after_mv != 0u) {
+        vdda = (vdda + pib_adc.burst.vdda_after_mv) / 2u;
+    }
     if (s == ADC_BURST_DONE && pib_adc_read_housekeeping(&pib_adc) == HAL_OK) {
         peak_i = pib_adc.hk.raw[HK_I_IGN_PK];
         peak_v = pib_adc.hk.raw[HK_V_IGN_PK];
     }
 
     uint32_t start = (first > WAVE_PRE_SAMPLES) ? WAVE_PRE_SAMPLES : first;
-    telemetry_set_pulse_header(pulse_index, peak_i, peak_v, sample_us, first - start);
+    telemetry_set_pulse_header(pulse_index, peak_i, peak_v, sample_us, (uint16_t)(first - start), (uint16_t)vdda);
 
     if (s != ADC_BURST_DONE) {
         pib_adc_burst_abort(&pib_adc);
@@ -410,7 +416,7 @@ static void flow_step(void)
     float v;
     bool err;
     switch (flow_meas) {
-    case FLOW_MEAS_FLOW: err = lg160431d_poll_flow(&flow, &v); if (!err) flow_ul_min = v;    break;
+    case FLOW_MEAS_FLOW: err = lg160431d_poll_flow(&flow, &v); if (!err) flow_ul_min = v * FLOW_ASCENT_GAIN; break;
     default:             err = lg160431d_poll_temp(&flow, &v); if (!err) flow_temp_degC = v; break;
     }
 
@@ -440,8 +446,8 @@ static void build_housekeeping(telemetry_hk_t *hk, uint32_t now)
     hk->frit_degC = dpt_ok[DPT_FRIT] ? dpt_t_C[DPT_FRIT] : NAN;
     hk->tank_mbar = dpt_ok[DPT_TANK] ? dpt_p_mbar[DPT_TANK] : NAN;
     hk->tank_degC = dpt_ok[DPT_TANK] ? dpt_t_C[DPT_TANK] : NAN;
-    hk->tank_ntc_degC[0] = NAN;
-    hk->tank_ntc_degC[1] = NAN;
+    hk->tank_ntc_degC[0] = ntc_degC(&ntc_tank, HK_TANK_NTC_1);
+    hk->tank_ntc_degC[1] = ntc_degC(&ntc_tank, HK_TANK_NTC_2);
     hk->pib_degC[0] = ntc_degC(&ntc_pib, HK_NTC_PIB);
     hk->pib_degC[1] = (float)pib_adc.hk.temp_mcu_degC;
     hk->flow_ul_min = flow_ul_min;
@@ -472,6 +478,7 @@ static void build_housekeeping(telemetry_hk_t *hk, uint32_t now)
     hk->ntc_raw[0] = pib_adc.hk.raw[HK_TANK_NTC_1];
     hk->ntc_raw[1] = pib_adc.hk.raw[HK_TANK_NTC_2];
     hk->ntc_raw[2] = pib_adc.hk.raw[HK_NTC_DCHG];
+    hk->vdda_mv = (uint16_t)pib_adc.hk.vdda_mv;
 }
 
 void app_init(void)
@@ -576,5 +583,10 @@ void app_run_once(void)
     if ((now - last_led_ms) >= LED_TOGGLE_PERIOD_MS) {
         last_led_ms = now;
         HAL_GPIO_TogglePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin);
+    }
+
+    if ((now - last_wdg_ms) >= WDG_TOGGLE_PERIOD_MS) {
+        last_wdg_ms = now;
+        HAL_GPIO_TogglePin(WDG_IN_GPIO_Port, WDG_IN_Pin);
     }
 }
