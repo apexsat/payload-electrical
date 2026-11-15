@@ -101,10 +101,11 @@ static bool flow_ok;              // init succeeded
 static flow_meas_t flow_meas;     // measurement currently triggered / next to trigger
 static float flow_ul_min = NAN;   // last good readings; NAN until the first one
 static float flow_temp_degC = NAN;
+static uint32_t flow_good_ms;
+static uint32_t flow_retry_ms;
 
 static uint32_t last_hk_ms;
 static uint32_t last_led_ms;
-static uint32_t last_wdg_ms;
 static uint32_t last_dpt_ms;
 
 static pib_state_t state;
@@ -399,9 +400,23 @@ static void dpt_step(uint32_t now)
 
 // Alternate flow -> temp. Each call either triggers the next
 // measurement or polls the one in progress; the sensor NACKs until it is done.
-static void flow_step(void)
+static void flow_step(uint32_t now)
 {
     if (!flow_ok) {
+        if ((now - flow_retry_ms) >= FLOW_RETRY_MS) {
+            flow_retry_ms = now;
+            flow_meas = FLOW_MEAS_FLOW;
+            flow_ok = !lg160431d_init(&flow, FLOW_CAL_FIELD, false, FLOW_RESOLUTION, false);
+            flow_good_ms = HAL_GetTick();
+        }
+        return;
+    }
+
+    if ((now - flow_good_ms) >= FLOW_STALE_MS) {
+        flow_ok = false;
+        flow_retry_ms = now;
+        flow_ul_min = NAN;
+        flow_temp_degC = NAN;
         return;
     }
 
@@ -418,6 +433,9 @@ static void flow_step(void)
     switch (flow_meas) {
     case FLOW_MEAS_FLOW: err = lg160431d_poll_flow(&flow, &v); if (!err) flow_ul_min = v * FLOW_ASCENT_GAIN; break;
     default:             err = lg160431d_poll_temp(&flow, &v); if (!err) flow_temp_degC = v; break;
+    }
+    if (!err) {
+        flow_good_ms = now;
     }
 
     // Still converting (NACK): keep polling. Done (good result or CRC fail): move on.
@@ -510,6 +528,8 @@ void app_init(void)
 
     // No-hold-master mode so app_run_once() can poll instead of blocking
     flow_ok = !lg160431d_init(&flow, FLOW_CAL_FIELD, false, FLOW_RESOLUTION, false);
+    flow_good_ms = HAL_GetTick();
+    flow_retry_ms = flow_good_ms;
 
     igniter.pulse_port = IGNITER_PULSE_GPIO_Port;
     igniter.pulse_pin = IGNITER_PULSE_Pin;
@@ -566,7 +586,7 @@ void app_run_once(void)
         dpt_step(now);
     }
 
-    flow_step();
+    flow_step(now);
 
     // Housekeeping read. Returns HAL_BUSY (skipped) while a burst is running.
     if ((now - last_hk_ms) >= HK_READ_PERIOD_MS) {
@@ -585,8 +605,5 @@ void app_run_once(void)
         HAL_GPIO_TogglePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin);
     }
 
-    if ((now - last_wdg_ms) >= WDG_TOGGLE_PERIOD_MS) {
-        last_wdg_ms = now;
-        HAL_GPIO_TogglePin(WDG_IN_GPIO_Port, WDG_IN_Pin);
-    }
+    HAL_GPIO_TogglePin(WDG_IN_GPIO_Port, WDG_IN_Pin);
 }

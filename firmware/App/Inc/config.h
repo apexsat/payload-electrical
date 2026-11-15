@@ -12,7 +12,6 @@
 
 // Heartbeat LED toggle period.
 #define LED_TOGGLE_PERIOD_MS 500u
-#define WDG_TOGGLE_PERIOD_MS 800u
 
 #define DPT_READ_PERIOD_MS        500u
 #define DPT_CONV_MS               40u
@@ -22,6 +21,8 @@
 #define FLOW_CAL_FIELD            0u     // CF0 = water, CF1 = IPA
 #define FLOW_RESOLUTION           7u     // 7 = 16-bit flow (69.3 ms), 6 = 15-bit (34.8 ms)
 #define FLOW_ASCENT_GAIN          1.1977f
+#define FLOW_STALE_MS             500u
+#define FLOW_RETRY_MS             1000u
 
 #define CDH_I2C_ADDR              0x42u
 #define CDH_HEARTBEAT_TIMEOUT_MS  10000u
