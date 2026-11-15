@@ -83,11 +83,12 @@ class NucleoLink:
 
     def __init__(self, port, baud):
         import serial
+        from serial.tools import list_ports
         if port is None:
-            ports = sorted(glob.glob("/dev/cu.usbmodem*") + glob.glob("/dev/ttyACM*"))
+            ports = sorted(p.device for p in list_ports.comports() if p.vid == 0x0483)
             if len(ports) != 1:
                 sys.exit("give --port; found %s\nexample: python3 pib_cdh.py --link nucleo --port %s hk"
-                         % (ports or "no /dev/cu.usbmodem* or /dev/ttyACM* ports",
+                         % (ports or "no Nucleo (ST-LINK) serial port; is it plugged in?",
                             ports[0] if ports else "/dev/cu.usbmodem1103"))
             port = ports[0]
         self.ser = serial.Serial(port, baud, timeout=1.0)
@@ -443,7 +444,7 @@ usage pattern:
   pib_cdh.py [options] <command> [command options]
   pib_cdh.py [options] arm <command> [command options]
 
-On the bench, always pass --link nucleo: the laptop talks to the Nucleo over USB,
+On a laptop, --link nucleo is the default: the laptop talks to the Nucleo over USB,
 and the Nucleo passes each SPI transaction to the PIB."""
 
 HELP_EPILOG = """\
@@ -504,8 +505,9 @@ first-time setup:
   python3 -m pip install pyserial
   python3 -m pip install pyside6      (only for --gui)
   Flash the Nucleo with RUN_SPI_BRIDGE = 1 (Core/Src/main.c).
-  ls /dev/cu.usbmodem* (macOS) or ls /dev/ttyACM* (Linux) lists serial ports;
-  pass the Nucleo's with --port if more than one shows up."""
+  The Nucleo's port is found on its own if it is the only Nucleo plugged in;
+  with more than one, pass --port (python3 -m serial.tools.list_ports lists them).
+  Linux only: sudo usermod -aG dialout $USER, then log out and back in."""
 
 
 EXAMPLE = "python3 pib_cdh.py --link nucleo "
@@ -534,11 +536,11 @@ def main():
     p = Parser(prog="pib_cdh.py", example="hk", description=HELP_DESCRIPTION, epilog=HELP_EPILOG,
                                 formatter_class=raw_fmt)
     g = p.add_argument_group("connection (options go before the command)")
-    g.add_argument("--link", choices=["spi", "i2c", "nucleo"], default="spi",
+    g.add_argument("--link", choices=["spi", "i2c", "nucleo"], default="spi" if glob.glob("/dev/spidev*") else "nucleo",
                    help="how to reach the PIB: nucleo = through the Nucleo bridge over USB (use this on the bench); "
-                        "spi / i2c = straight from a Raspberry Pi's own pins. Default: spi")
-    g.add_argument("--port", help="Nucleo serial port, e.g. /dev/cu.usbmodem1103 (macOS) or /dev/ttyACM0 (Linux). "
-                                  "Default: the only /dev/cu.usbmodem* or /dev/ttyACM* port, if exactly one exists")
+                        "spi / i2c = straight from a Raspberry Pi's own pins. Default: spi on a Raspberry Pi, nucleo elsewhere")
+    g.add_argument("--port", help="Nucleo serial port, e.g. /dev/cu.usbmodem1103 (macOS), /dev/ttyACM0 (Linux) or COM5 (Windows). "
+                                  "Default: the only ST-LINK serial port, if exactly one is plugged in")
     g.add_argument("--baud", type=int, default=115200, help="Nucleo serial speed; must match its firmware. Default: 115200")
     g.add_argument("--spi-bus", type=int, default=0, help="Raspberry Pi SPI bus (--link spi). Default: 0")
     g.add_argument("--spi-dev", type=int, default=0, help="Raspberry Pi SPI chip select (--link spi). Default: 0")
