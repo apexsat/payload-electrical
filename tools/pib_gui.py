@@ -24,7 +24,7 @@ GREEN = "#00A651"
 FLUID = "#D40000"
 POWER = "#F29200"
 OFF = "#808080"
-LIQUID = "#A9CCEE"
+LIQUID = "#FFB4B3"
 BLUE = "#0050E6"
 ORANGE = "#E86A00"
 SCOPE = "#0A0A0A"
@@ -37,7 +37,7 @@ WEIGHTS = {400: QtGui.QFont.Weight.Normal, 500: QtGui.QFont.Weight.Medium,
            600: QtGui.QFont.Weight.DemiBold, 700: QtGui.QFont.Weight.Bold}
 
 FAULTS = ["FLOW_FAULT", "IGNITER_FAULT", "DISCHARGE_FAULT", "BATT_UVLO", "TEMP_FAULT"]
-VALVES = [(1, "ISO1", "V1 tank, latching", 1230), (2, "ISO2", "V2 NC solenoid", 1120), (3, "ISO3", "V3 frit, latching", 1010)]
+VALVES = [(2, "ISO1", "V2 tank, NC solenoid", 1230), (1, "ISO2", "V1 latching", 1120), (3, "ISO3", "V3 frit, latching", 1010)]
 OUT_LABELS = ["Battery bus", "Valve 12 V", "Igniter HV", "Discharge HV", "Heater 1", "Heater 2", "Peak-detect reset", "Watchdog pin"]
 TREND_S = 600.0
 POLL_S = 1.0
@@ -198,7 +198,7 @@ class Worker(QtCore.QObject):
         elif kind == "valve":
             for n in ([1, 2, 3] if cmd[1] == 0 else [cmd[1]]):
                 self.lnk.write(cdh.REG_SET_VALVE, [n, 1 if cmd[2] else 0])
-            self.log.emit("%s %s" % ("all valves" if cmd[1] == 0 else "ISO%d" % cmd[1], "open" if cmd[2] else "close"))
+            self.log.emit("%s %s" % ("all valves" if cmd[1] == 0 else next(t for n, t, _, _ in VALVES if n == cmd[1]), "open" if cmd[2] else "close"))
         elif kind == "out":
             self.lnk.write(cdh.REG_SET_OUTPUT, [cmd[1], 1 if cmd[2] else 0])
             self.log.emit("%s %s" % (cdh.OUTPUTS[cmd[1]][1], "on" if cmd[2] else "off"))
@@ -624,7 +624,7 @@ class Console(QtWidgets.QWidget):
         self.line(384, 584, 600, 584, *pw(out(3)))
         self.line(652, 384, 652, 504, *pw(out(2)))
 
-        v1, v2, v3 = (self.valve_state(n)[0] == "open" for n in (1, 2, 3))
+        v1, v2, v3 = (self.valve_state(n)[0] == "open" for n, _, _, _ in VALVES)
         fl = lambda on: (FLUID, 4.0, "solid") if on else (OFF, 2.0, "dash")
         self.line(1300, 368, 1300, 602, *fl(True))
         self.line(1262, 600, 1302, 600, *fl(True))
